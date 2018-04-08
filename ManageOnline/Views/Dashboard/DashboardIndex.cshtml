@@ -1,0 +1,13 @@
+﻿
+@{
+    ViewBag.Title = "DashboardIndex";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<h2>Dashboard</h2>
+
+@if (Session["UserId"] != null)
+{
+    <h4>hello @Session["Username"].ToString()</h4>
+}
+
