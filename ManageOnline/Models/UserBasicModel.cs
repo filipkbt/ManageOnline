@@ -6,16 +6,16 @@ using System.Web;
 
 namespace ManageOnline.Models
 {
+    public enum Roles
+    {
+        Pracownik,
+        Manager,
+        Klient
+    }
     public class UserBasicModel
     {
         [Key]
         public int UserID { get; set; }
-
-        [Required(ErrorMessage = "Imię jest wymagane.")]
-        public string FirstName { get; set; }
-
-        [Required(ErrorMessage = "Nazwisko jest wymagane.")]
-        public string LastName { get; set; }
 
         [Required(ErrorMessage = "Email jest wymagany.")]
         public string Email { get; set; }
@@ -30,5 +30,8 @@ namespace ManageOnline.Models
         [Compare("Password", ErrorMessage = "Potwierdź swoje hasło.")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "Podanie roli konta jest wymagane.")]
+        public Roles Role { get; set; }
     }
 }

@@ -32,7 +32,7 @@ namespace ManageOnline.Controllers
                         db.userAccount.Add(userAccount);
                         db.SaveChanges();
                         ModelState.Clear();
-                        ViewBag.Message = "Poprawnie się zarejestrowałeś " + userAccount.FirstName;
+                        ViewBag.Message = "Poprawnie się zarejestrowałeś " + userAccount.Username;
                     }
                 }
             }
@@ -62,6 +62,13 @@ namespace ManageOnline.Controllers
                 }
             }
             return View();
+        }
+
+        public ActionResult LogOut()
+        {
+            System.Web.HttpContext.Current.Session["UserId"] = null;
+            System.Web.HttpContext.Current.Session["Username"] = null;
+            return RedirectToAction("Login","Account");
         }
 
     }

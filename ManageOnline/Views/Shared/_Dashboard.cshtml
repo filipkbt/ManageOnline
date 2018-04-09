@@ -8,13 +8,16 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-   
-<div class="container body-content">
-    @RenderBody()
-</div>
+    <div class="navbar navbar-expand-lg navbar-light bg-light" >
+        <li class="navbar-brand">Navbar</li>
+        <li class="navbar-brand">@Html.ActionLink("Wyloguj się", "LogOut", "Account")</li>
+    </div>
+        <div class="container body-content">
+            @RenderBody()
+        </div>
 
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-@RenderSection("scripts", required: false)
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
 </body>
 </html>
