@@ -13,6 +13,7 @@ namespace ManageOnline.Controllers
         {
             if (Session["UserId"] != null)
             {
+                ViewBag.UserName = User.Identity.Name;
                 return View();
             }
             else

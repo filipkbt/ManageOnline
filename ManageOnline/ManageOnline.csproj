@@ -156,12 +156,30 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\AuthorizationService.cs" />
+    <Compile Include="Infrastructure\Crypto.cs" />
     <Compile Include="Migrations\201804091252277_addRoles.cs" />
     <Compile Include="Migrations\201804091252277_addRoles.Designer.cs">
       <DependentUpon>201804091252277_addRoles.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804111514467_addMoreFieldToUserBasicModel.cs" />
+    <Compile Include="Migrations\201804111514467_addMoreFieldToUserBasicModel.Designer.cs">
+      <DependentUpon>201804111514467_addMoreFieldToUserBasicModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804121901440_changeUserIDToUserId.cs" />
+    <Compile Include="Migrations\201804121901440_changeUserIDToUserId.Designer.cs">
+      <DependentUpon>201804121901440_changeUserIDToUserId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804122037381_AddModelsCommentTaskProjectSkills.cs" />
+    <Compile Include="Migrations\201804122037381_AddModelsCommentTaskProjectSkills.Designer.cs">
+      <DependentUpon>201804122037381_AddModelsCommentTaskProjectSkills.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\DbContextModel.cs" />
+    <Compile Include="Models\ProjectModel.cs" />
+    <Compile Include="Models\SkillsModel.cs" />
+    <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Models\UserBasicModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -248,6 +266,7 @@
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Dashboard\DashboardIndex.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\EditAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -264,6 +283,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201804091252277_addRoles.resx">
       <DependentUpon>201804091252277_addRoles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804111514467_addMoreFieldToUserBasicModel.resx">
+      <DependentUpon>201804111514467_addMoreFieldToUserBasicModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804121901440_changeUserIDToUserId.resx">
+      <DependentUpon>201804121901440_changeUserIDToUserId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804122037381_AddModelsCommentTaskProjectSkills.resx">
+      <DependentUpon>201804122037381_AddModelsCommentTaskProjectSkills.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

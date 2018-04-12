@@ -8,6 +8,14 @@ namespace ManageOnline.Models
 {
         public class DbContextModel : DbContext
         {
-            public DbSet<UserBasicModel> userAccount { get; set; }
-        }
+            public DbSet<UserBasicModel> UserAccounts { get; set; }
+
+            public DbSet<ProjectModel> Projects { get; set; }
+
+            public DbSet<SkillsModel>  Skills { get; set; }
+
+            public DbSet<CommentModel> Comments { get; set; }
+
+            public DbSet<TaskModel> Tasks { get; set; }
+    }
 }

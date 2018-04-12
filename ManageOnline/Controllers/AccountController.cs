@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ManageOnline.Infrastructure;
 using ManageOnline.Models;
 
 namespace ManageOnline.Controllers
@@ -21,7 +23,7 @@ namespace ManageOnline.Controllers
             {
                 using (DbContextModel db = new DbContextModel())
                 {
-                    var user = db.userAccount.SingleOrDefault(u => u.Username == userAccount.Username);
+                    var user = db.UserAccounts.SingleOrDefault(u => u.Username == userAccount.Username);
                     if (user != null)
                     {
                         ViewBag.Message = "Użytkownik o podanym loginie już istnieje.";
@@ -29,7 +31,9 @@ namespace ManageOnline.Controllers
                     }
                     else
                     {
-                        db.userAccount.Add(userAccount);
+                        userAccount.Password = Crypto.Hash(userAccount.Password);
+                        userAccount.ConfirmPassword = Crypto.Hash(userAccount.ConfirmPassword);
+                        db.UserAccounts.Add(userAccount);
                         db.SaveChanges();
                         ModelState.Clear();
                         ViewBag.Message = "Poprawnie się zarejestrowałeś " + userAccount.Username;
@@ -49,12 +53,19 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
-                var currentUser = db.userAccount.Where(u => u.Username == user.Username && u.Password == user.Password).FirstOrDefault();
+                var currentUser = db.UserAccounts.Where(u => u.Username == user.Username).FirstOrDefault();
                 if (currentUser != null)
                 {
-                    System.Web.HttpContext.Current.Session["UserId"] = currentUser.UserID.ToString();
-                    System.Web.HttpContext.Current.Session["Username"] = currentUser.Username.ToString();
-                    return RedirectToAction("DashboardIndex", "Dashboard");
+                    if((string.Compare(Crypto.Hash(user.Password), currentUser.Password) == 0))
+                    {
+                        System.Web.HttpContext.Current.Session["UserId"] = currentUser.UserId.ToString();
+                        System.Web.HttpContext.Current.Session["Username"] = currentUser.Username.ToString();
+                        return RedirectToAction("DashboardIndex", "Dashboard");
+                    }
+                    else
+                    {
+                        ViewBag.Message = "Podane hasło jest nieprawidłowe";
+                    }
                 }
                 else
                 {
@@ -69,6 +80,52 @@ namespace ManageOnline.Controllers
             System.Web.HttpContext.Current.Session["UserId"] = null;
             System.Web.HttpContext.Current.Session["Username"] = null;
             return RedirectToAction("Login","Account");
+        }
+
+        public ActionResult EditAccount()
+        {
+            DbContextModel db = new DbContextModel();
+
+            int UserId = Convert.ToInt32(Session["UserId"]);
+
+            UserBasicModel userToEdit = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
+
+
+            return View(userToEdit);
+        }
+
+
+
+        [HttpPost]
+        public ActionResult EditAccount(UserBasicModel userAfterEdit)
+        {
+                int UserId = Convert.ToInt32(Session["UserId"]);
+
+                using (DbContextModel db = new DbContextModel())
+                {
+                    UserBasicModel user = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
+
+                    user.MobileNumber = userAfterEdit.MobileNumber;
+
+                    user.DisplayedRole = userAfterEdit.DisplayedRole;
+
+                    user.Description = userAfterEdit.Description;
+
+                    db.Entry(user).State = EntityState.Modified;
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+
+                    catch
+                    {
+                        ViewBag.MessageAfterEditProfileDetails = "Edycja danych nie powiodła się";
+                    }
+
+                    ViewBag.MessageAfterEditProfileDetails = "Edycja danych przebiegła pomyślnie";
+                
+                    return View();
+                }
         }
 
     }

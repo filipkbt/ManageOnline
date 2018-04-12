@@ -12,10 +12,12 @@ namespace ManageOnline.Models
         Manager,
         Klient
     }
+
+
     public class UserBasicModel
     {
         [Key]
-        public int UserID { get; set; }
+        public int UserId { get; set; }
 
         [Required(ErrorMessage = "Email jest wymagany.")]
         public string Email { get; set; }
@@ -33,5 +35,17 @@ namespace ManageOnline.Models
 
         [Required(ErrorMessage = "Podanie roli konta jest wymagane.")]
         public Roles Role { get; set; }
+
+        public string DisplayedRole { get; set; }
+
+        public string MobileNumber { get; set; }
+
+        public string Description { get; set; }
+
+        public ICollection<ProjectModel> Projects { get; set; }
+
+        public ICollection<SkillsModel> Skills { get; set; }
+
+        public ICollection<UserBasicModel> Coworkers { get; set; }
     }
 }
