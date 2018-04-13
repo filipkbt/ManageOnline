@@ -1,0 +1,53 @@
+﻿@model IEnumerable<ManageOnline.Models.ProjectModel>
+
+@{
+    ViewBag.Title = "SearchProjects";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<h2>SearchProjects</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectTitle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectCreationDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectStartDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProjectFinishDate)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProjectTitle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProjectDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProjectCreationDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProjectStartDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ProjectFinishDate)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id=item.ProjectId }) |
+        </td>
+    </tr>
+}
+
+</table>

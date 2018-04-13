@@ -10,16 +10,16 @@ namespace ManageOnline.Models
     {
         [Key]
         public int ProjectId { get; set; }
-
+        [Required]
         public string ProjectTitle { get; set; }
-
+        [Required]
         public string ProjectDescription { get; set; }
 
         public DateTime ProjectCreationDate { get; set; }
 
-        public DateTime ProjectStartDate { get; set; }
+        public DateTime? ProjectStartDate { get; set; }
 
-        public DateTime ProjectFinishDate { get; set; }
+        public DateTime? ProjectFinishDate { get; set; }
         
         public UserBasicModel ProjectOwner { get; set; }
 

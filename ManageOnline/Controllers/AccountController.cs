@@ -60,6 +60,8 @@ namespace ManageOnline.Controllers
                     {
                         System.Web.HttpContext.Current.Session["UserId"] = currentUser.UserId.ToString();
                         System.Web.HttpContext.Current.Session["Username"] = currentUser.Username.ToString();
+                        System.Web.HttpContext.Current.Session["Role"] = currentUser.Role.ToString();
+                        
                         return RedirectToAction("DashboardIndex", "Dashboard");
                     }
                     else
@@ -79,6 +81,7 @@ namespace ManageOnline.Controllers
         {
             System.Web.HttpContext.Current.Session["UserId"] = null;
             System.Web.HttpContext.Current.Session["Username"] = null;
+            System.Web.HttpContext.Current.Session["Role"] = null;
             return RedirectToAction("Login","Account");
         }
 
@@ -126,6 +129,24 @@ namespace ManageOnline.Controllers
                 
                     return View();
                 }
+        }
+
+        public ActionResult ProfileDetails(int? UserId)
+        {
+            DbContextModel db = new DbContextModel();
+
+            if(UserId == null)
+            {
+                int userId = Convert.ToInt32(Session["UserId"]);
+                UserBasicModel userDetails = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(userId));
+                return View(userDetails);
+            }
+            else
+            {
+                UserBasicModel userDetails = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
+
+                return View(userDetails);
+            }
         }
 
     }
