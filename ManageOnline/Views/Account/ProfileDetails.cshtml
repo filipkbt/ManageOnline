@@ -7,3 +7,10 @@
 
 <h2>ProfileDetails</h2>
 
+@using (Html.BeginForm())
+{
+    @Html.DisplayFor(model => model.Username)
+    @Html.DisplayFor(model => model.UserId)
+}
+
+

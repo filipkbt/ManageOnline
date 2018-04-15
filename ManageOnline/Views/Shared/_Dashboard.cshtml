@@ -47,7 +47,7 @@
                 {
                     <li class="navbar-brand">@Html.ActionLink("Wyszukaj projekty", "SearchProjects", "Project")</li>
                 }
-                @if ( (string)HttpContext.Current.Session["Role"] == "Klient")
+                @if ((string)HttpContext.Current.Session["Role"] == "Klient")
                 {
                     <li class="navbar-brand">@Html.ActionLink("Dodaj projekt", "AddProject", "Project")</li>
                 }
@@ -62,7 +62,7 @@
                 <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li class="navbar-brand">@Html.ActionLink("Edytuj profil", "EditAccount", "Account")</li>
+                <li class="navbar-brand">@Html.ActionLink("Edytuj profil", "EditAccount", "Account", new { id = HttpContext.Current.Session["UserId"] }, null)</li>
                 <li class="navbar-brand">@Html.ActionLink("Zobacz profil", "ProfileDetails", "Account")</li>
                 <li class="navbar-brand">@Html.ActionLink("Wyloguj się", "LogOut", "Account")</li>
             </ul>

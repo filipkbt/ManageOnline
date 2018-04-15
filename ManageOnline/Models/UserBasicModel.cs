@@ -6,7 +6,7 @@ using System.Web;
 
 namespace ManageOnline.Models
 {
-    public enum Roles
+    public enum Roles : int
     {
         Pracownik,
         Manager,

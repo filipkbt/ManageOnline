@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ManageOnline.Models.UserBasicModel>
+
+@{
+    ViewBag.Title = "EmployeesList";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<h2>EmployeesList</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Role)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DisplayedRole)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MobileNumber)
+        </th>
+    </tr>
+
+@foreach (var employee in Model) {
+    <tr>
+        @Html.HiddenFor(modelItem => employee.UserId)
+        <td>
+            @Html.DisplayFor(modelItem => employee.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => employee.Username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => employee.DisplayedRole)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => employee.MobileNumber)
+        </td>
+        <td>
+            @Html.ActionLink("Zobacz profil", "ProfileDetails", "Account", new { id = employee.UserId }, null)
+        </td>
+    </tr>
+}
+
+</table>

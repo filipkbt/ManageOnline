@@ -27,7 +27,7 @@ namespace ManageOnline.Controllers
                     if (user != null)
                     {
                         ViewBag.Message = "Użytkownik o podanym loginie już istnieje.";
-                       
+
                     }
                     else
                     {
@@ -56,12 +56,12 @@ namespace ManageOnline.Controllers
                 var currentUser = db.UserAccounts.Where(u => u.Username == user.Username).FirstOrDefault();
                 if (currentUser != null)
                 {
-                    if((string.Compare(Crypto.Hash(user.Password), currentUser.Password) == 0))
+                    if ((string.Compare(Crypto.Hash(user.Password), currentUser.Password) == 0))
                     {
                         System.Web.HttpContext.Current.Session["UserId"] = currentUser.UserId.ToString();
                         System.Web.HttpContext.Current.Session["Username"] = currentUser.Username.ToString();
                         System.Web.HttpContext.Current.Session["Role"] = currentUser.Role.ToString();
-                        
+
                         return RedirectToAction("DashboardIndex", "Dashboard");
                     }
                     else
@@ -82,7 +82,7 @@ namespace ManageOnline.Controllers
             System.Web.HttpContext.Current.Session["UserId"] = null;
             System.Web.HttpContext.Current.Session["Username"] = null;
             System.Web.HttpContext.Current.Session["Role"] = null;
-            return RedirectToAction("Login","Account");
+            return RedirectToAction("Login", "Account");
         }
 
         public ActionResult EditAccount()
@@ -102,48 +102,48 @@ namespace ManageOnline.Controllers
         [HttpPost]
         public ActionResult EditAccount(UserBasicModel userAfterEdit)
         {
-                int UserId = Convert.ToInt32(Session["UserId"]);
+            int UserId = Convert.ToInt32(Session["UserId"]);
 
-                using (DbContextModel db = new DbContextModel())
+            using (DbContextModel db = new DbContextModel())
+            {
+                UserBasicModel user = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
+
+                user.MobileNumber = userAfterEdit.MobileNumber;
+
+                user.DisplayedRole = userAfterEdit.DisplayedRole;
+
+                user.Description = userAfterEdit.Description;
+
+                db.Entry(user).State = EntityState.Modified;
+                try
                 {
-                    UserBasicModel user = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
-
-                    user.MobileNumber = userAfterEdit.MobileNumber;
-
-                    user.DisplayedRole = userAfterEdit.DisplayedRole;
-
-                    user.Description = userAfterEdit.Description;
-
-                    db.Entry(user).State = EntityState.Modified;
-                    try
-                    {
-                        db.SaveChanges();
-                    }
-
-                    catch
-                    {
-                        ViewBag.MessageAfterEditProfileDetails = "Edycja danych nie powiodła się";
-                    }
-
-                    ViewBag.MessageAfterEditProfileDetails = "Edycja danych przebiegła pomyślnie";
-                
-                    return View();
+                    db.SaveChanges();
                 }
+
+                catch
+                {
+                    ViewBag.MessageAfterEditProfileDetails = "Edycja danych nie powiodła się";
+                }
+
+                ViewBag.MessageAfterEditProfileDetails = "Edycja danych przebiegła pomyślnie";
+
+                return View();
+            }
         }
 
-        public ActionResult ProfileDetails(int? UserId)
+        public ActionResult ProfileDetails(int id)
         {
             DbContextModel db = new DbContextModel();
 
-            if(UserId == null)
+            if (id == null)
             {
-                int userId = Convert.ToInt32(Session["UserId"]);
-                UserBasicModel userDetails = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(userId));
+                int userIdOwner = Convert.ToInt32(Session["UserId"]);
+                UserBasicModel userDetails = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(userIdOwner));
                 return View(userDetails);
             }
             else
             {
-                UserBasicModel userDetails = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
+                UserBasicModel userDetails = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(id));
 
                 return View(userDetails);
             }
