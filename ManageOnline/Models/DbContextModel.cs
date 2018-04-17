@@ -17,5 +17,7 @@ namespace ManageOnline.Models
             public DbSet<CommentModel> Comments { get; set; }
 
             public DbSet<TaskModel> Tasks { get; set; }
+
+            public DbSet<OfferToProjectModel> OfferToProjectModels { get; set; }
     }
 }

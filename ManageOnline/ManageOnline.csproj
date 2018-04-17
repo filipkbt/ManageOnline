@@ -184,9 +184,14 @@
     <Compile Include="Migrations\201804122141467_enableNullableToDateProjects.Designer.cs">
       <DependentUpon>201804122141467_enableNullableToDateProjects.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804171459584_AddOfferToProjectModel.cs" />
+    <Compile Include="Migrations\201804171459584_AddOfferToProjectModel.Designer.cs">
+      <DependentUpon>201804171459584_AddOfferToProjectModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\DbContextModel.cs" />
+    <Compile Include="Models\OfferToProjectModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Models\SkillsModel.cs" />
     <Compile Include="Models\TaskModel.cs" />
@@ -314,6 +319,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804122141467_enableNullableToDateProjects.resx">
       <DependentUpon>201804122141467_enableNullableToDateProjects.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804171459584_AddOfferToProjectModel.resx">
+      <DependentUpon>201804171459584_AddOfferToProjectModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
