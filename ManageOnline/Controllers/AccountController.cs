@@ -132,22 +132,13 @@ namespace ManageOnline.Controllers
         }
 
 
-        public ActionResult ProfileDetails(int? id)
+        public ActionResult ProfileDetails(int id)
         {
             DbContextModel db = new DbContextModel();
 
-            if (id == null)
-            {
-                int userIdOwner = Convert.ToInt32(Session["UserId"]);
-                UserBasicModel userDetails = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(userIdOwner));
-                return View(userDetails);
-            }
-            else
-            {
-                UserBasicModel userDetails = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(id));
+            UserBasicModel userDetails = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(id));
 
-                return View(userDetails);
-            }
+            return View(userDetails);
         }
 
     }

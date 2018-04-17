@@ -62,8 +62,8 @@
                 <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li class="navbar-brand">@Html.ActionLink("Edytuj profil", "EditAccount", "Account", new { id = HttpContext.Current.Session["UserId"] }, null)</li>
-                <li class="navbar-brand">@Html.ActionLink("Zobacz profil", "ProfileDetails", "Account")</li>
+                <li class="navbar-brand">@Html.ActionLink("Edytuj profil", "EditAccount", "Account" )</li>
+                <li class="navbar-brand">@Html.ActionLink("Zobacz profil", "ProfileDetails", "Account", new { id = Convert.ToInt32(HttpContext.Current.Session["UserId"]) },null)</li>
                 <li class="navbar-brand">@Html.ActionLink("Wyloguj się", "LogOut", "Account")</li>
             </ul>
         </li>
