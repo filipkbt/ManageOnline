@@ -188,6 +188,10 @@
     <Compile Include="Migrations\201804171459584_AddOfferToProjectModel.Designer.cs">
       <DependentUpon>201804171459584_AddOfferToProjectModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804171516433_AddBoolsToProjectModel.cs" />
+    <Compile Include="Migrations\201804171516433_AddBoolsToProjectModel.Designer.cs">
+      <DependentUpon>201804171516433_AddBoolsToProjectModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\DbContextModel.cs" />
@@ -197,6 +201,7 @@
     <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Models\UserBasicModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\ProjectUserViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -286,11 +291,10 @@
     <Content Include="Views\Project\SearchProjects.cshtml" />
     <Content Include="Views\Account\ProfileDetails.cshtml" />
     <Content Include="Views\Employees\EmployeesList.cshtml" />
-    <Content Include="Views\Employees\Viewtren.cshtml" />
+    <Content Include="Views\Project\ProjectDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -322,6 +326,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804171459584_AddOfferToProjectModel.resx">
       <DependentUpon>201804171459584_AddOfferToProjectModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804171516433_AddBoolsToProjectModel.resx">
+      <DependentUpon>201804171516433_AddBoolsToProjectModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

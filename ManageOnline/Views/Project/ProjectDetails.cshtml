@@ -1,0 +1,44 @@
+﻿@model ManageOnline.Models.ProjectModel
+
+@{
+    ViewBag.Title = "ProjectDetails";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<h2>ProjectDetails</h2>
+
+<div>
+    <h4>ProjectModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <h1>@Html.DisplayFor(model => model.ProjectOwner.Username)</h1>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectOwner.Username)
+        </dd>
+        <dd>
+            @Html.DisplayFor(model => model.ProjectTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectCreationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectCreationDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProjectId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

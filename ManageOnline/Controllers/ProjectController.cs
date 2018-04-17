@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ManageOnline.Models;
+using ManageOnline.ViewModels;
 
 namespace ManageOnline.Controllers
 {
@@ -39,13 +40,30 @@ namespace ManageOnline.Controllers
 
         public ActionResult SearchProjects()
         {
-
             using (DbContextModel db = new DbContextModel())
             {
                 var dataContext = db.Projects;
                 return View(db.Projects.ToList());
+            }            
+        }
+
+        public ActionResult ProjectDetails(int id)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                //var projectDetailsInfo = new ProjectUserViewModel();
+
+                var projectDetailsInfo = db.Projects.Include("ProjectOwner").FirstOrDefault(p => p.ProjectId.Equals(id));
+                //var projectOwnerId = project.ProjectOwner;
+                //projectDetailsInfo.ProjectOwner = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(projectOwnerId));
+
+                //var projectContext = db.Projects.FirstOrDefault(p => p.ProjectId.Equals(id));
+                // projectContext.ProjectOwner = db.UserAccounts.FirstOrDefault(u => )
+                return View(projectDetailsInfo);
             }
 
+           
+            
             
         }
     }

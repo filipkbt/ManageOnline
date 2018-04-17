@@ -30,6 +30,9 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            @Html.DisplayFor(modelItem => item.ProjectOwner.Username)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.ProjectTitle)
         </td>
         <td>
@@ -45,7 +48,7 @@
             @Html.DisplayFor(modelItem => item.ProjectFinishDate)
         </td>
         <td>
-            @Html.ActionLink("Details", "Details", new { id=item.ProjectId }) |
+            @Html.ActionLink("Przejdź do projektu", "ProjectDetails", new { id = item.ProjectId })
         </td>
     </tr>
 }
