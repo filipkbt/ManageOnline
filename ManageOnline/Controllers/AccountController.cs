@@ -131,7 +131,8 @@ namespace ManageOnline.Controllers
             }
         }
 
-        public ActionResult ProfileDetails(int id)
+
+        public ActionResult ProfileDetails(int? id)
         {
             DbContextModel db = new DbContextModel();
 

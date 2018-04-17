@@ -5,7 +5,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ManageOnline.Models;
-using ManageOnline.ViewModels;
 
 namespace ManageOnline.Controllers
 {
@@ -51,20 +50,37 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
-                //var projectDetailsInfo = new ProjectUserViewModel();
+                var projectDetailsInfo = db.Projects
+                    .Include("ProjectOwner")
+                    .Include("OffersToProject")
+                    .Include("SkilsRequiredToProject")
+                    .FirstOrDefault(p => p.ProjectId.Equals(id));
 
-                var projectDetailsInfo = db.Projects.Include("ProjectOwner").FirstOrDefault(p => p.ProjectId.Equals(id));
-                //var projectOwnerId = project.ProjectOwner;
-                //projectDetailsInfo.ProjectOwner = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(projectOwnerId));
-
-                //var projectContext = db.Projects.FirstOrDefault(p => p.ProjectId.Equals(id));
-                // projectContext.ProjectOwner = db.UserAccounts.FirstOrDefault(u => )
                 return View(projectDetailsInfo);
-            }
-
-           
-            
-            
+            }        
         }
+
+        //public ActionResult _addOfferToProject()
+        //{
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public ActionResult _addOfferToProject(ProjectModel project, OfferToProjectModel offer)
+        //{
+            
+        //    using (DbContextModel db = new DbContextModel())
+        //    {
+        //        offer.ProjectWhereOfferWasAdded = project;
+        //        offer.UserWhoAddOffer = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(project.ProjectOwner.UserId));
+
+        //        db.OfferToProjectModels.Add(offer);
+
+        //        db.SaveChanges();
+        //        ViewBag.IsOfferAdded = "Dodałeś poprawnie ofertę. Powodzenia !";
+        //        return View();
+        //    }
+        //}
+
     }
 }
