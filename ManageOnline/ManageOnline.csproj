@@ -192,6 +192,10 @@
     <Compile Include="Migrations\201804171516433_AddBoolsToProjectModel.Designer.cs">
       <DependentUpon>201804171516433_AddBoolsToProjectModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804182054188_addVirtuals.cs" />
+    <Compile Include="Migrations\201804182054188_addVirtuals.Designer.cs">
+      <DependentUpon>201804182054188_addVirtuals.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\DbContextModel.cs" />
@@ -291,7 +295,7 @@
     <Content Include="Views\Account\ProfileDetails.cshtml" />
     <Content Include="Views\Employees\EmployeesList.cshtml" />
     <Content Include="Views\Project\ProjectDetails.cshtml" />
-    <Content Include="Views\Project\_addOfferToProject.cshtml" />
+    <Content Include="Views\Project\AddOfferToProject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -329,6 +333,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804171516433_AddBoolsToProjectModel.resx">
       <DependentUpon>201804171516433_AddBoolsToProjectModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804182054188_addVirtuals.resx">
+      <DependentUpon>201804182054188_addVirtuals.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

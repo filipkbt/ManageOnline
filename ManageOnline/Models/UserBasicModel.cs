@@ -42,10 +42,10 @@ namespace ManageOnline.Models
 
         public string Description { get; set; }
 
-        public ICollection<ProjectModel> Projects { get; set; }
+        public virtual ICollection<ProjectModel> Projects { get; set; }
 
-        public ICollection<SkillsModel> Skills { get; set; }
+        public virtual ICollection<SkillsModel> Skills { get; set; }
 
-        public ICollection<UserBasicModel> Coworkers { get; set; }
+        public virtual ICollection<UserBasicModel> Coworkers { get; set; }
     }
 }

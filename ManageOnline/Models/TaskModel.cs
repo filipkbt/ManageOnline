@@ -21,6 +21,8 @@ namespace ManageOnline.Models
         
         public int WorkerId { get; set; }
 
-        public UserBasicModel CurrentWorkerAtTask { get; set; }
+        public int CurrentWorketAtTaskId { get; set; }
+
+        public virtual UserBasicModel CurrentWorkerAtTask { get; set; }
     }
 }

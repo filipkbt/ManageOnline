@@ -16,10 +16,10 @@ namespace ManageOnline.Models
         public string CommentDescription { get; set; }
 
         public int TaskId { get; set; }
-        public TaskModel TaskWhereCommentBelong { get; set; }
+        public virtual TaskModel TaskWhereCommentBelong { get; set; }
 
         public int ProjectId { get; set; }
-        public ProjectModel ProjectWhereCommentBelong { get; set; }
+        public virtual ProjectModel ProjectWhereCommentBelong { get; set; }
 
         public DateTime DateWhenCommentWasAdded { get; set; }
     }

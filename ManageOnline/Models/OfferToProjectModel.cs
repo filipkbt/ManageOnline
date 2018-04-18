@@ -11,9 +11,11 @@ namespace ManageOnline.Models
         [Key]
         public int OfferToProjectId { get; set; }
 
-        public ProjectModel ProjectWhereOfferWasAdded { get; set; }
+        public int ProjectId { get; set; }
+        public virtual ProjectModel ProjectWhereOfferWasAdded { get; set; }
 
-        public UserBasicModel UserWhoAddOffer { get; set; }
+        public int UserWhoAddOfferId { get; set; }
+        public virtual UserBasicModel UserWhoAddOffer { get; set; }
 
         public DateTime AddOfferDate { get; set; }
 
@@ -23,6 +25,6 @@ namespace ManageOnline.Models
 
         public int EstimatedTimeToFinishProject { get; set; }
 
-        public ICollection<UserBasicModel> WorkersProposedToProject { get; set; }
+        public virtual ICollection<UserBasicModel> WorkersProposedToProject { get; set; }
     }
 }

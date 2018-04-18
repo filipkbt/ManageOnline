@@ -39,8 +39,17 @@
     </dl>
 </div>
 <p>
+    @if (Model.OffersToProject.Count == 0)
+    {
+        <span>Brak ofert</span>
+    }
+    else
+    {
+        foreach (var item in Model.OffersToProject)
+        {
+        <p>@item.OfferToProjectId</p>
+    }
+}
 
-    @Html.Partial("_addOfferToProject", Model);
-
-
-</p>
+    @Html.ActionLink("Dodaj ofertę","AddOfferToProject","Project",new { projectId = Model.ProjectId }, null);
+    </p>

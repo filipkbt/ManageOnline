@@ -43,7 +43,7 @@ namespace ManageOnline.Controllers
             {
                 var dataContext = db.Projects;
                 return View(db.Projects.ToList());
-            }            
+            }
         }
 
         public ActionResult ProjectDetails(int id)
@@ -55,32 +55,36 @@ namespace ManageOnline.Controllers
                     .Include("OffersToProject")
                     .Include("SkilsRequiredToProject")
                     .FirstOrDefault(p => p.ProjectId.Equals(id));
-
                 return View(projectDetailsInfo);
-            }        
+            }
         }
 
-        //public ActionResult _addOfferToProject()
-        //{
-        //    return View();
-        //}
+        public ActionResult AddOfferToProject(int projectId)
+        {
+            OfferToProjectModel offerToProject = new OfferToProjectModel();
+            using (DbContextModel db = new DbContextModel())
+            {
+                offerToProject.ProjectWhereOfferWasAdded = db.Projects.FirstOrDefault(p => p.ProjectId.Equals(projectId));
+                return View(offerToProject);
+            }
+        }
 
-        //[HttpPost]
-        //public ActionResult _addOfferToProject(ProjectModel project, OfferToProjectModel offer)
-        //{
-            
-        //    using (DbContextModel db = new DbContextModel())
-        //    {
-        //        offer.ProjectWhereOfferWasAdded = project;
-        //        offer.UserWhoAddOffer = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(project.ProjectOwner.UserId));
-
-        //        db.OfferToProjectModels.Add(offer);
-
-        //        db.SaveChanges();
-        //        ViewBag.IsOfferAdded = "Dodałeś poprawnie ofertę. Powodzenia !";
-        //        return View();
-        //    }
-        //}
+        [HttpPost]
+        public ActionResult AddOfferToProject(OfferToProjectModel offerToProject)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                int UserId = Convert.ToInt32(Session["UserId"]);
+                offerToProject.UserWhoAddOffer = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
+                offerToProject.AddOfferDate = DateTime.Now;
+                db.UserAccounts.Attach(offerToProject.UserWhoAddOffer);
+                db.Projects.Attach(offerToProject.ProjectWhereOfferWasAdded);
+                db.OfferToProjectModels.Add(offerToProject);
+                db.SaveChanges();
+                ViewBag.IsOfferAdded = "Dodałeś poprawnie ofertę. Powodzenia !";
+                return View();
+            }
+        }
 
     }
 }
