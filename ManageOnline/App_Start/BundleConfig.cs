@@ -23,9 +23,14 @@ namespace ManageOnline
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/metroui").Include(
+                      "~/Scripts/metro.js"));
+
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                "~/Content/metro-all.css"));
         }
     }
 }

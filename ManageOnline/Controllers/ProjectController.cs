@@ -74,8 +74,8 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
-                int UserId = Convert.ToInt32(Session["UserId"]);
-                offerToProject.UserWhoAddOffer = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
+                int userId = Convert.ToInt32(Session["UserId"]);
+                offerToProject.UserWhoAddOffer = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(userId));
                 offerToProject.AddOfferDate = DateTime.Now;
                 db.UserAccounts.Attach(offerToProject.UserWhoAddOffer);
                 db.Projects.Attach(offerToProject.ProjectWhereOfferWasAdded);

@@ -9,5 +9,9 @@
 @if (Session["UserId"] != null)
 {
     <h4>hello @Session["Username"].ToString() bleble  @ViewBag.UserName</h4>
+    <input data-role="rating"
+           data-value="3"
+           data-star-color="cyan"
+           data-stared-color="pink">
 }
 <asp:textbox></asp:textbox>
