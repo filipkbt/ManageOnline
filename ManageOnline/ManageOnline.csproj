@@ -196,7 +196,28 @@
     <Compile Include="Migrations\201804182054188_addVirtuals.Designer.cs">
       <DependentUpon>201804182054188_addVirtuals.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805021403458_addCategoriesModel.cs" />
+    <Compile Include="Migrations\201805021403458_addCategoriesModel.Designer.cs">
+      <DependentUpon>201805021403458_addCategoriesModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805021519327_small.cs" />
+    <Compile Include="Migrations\201805021519327_small.Designer.cs">
+      <DependentUpon>201805021519327_small.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805021526177_addCategoriesSomeFields.cs" />
+    <Compile Include="Migrations\201805021526177_addCategoriesSomeFields.Designer.cs">
+      <DependentUpon>201805021526177_addCategoriesSomeFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805021621230_changeCollectionsToStringWithCommas.cs" />
+    <Compile Include="Migrations\201805021621230_changeCollectionsToStringWithCommas.Designer.cs">
+      <DependentUpon>201805021621230_changeCollectionsToStringWithCommas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805022024292_fix.cs" />
+    <Compile Include="Migrations\201805022024292_fix.Designer.cs">
+      <DependentUpon>201805022024292_fix.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\DbContextModel.cs" />
     <Compile Include="Models\OfferToProjectModel.cs" />
@@ -213,6 +234,10 @@
     <Content Include="Content\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\chosen-sprite%402x.png" />
+    <Content Include="Content\chosen-sprite.png" />
+    <Content Include="Content\chosen.css" />
+    <Content Include="Content\chosen.min.css" />
     <Content Include="Content\metro-all.css" />
     <Content Include="Content\metro-all.min.css" />
     <Content Include="Content\metro-colors.css" />
@@ -234,6 +259,10 @@
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\chosen.jquery.js" />
+    <Content Include="Scripts\chosen.jquery.min.js" />
+    <Content Include="Scripts\chosen.proto.js" />
+    <Content Include="Scripts\chosen.proto.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />
@@ -274,6 +303,7 @@
     <Content Include="Scripts\popper-utils.min.js" />
     <Content Include="Scripts\popper.js" />
     <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\prototype.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\umd\popper-utils.js" />
@@ -313,6 +343,10 @@
     <Content Include="Views\Project\ProjectDetails.cshtml" />
     <Content Include="Views\Project\AddOfferToProject.cshtml" />
     <Content Include="Scripts\metro.min.js.map" />
+    <Content Include="Views\Project\SuccessfullAddProject.cshtml" />
+    <Content Include="Views\Project\ShowYourProjects.cshtml" />
+    <Content Include="Views\Project\SuccessfullAddOffer.cshtml" />
+    <Content Include="Views\Project\EditOfferToProject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -353,6 +387,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804182054188_addVirtuals.resx">
       <DependentUpon>201804182054188_addVirtuals.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805021403458_addCategoriesModel.resx">
+      <DependentUpon>201805021403458_addCategoriesModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805021519327_small.resx">
+      <DependentUpon>201805021519327_small.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805021526177_addCategoriesSomeFields.resx">
+      <DependentUpon>201805021526177_addCategoriesSomeFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805021621230_changeCollectionsToStringWithCommas.resx">
+      <DependentUpon>201805021621230_changeCollectionsToStringWithCommas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805022024292_fix.resx">
+      <DependentUpon>201805022024292_fix.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

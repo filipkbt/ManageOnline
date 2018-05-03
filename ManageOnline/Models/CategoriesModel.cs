@@ -4,13 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
+
 namespace ManageOnline.Models
 {
+    public class CategoriesModel
+    {
+        [Key]
+        public int CategoryId { get; set; }
 
-    public class SkillsModel
-    {   [Key]
-        public int SkillId { get; set; }
-
-        public string SkillName { get; set; }
+        public string CategoryName { get; set; }
     }
 }

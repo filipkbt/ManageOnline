@@ -1,7 +1,7 @@
 ﻿@model ManageOnline.Models.OfferToProjectModel
 
 @{
-    ViewBag.Title = "AddOfferToProject";
+    ViewBag.Title = "EditOfferToProject";
     Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
 
@@ -10,10 +10,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(model => model.ProjectWhereOfferWasAdded.ProjectId)
-    @Html.HiddenFor(model => model.ProjectWhereOfferWasAdded.ProjectTitle)
-    @Html.HiddenFor(model => model.ProjectWhereOfferWasAdded.ProjectDescription)
-    @Html.HiddenFor(model => model.ProjectWhereOfferWasAdded.ProjectCreationDate)
+
     <div class="form-horizontal">
         <h4>OfferToProjectModel</h4>
         <hr />
@@ -45,11 +42,12 @@
         </div>
         <div class="form-group">
 
-            @Html.ListBoxFor(model => model.WorkersProposedToProjectArray, ViewBag.Employees as MultiSelectList, new { id = "multiSelectDropDown", multiple = "multiple" })
+            @Html.ListBoxFor(model => model.WorkersProposedToProjectArray, ViewBag.EmployeesEdit as MultiSelectList, new { id = "multiSelectDropDown", multiple = "multiple" })
+
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Dodaj ofertę" class="btn btn-success" />
+                <input type="submit" value="Edytuj ofertę" class="btn btn-success" />
             </div>
         </div>
     </div>

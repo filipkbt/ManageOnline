@@ -8,6 +8,16 @@ using System.Web;
 
 namespace ManageOnline.Models
 {
+    public enum ProjectStatus
+    {
+        [Description("Waiting for offers")]
+        WaitingForOffers,
+        [Description("In Progress")]
+        InProgress,
+        [Description("Finished")]
+        Finished
+    }
+
     public class ProjectModel
     {
         [Key]
@@ -22,25 +32,26 @@ namespace ManageOnline.Models
         public DateTime? ProjectStartDate { get; set; }
 
         public DateTime? ProjectFinishDate { get; set; }
-        
+
         public UserBasicModel ProjectOwner { get; set; }
 
-        public ICollection<UserBasicModel> UsersBelongsToProject { get; set; }
+        public string UsersBelongsToProject { get; set; }
+        public virtual ICollection<UserBasicModel> UsersBelongsToProjectCollection { get; set; }
 
         public ICollection<TaskModel> Tasks { get; set; }
 
-        public ICollection<SkillsModel> SkilsRequiredToProject { get; set; }
+
+        public string SkillsRequiredToProject { get; set; }
+        public virtual ICollection<SkillsModel> SkillsRequiredToProjectCollection { get; set; }
 
         public ICollection<OfferToProjectModel> OffersToProject { get; set; }
 
-        [DefaultValue(false)]
-        public bool IsProjectAllowedToSomeone { get; set; }
+        public ProjectStatus ProjectStatus { get; set; }
 
-        [DefaultValue(false)]
-        public bool IsProjectInProgress { get; set; }
+        public string ProjectBudget { get; set; }
 
-        [DefaultValue(false)]
-        public bool IsProjectFinished { get; set; }
+        public string ProjectCategory { get; set; }
+        public virtual CategoriesModel CategoriesModel { get; set; }
 
     }
 }

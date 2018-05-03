@@ -18,7 +18,14 @@ namespace ManageOnline.Controllers
 
         public ActionResult AddProject()
         {
-            return View();
+            using (DbContextModel db = new DbContextModel())
+            {
+                var categories = db.Categories.ToList();
+                SelectList list = new SelectList(categories, "CategoryId", "CategoryName");
+                ViewBag.Categories = list;
+                return View();
+            }
+
         }
 
         [HttpPost]
@@ -26,15 +33,22 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
+
+
                 int UserId = Convert.ToInt32(Session["UserId"]);
                 project.ProjectCreationDate = DateTime.Now;
                 project.ProjectOwner = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
+                project.ProjectStatus = ProjectStatus.WaitingForOffers;
 
                 db.Projects.Add(project);
                 db.SaveChanges();
+
+                var categories = db.Categories.ToList();
+                SelectList list = new SelectList(categories, "CategoryId", "CategoryName");
+                ViewBag.Categories = list;
             }
 
-            return View();
+            return View("SuccessfullAddProject");
         }
 
         public ActionResult SearchProjects()
@@ -53,7 +67,7 @@ namespace ManageOnline.Controllers
                 var projectDetailsInfo = db.Projects
                     .Include("ProjectOwner")
                     .Include("OffersToProject")
-                    .Include("SkilsRequiredToProject")
+                    .Include("OffersToProject.UserWhoAddOffer")
                     .FirstOrDefault(p => p.ProjectId.Equals(id));
                 return View(projectDetailsInfo);
             }
@@ -64,6 +78,9 @@ namespace ManageOnline.Controllers
             OfferToProjectModel offerToProject = new OfferToProjectModel();
             using (DbContextModel db = new DbContextModel())
             {
+                var employees = db.UserAccounts.Where(x => x.Role == Roles.Pracownik).ToList();
+                MultiSelectList list = new MultiSelectList(employees, "UserId", "UserName");
+                ViewBag.Employees = list;
                 offerToProject.ProjectWhereOfferWasAdded = db.Projects.FirstOrDefault(p => p.ProjectId.Equals(projectId));
                 return View(offerToProject);
             }
@@ -77,14 +94,54 @@ namespace ManageOnline.Controllers
                 int userId = Convert.ToInt32(Session["UserId"]);
                 offerToProject.UserWhoAddOffer = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(userId));
                 offerToProject.AddOfferDate = DateTime.Now;
-                db.UserAccounts.Attach(offerToProject.UserWhoAddOffer);
+                offerToProject.WorkersProposedToProject = string.Join(",", offerToProject.WorkersProposedToProjectArray);
                 db.Projects.Attach(offerToProject.ProjectWhereOfferWasAdded);
                 db.OfferToProjectModels.Add(offerToProject);
+
                 db.SaveChanges();
-                ViewBag.IsOfferAdded = "Dodałeś poprawnie ofertę. Powodzenia !";
-                return View();
+                return View("SuccessfullAddOffer");
             }
         }
 
+        public ActionResult SuccessfullAddProject()
+        {
+            return View();
+        }
+
+        public ActionResult ShowYourProjects()
+        {
+         
+            return View();
+        }
+
+
+        public ActionResult SuccessfullAddOffer()
+        {
+            return View();
+        }
+
+        public ActionResult EditOfferToProject(int offerId)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                var selectedOffer = db.OfferToProjectModels.Where(x => x.OfferToProjectId == offerId).FirstOrDefault();
+
+                var employees = selectedOffer.WorkersProposedToProject.Split(',').ToArray();
+
+                var EmployeesFinalVersion = db.UserAccounts.Where(x => employees.ToList().Contains(x.UserId.ToString()));
+                var EmployeesFinalVersionList = EmployeesFinalVersion.ToList();
+                MultiSelectList list = new MultiSelectList(EmployeesFinalVersionList, "UserId", "UserName");
+                ViewBag.EmployeesEdit = list;
+                return View(selectedOffer);
+            }
+            
+        }
+
+        [HttpPost]
+        public ActionResult EditOfferToProject(OfferToProjectModel offerToProject)
+        {
+
+            return View();
+        }
     }
 }

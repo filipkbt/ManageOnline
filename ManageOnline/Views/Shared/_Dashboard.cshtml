@@ -33,14 +33,11 @@ else if (!String.IsNullOrEmpty((string) HttpContext.Current.Session["Username"])
                 <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                <li class="navbar-brand">Twoi współpracownicy@*@Html.ActionLink("Wyszukaj projekty", "SearchProjects", "Project")*@</li>
-                <li class="navbar-brand">Szukaj pracowników@*@Html.ActionLink("Wyszukaj projekty", "SearchProjects", "Project")*@</li>
+               @Html.ActionLink("Przeglądaj pracowników", "EmployeesList", "Employees")
                 @if ((string) HttpContext.Current.Session["Role"] == "Klient")
                 {
                     <li class="navbar-brand">Managerzy, z którymi współpracujesz@*@Html.ActionLink("Wyszukaj projekty", "SearchProjects", "Project")*@</li>
                 }
-
-                @*<li class="navbar-brand">@Html.ActionLink("Twoje projekty", null.null)</li>*@
             </ul>
         </li>
         <li class="btn-group nav" style="float: right;">
@@ -56,10 +53,8 @@ else if (!String.IsNullOrEmpty((string) HttpContext.Current.Session["Username"])
                 }
                 @if ((string) HttpContext.Current.Session["Role"] == "Klient")
                 {
-                    <li class="navbar-brand">@Html.ActionLink("Dodaj projekt", "AddProject", "Project")</li>
+                    <li class="navbar-brand">@Html.ActionLink("Dodaj projekt", "AddProject", "Project",  new { id = Convert.ToInt32(HttpContext.Current.Session["UserId"]) }, null)</li>
                 }
-
-                @*<li class="navbar-brand">@Html.ActionLink("Twoje projekty", null.null)</li>*@
             </ul>
         </li>
         <li class="btn-group nav" style="float: right;">
@@ -85,6 +80,7 @@ else if (!String.IsNullOrEmpty((string) HttpContext.Current.Session["Username"])
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
 @Scripts.Render("~/bundles/metroui")
+@Scripts.Render("~/bundles/chosen")
 @RenderSection("scripts", required: false)
 </body>
 </html>

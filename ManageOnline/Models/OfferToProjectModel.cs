@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -14,7 +15,6 @@ namespace ManageOnline.Models
         public int ProjectId { get; set; }
         public virtual ProjectModel ProjectWhereOfferWasAdded { get; set; }
 
-        public int UserWhoAddOfferId { get; set; }
         public virtual UserBasicModel UserWhoAddOffer { get; set; }
 
         public DateTime AddOfferDate { get; set; }
@@ -25,6 +25,10 @@ namespace ManageOnline.Models
 
         public int EstimatedTimeToFinishProject { get; set; }
 
-        public virtual ICollection<UserBasicModel> WorkersProposedToProject { get; set; }
+        public string WorkersProposedToProject { get; set; }
+        public virtual ICollection<UserBasicModel> WorkersProposedToProjectCollection { get; set; }
+
+        [NotMapped]
+        public string[] WorkersProposedToProjectArray { get; set; }
     }
 }

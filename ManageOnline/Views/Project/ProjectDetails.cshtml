@@ -47,9 +47,22 @@
     {
         foreach (var item in Model.OffersToProject)
         {
-        <p>@item.OfferToProjectId</p>
+            if (item.UserWhoAddOffer.UserId.ToString() == HttpContext.Current.Session["UserId"].ToString())
+            {
+                <p>@item.OfferToProjectId</p>
+                <p>@Html.ActionLink("Edytuj swoją ofertę", "EditOfferToProject", "Project", new {offerId = item.OfferToProjectId}, null);</p>
+            }
+            else
+            {
+                <p>@item.OfferToProjectId</p>
+            }
+        }
     }
-}
 
-    @Html.ActionLink("Dodaj ofertę","AddOfferToProject","Project",new { projectId = Model.ProjectId }, null);
+    @if (Model.OffersToProject.Any(item => item.UserWhoAddOffer.UserId.ToString() == HttpContext.Current.Session["UserId"].ToString()) == false)
+    {
+        @Html.ActionLink("Dodaj ofertę", "AddOfferToProject", "Project", new { projectId = Model.ProjectId }, null);
+    }
+
+
     </p>
