@@ -42,6 +42,8 @@ namespace ManageOnline.Models
 
         public string Description { get; set; }
 
+        public byte[] UserPhoto { get; set; }
+
         public virtual ICollection<ProjectModel> Projects { get; set; }
 
         public virtual ICollection<SkillsModel> Skills { get; set; }

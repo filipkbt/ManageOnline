@@ -151,9 +151,8 @@ namespace ManageOnline.Controllers
             return View();
         }
 
-        public ActionResult ShowYourProjects()
+        public ActionResult ShowYourProjects(int id)
         {
-         
             return View();
         }
 

@@ -7,15 +7,21 @@
 
 <h2>EditAccount</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("EditAccount", "Account", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>UserBasicModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.UserId)
+
+        <div class="form-group">
+            <img src="data:image;base64,@System.Convert.ToBase64String(Model.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail" style="height:200px; width:200px"/>
+        </div>
+
+        <div class="text-bold">@Html.DisplayFor(model => model.Username)</div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.DisplayedRole, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -41,6 +47,15 @@
             </div>
         </div>
 
+
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.UserPhoto, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input type="file" name="file" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" />
+            </div>
+        </div>
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save" class="btn btn-default" />
@@ -51,5 +66,5 @@
 }
 
 <div>
-        @Html.ActionLink("Wróć do menu głównego", "DashboardIndex", "Dashboard", "Default",null)
+    @Html.ActionLink("Wróć do menu głównego", "DashboardIndex", "Dashboard", "Default", null)
 </div>

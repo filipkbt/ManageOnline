@@ -160,6 +160,7 @@
     </Compile>
     <Compile Include="Infrastructure\AuthorizationService.cs" />
     <Compile Include="Infrastructure\Crypto.cs" />
+    <Compile Include="Infrastructure\ImageManager.cs" />
     <Compile Include="Migrations\201804091252277_addRoles.cs" />
     <Compile Include="Migrations\201804091252277_addRoles.Designer.cs">
       <DependentUpon>201804091252277_addRoles.cs</DependentUpon>
@@ -216,6 +217,14 @@
     <Compile Include="Migrations\201805022024292_fix.Designer.cs">
       <DependentUpon>201805022024292_fix.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805031756337_deleteImages.cs" />
+    <Compile Include="Migrations\201805031756337_deleteImages.Designer.cs">
+      <DependentUpon>201805031756337_deleteImages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805031804104_AddUserPhoto.cs" />
+    <Compile Include="Migrations\201805031804104_AddUserPhoto.Designer.cs">
+      <DependentUpon>201805031804104_AddUserPhoto.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -238,6 +247,7 @@
     <Content Include="Content\chosen-sprite.png" />
     <Content Include="Content\chosen.css" />
     <Content Include="Content\chosen.min.css" />
+    <Content Include="Content\Images\defaultProfileImage.png" />
     <Content Include="Content\metro-all.css" />
     <Content Include="Content\metro-all.min.css" />
     <Content Include="Content\metro-colors.css" />
@@ -403,6 +413,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805022024292_fix.resx">
       <DependentUpon>201805022024292_fix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805031756337_deleteImages.resx">
+      <DependentUpon>201805031756337_deleteImages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805031804104_AddUserPhoto.resx">
+      <DependentUpon>201805031804104_AddUserPhoto.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

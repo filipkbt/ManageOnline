@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -88,11 +89,10 @@ namespace ManageOnline.Controllers
         public ActionResult EditAccount()
         {
             DbContextModel db = new DbContextModel();
-
+            
             int UserId = Convert.ToInt32(Session["UserId"]);
 
             UserBasicModel userToEdit = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
-
 
             return View(userToEdit);
         }
@@ -100,10 +100,11 @@ namespace ManageOnline.Controllers
 
 
         [HttpPost]
-        public ActionResult EditAccount(UserBasicModel userAfterEdit)
+        public ActionResult EditAccount(UserBasicModel userAfterEdit, HttpPostedFileBase file)
         {
             int UserId = Convert.ToInt32(Session["UserId"]);
 
+            
             using (DbContextModel db = new DbContextModel())
             {
                 UserBasicModel user = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
@@ -113,6 +114,11 @@ namespace ManageOnline.Controllers
                 user.DisplayedRole = userAfterEdit.DisplayedRole;
 
                 user.Description = userAfterEdit.Description;
+                if (file != null)
+                {
+                    byte[] data = GetBytesFromFile(file);
+                    user.UserPhoto = data;
+                }
 
                 db.Entry(user).State = EntityState.Modified;
                 try
@@ -127,10 +133,23 @@ namespace ManageOnline.Controllers
 
                 ViewBag.MessageAfterEditProfileDetails = "Edycja danych przebiegła pomyślnie";
 
-                return View();
+                return View(user);
             }
         }
 
+        private byte[] GetBytesFromFile(HttpPostedFileBase file)
+        {
+            using (Stream inputStream = file.InputStream)
+            {
+                MemoryStream memoryStream = inputStream as MemoryStream;
+                if (memoryStream == null)
+                {
+                    memoryStream = new MemoryStream();
+                    inputStream.CopyTo(memoryStream);
+                }
+                return memoryStream.ToArray();
+            }
+        }
 
         public ActionResult ProfileDetails(int id)
         {
