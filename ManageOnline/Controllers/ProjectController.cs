@@ -33,8 +33,6 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
-
-
                 int UserId = Convert.ToInt32(Session["UserId"]);
                 project.ProjectCreationDate = DateTime.Now;
                 project.ProjectOwner = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));

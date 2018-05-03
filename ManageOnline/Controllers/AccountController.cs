@@ -93,6 +93,14 @@ namespace ManageOnline.Controllers
             int UserId = Convert.ToInt32(Session["UserId"]);
 
             UserBasicModel userToEdit = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
+            if (userToEdit.Skills != null)
+            {
+                userToEdit.SkillsArray = userToEdit.Skills.Split(',').ToArray();
+            }
+
+            var skills = db.Skills.ToList();
+            MultiSelectList list = new MultiSelectList(skills, "SkillId", "SkillName");
+            ViewBag.Skills = list;
 
             return View(userToEdit);
         }
@@ -104,7 +112,8 @@ namespace ManageOnline.Controllers
         {
             int UserId = Convert.ToInt32(Session["UserId"]);
 
-            
+            userAfterEdit.Skills = string.Join(",", userAfterEdit.SkillsArray);
+
             using (DbContextModel db = new DbContextModel())
             {
                 UserBasicModel user = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
@@ -120,6 +129,8 @@ namespace ManageOnline.Controllers
                     user.UserPhoto = data;
                 }
 
+                user.Skills = userAfterEdit.Skills;
+                
                 db.Entry(user).State = EntityState.Modified;
                 try
                 {
@@ -132,7 +143,10 @@ namespace ManageOnline.Controllers
                 }
 
                 ViewBag.MessageAfterEditProfileDetails = "Edycja danych przebiegła pomyślnie";
-
+                user.SkillsArray = user.Skills.Split(',').ToArray();
+                var skills = db.Skills.ToList();
+                MultiSelectList list = new MultiSelectList(skills, "SkillId", "SkillName");
+                ViewBag.Skills = list;
                 return View(user);
             }
         }

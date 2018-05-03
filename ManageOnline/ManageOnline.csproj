@@ -225,6 +225,10 @@
     <Compile Include="Migrations\201805031804104_AddUserPhoto.Designer.cs">
       <DependentUpon>201805031804104_AddUserPhoto.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805031929496_addSkillsToUser.cs" />
+    <Compile Include="Migrations\201805031929496_addSkillsToUser.Designer.cs">
+      <DependentUpon>201805031929496_addSkillsToUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -419,6 +423,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805031804104_AddUserPhoto.resx">
       <DependentUpon>201805031804104_AddUserPhoto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805031929496_addSkillsToUser.resx">
+      <DependentUpon>201805031929496_addSkillsToUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

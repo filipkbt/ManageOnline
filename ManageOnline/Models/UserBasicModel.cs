@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -46,7 +47,10 @@ namespace ManageOnline.Models
 
         public virtual ICollection<ProjectModel> Projects { get; set; }
 
-        public virtual ICollection<SkillsModel> Skills { get; set; }
+        public string Skills { get; set; }
+        public virtual ICollection<SkillsModel> SkillsCollection { get; set; }
+        [NotMapped]
+        public string[] SkillsArray { get; set; }
 
         public virtual ICollection<UserBasicModel> Coworkers { get; set; }
     }
