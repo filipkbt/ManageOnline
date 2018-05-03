@@ -15,7 +15,7 @@
         <h4>OfferToProjectModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
+        @Html.HiddenFor(model => model.OfferToProjectId)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -42,7 +42,7 @@
         </div>
         <div class="form-group">
 
-            @Html.ListBoxFor(model => model.WorkersProposedToProjectArray, ViewBag.EmployeesEdit as MultiSelectList, new { id = "multiSelectDropDown", multiple = "multiple" })
+            @Html.ListBoxFor(model => model.WorkersProposedToProjectArray, ViewBag.Employees as MultiSelectList, new { id = "multiSelectDropDown", multiple = "multiple" })
 
         </div>
         <div class="form-group">

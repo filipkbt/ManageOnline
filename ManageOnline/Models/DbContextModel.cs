@@ -9,11 +9,6 @@ namespace ManageOnline.Models
     public class DbContextModel : DbContext
     {
 
-        public DbContextModel()
-        {
-            this.Configuration.LazyLoadingEnabled = false;
-        }
-
         public DbSet<UserBasicModel> UserAccounts { get; set; }
 
         public DbSet<ProjectModel> Projects { get; set; }

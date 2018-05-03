@@ -59,7 +59,7 @@
         }
     }
 
-    @if (Model.OffersToProject.Any(item => item.UserWhoAddOffer.UserId.ToString() == HttpContext.Current.Session["UserId"].ToString()) == false)
+    @if ((Model.OffersToProject.Any(item => item.UserWhoAddOffer.UserId.ToString() == HttpContext.Current.Session["UserId"].ToString()) == false) && (HttpContext.Current.Session["Role"].ToString() == "Manager"))
     {
         @Html.ActionLink("Dodaj ofertę", "AddOfferToProject", "Project", new { projectId = Model.ProjectId }, null);
     }

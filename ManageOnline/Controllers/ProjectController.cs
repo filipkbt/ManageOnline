@@ -98,12 +98,55 @@ namespace ManageOnline.Controllers
                 db.Projects.Attach(offerToProject.ProjectWhereOfferWasAdded);
                 db.OfferToProjectModels.Add(offerToProject);
 
+
                 db.SaveChanges();
                 return View("SuccessfullAddOffer");
             }
         }
 
+        public ActionResult EditOfferToProject(int offerId)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                var selectedOffer = db.OfferToProjectModels.Where(x => x.OfferToProjectId == offerId).FirstOrDefault();
+                selectedOffer.WorkersProposedToProjectArray = selectedOffer.WorkersProposedToProject.Split(',').ToArray();
+
+                var employees = db.UserAccounts.Where(x => x.Role == Roles.Pracownik).ToList();
+                MultiSelectList list = new MultiSelectList(employees, "UserId", "UserName");
+                ViewBag.Employees = list;
+
+                return View(selectedOffer);
+            }
+
+        }
+
+        [HttpPost]
+        public ActionResult EditOfferToProject(OfferToProjectModel offerToProject)
+        {
+            offerToProject.WorkersProposedToProject = string.Join(",", offerToProject.WorkersProposedToProjectArray);
+            using (DbContextModel db = new DbContextModel())
+            {
+                int offerToProjectId = offerToProject.OfferToProjectId;
+
+                OfferToProjectModel oldOffer = db.OfferToProjectModels.FirstOrDefault(x => x.OfferToProjectId.Equals(offerToProjectId));
+
+                oldOffer.Budget = offerToProject.Budget;
+                oldOffer.Description = offerToProject.Description;
+                oldOffer.EstimatedTimeToFinishProject = offerToProject.EstimatedTimeToFinishProject;
+                oldOffer.WorkersProposedToProject = offerToProject.WorkersProposedToProject;
+
+                db.Entry(oldOffer).State = EntityState.Modified;
+                db.SaveChanges();
+                return View("SuccessfullEditOffer");
+            }
+        }
+
         public ActionResult SuccessfullAddProject()
+        {
+            return View();
+        }
+
+        public ActionResult SuccessfullEditOffer()
         {
             return View();
         }
@@ -120,28 +163,6 @@ namespace ManageOnline.Controllers
             return View();
         }
 
-        public ActionResult EditOfferToProject(int offerId)
-        {
-            using (DbContextModel db = new DbContextModel())
-            {
-                var selectedOffer = db.OfferToProjectModels.Where(x => x.OfferToProjectId == offerId).FirstOrDefault();
-
-                var employees = selectedOffer.WorkersProposedToProject.Split(',').ToArray();
-
-                var EmployeesFinalVersion = db.UserAccounts.Where(x => employees.ToList().Contains(x.UserId.ToString()));
-                var EmployeesFinalVersionList = EmployeesFinalVersion.ToList();
-                MultiSelectList list = new MultiSelectList(EmployeesFinalVersionList, "UserId", "UserName");
-                ViewBag.EmployeesEdit = list;
-                return View(selectedOffer);
-            }
-            
-        }
-
-        [HttpPost]
-        public ActionResult EditOfferToProject(OfferToProjectModel offerToProject)
-        {
-
-            return View();
-        }
+       
     }
 }
