@@ -47,14 +47,18 @@
     {
         <div data-role="accordion"
              data-one-frame="false">
-            @foreach (var item in Model.OffersToProject.OrderBy(x=> x.AddOfferDate))
+            @foreach (var item in Model.OffersToProject.OrderBy(x => x.AddOfferDate))
             {
 
                 <div class="frame" style="margin: 15px 0">
-                    <div class="heading bg-dark fg-white">
+                    <div class="heading bg-dark fg-white" style="height:55px">
                         Oferta użytkownika @item.UserWhoAddOffer.Username @if (item.UserWhoAddOffer.UserId.ToString() == HttpContext.Current.Session["UserId"].ToString())
                         {
-                           @Html.ActionLink("Edytuj swoją ofertę", "EditOfferToProject", "Project", new { offerId = item.OfferToProjectId }, null);
+                            @Html.ActionLink("Edytuj swoją ofertę", "EditOfferToProject", "Project", new { offerId = item.OfferToProjectId }, null);
+                        }
+                        @if (HttpContext.Current.Session["UserId"].ToString() == Model.ProjectOwner.UserId.ToString())
+                        {
+                            <button type="button" class="btn btn-success float-right" onclick="location.href = '@Url.Action("AdmitSelectedProject", "Project",  new {projectId = Model.ProjectId, offerId = item.OfferToProjectId}, null)'">Przyznaj projekt</button>
                         }
                     </div>
                     <div class="content bg-info fg-white">
@@ -73,7 +77,7 @@
         </div>
         </div>
         <div class="col-5" style="margin: 15px 10px">@item.Description</div>
-                            <div class="col-3" style="margin: 15px 5px"><h3>Data dodania oferty: @item.AddOfferDate.Date.ToShortDateString()<br />Cena: @item.Budget zł<br />Czas wykonania: @item.EstimatedTimeToFinishProject dni</h3></div>
+        <div class="col-3" style="margin: 15px 5px"><h3>Data dodania oferty: @item.AddOfferDate.Date.ToShortDateString()<br />Cena: @item.Budget zł<br />Czas wykonania: @item.EstimatedTimeToFinishProject dni</h3></div>
         </div>
         <hr>
         <div class="col text-white">

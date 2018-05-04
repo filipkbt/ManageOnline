@@ -68,9 +68,33 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
-                var dataContext = db.Projects;
-                return View(db.Projects.ToList());
+                var dataContext = db.Projects
+                    .Include("ProjectOwner")
+                    .Include("SkillsRequiredToProjectCollection")
+                    .Include("CategoriesModel")
+                    .ToList();
+                var categoriesList = db.Categories.ToList();
+                foreach (var project in dataContext)
+                {
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+
+
+                    if (project.SkillsRequiredToProject != null)
+                    {
+                        project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
+                        foreach (var skillId in project.SkillsRequiredToProjectArray)
+                        {
+                            var skillIdInt = Convert.ToInt32(skillId);
+                            var skill = db.Skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                            project.SkillsRequiredToProjectCollection.Add(skill);
+                        }
+                    }
+                   
+                }
+                return View(dataContext);
             }
+            
         }
 
         public ActionResult ProjectDetails(int id)
@@ -94,7 +118,7 @@ namespace ManageOnline.Controllers
                         offer.WorkersProposedToProjectCollection.Add(workerData);
                     }
                 }
-                    
+
 
                 return View(projectDetailsInfo);
             }
@@ -168,6 +192,25 @@ namespace ManageOnline.Controllers
             }
         }
 
+        public ActionResult AdmitSelectedProject(int projectId, int offerId)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                ProjectModel project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
+                OfferToProjectModel offer = db.OfferToProjectModels.Where(x => x.OfferToProjectId.Equals(offerId)).FirstOrDefault();
+                offer.WorkersProposedToProject += "," + offer.UserWhoAddOffer.UserId;
+                project.UsersBelongsToProject = string.Join(",", offer.WorkersProposedToProject);
+
+                project.ProjectStartDate = DateTime.Now;
+                project.ProjectStatus = ProjectStatus.InProgress;
+
+                db.Entry(project).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return View("SuccessfulAdmitProject");
+            }
+        }
+
         public ActionResult SuccessfullAddProject()
         {
             return View();
@@ -189,6 +232,6 @@ namespace ManageOnline.Controllers
             return View();
         }
 
-       
+
     }
 }
