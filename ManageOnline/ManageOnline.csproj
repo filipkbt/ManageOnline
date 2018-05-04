@@ -228,10 +228,20 @@
     <Compile Include="Migrations\201805031929496_addSkillsToUser.Designer.cs">
       <DependentUpon>201805031929496_addSkillsToUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805041551045_messages.cs" />
+    <Compile Include="Migrations\201805041551045_messages.Designer.cs">
+      <DependentUpon>201805041551045_messages.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805041614172_notificationsdsa.cs" />
+    <Compile Include="Migrations\201805041614172_notificationsdsa.Designer.cs">
+      <DependentUpon>201805041614172_notificationsdsa.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\DbContextModel.cs" />
+    <Compile Include="Models\MessageModel.cs" />
+    <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\OfferToProjectModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Models\SkillsModel.cs" />
@@ -426,6 +436,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805031929496_addSkillsToUser.resx">
       <DependentUpon>201805031929496_addSkillsToUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805041551045_messages.resx">
+      <DependentUpon>201805041551045_messages.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805041614172_notificationsdsa.resx">
+      <DependentUpon>201805041614172_notificationsdsa.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

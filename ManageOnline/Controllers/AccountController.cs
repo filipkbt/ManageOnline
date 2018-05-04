@@ -113,15 +113,15 @@ namespace ManageOnline.Controllers
         public ActionResult EditAccount(UserBasicModel userAfterEdit, HttpPostedFileBase file)
         {
             int UserId = Convert.ToInt32(Session["UserId"]);
-
-            if(userAfterEdit.Skills != null)
-            {
-                userAfterEdit.Skills = string.Join(",", userAfterEdit.SkillsArray);
-            }
             
 
             using (DbContextModel db = new DbContextModel())
             {
+                if (userAfterEdit.SkillsArray != null)
+                {
+                    userAfterEdit.Skills = string.Join(",", userAfterEdit.SkillsArray);
+                }
+
                 UserBasicModel user = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
 
                 user.MobileNumber = userAfterEdit.MobileNumber;

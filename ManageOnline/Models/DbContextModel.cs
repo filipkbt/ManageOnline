@@ -22,5 +22,9 @@ namespace ManageOnline.Models
         public DbSet<OfferToProjectModel> OfferToProjectModels { get; set; }
 
         public DbSet<CategoriesModel> Categories { get; set; }
+
+        public DbSet<MessageModel> Messages { get; set; }
+
+        public DbSet<NotificationModel> Notifications { get; set; }
     }
 }
