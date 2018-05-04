@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using ManageOnline.Models;
 
 namespace ManageOnline.Controllers
@@ -73,6 +74,18 @@ namespace ManageOnline.Controllers
                     .Include("SkillsRequiredToProjectCollection")
                     .Include("CategoriesModel")
                     .ToList();
+
+                var skills = db.Skills.ToList();
+                MultiSelectList skillsList = new MultiSelectList(skills, "SkillId", "SkillName");
+
+                if ((TempData["Skills"] as MultiSelectList) != null)
+                {
+                    var selectedSkillsSelectList = TempData["Skills"] as MultiSelectList;
+                    var selectedSkills = selectedSkillsSelectList.Items;
+                }
+
+                TempData["Skills"] = skillsList;
+
                 var categoriesList = db.Categories.ToList();
                 foreach (var project in dataContext)
                 {
@@ -94,7 +107,59 @@ namespace ManageOnline.Controllers
                 }
                 return View(dataContext);
             }
-            
+        }
+
+        [HttpPost]
+        public ActionResult SearchProjects(FormCollection form)
+        {
+
+
+
+            using (DbContextModel db = new DbContextModel())
+            {
+                var dataContext = db.Projects
+                    .Include("ProjectOwner")
+                    .Include("SkillsRequiredToProjectCollection")
+                    .Include("CategoriesModel")
+                    .ToList();
+
+                var skills = db.Skills.ToList();
+                MultiSelectList skillsList = new MultiSelectList(skills, "SkillId", "SkillName");
+
+                TempData["Skills"] = skillsList;
+
+                var categoriesList = db.Categories.ToList();
+                foreach (var project in dataContext)
+                {
+                    var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                    project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+
+
+                    if (project.SkillsRequiredToProject != null)
+                    {
+                        project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
+                        foreach (var skillId in project.SkillsRequiredToProjectArray)
+                        {
+                            var skillIdInt = Convert.ToInt32(skillId);
+                            var skill = db.Skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                            project.SkillsRequiredToProjectCollection.Add(skill);
+                        }
+                    }
+
+                }
+                if (form["Skills"] != null)
+                {
+                    var selectedSkills = form["Skills"];
+                    var selectedSkillsArray = selectedSkills.Split(',').ToArray();
+
+                    var filteredDataContext = from p in dataContext
+                        where selectedSkillsArray.Any(val => p.SkillsRequiredToProject.Contains(val))
+                        select p;
+
+                    return View(filteredDataContext);
+                }
+                return View(dataContext);
+            }
         }
 
         public ActionResult ProjectDetails(int id)

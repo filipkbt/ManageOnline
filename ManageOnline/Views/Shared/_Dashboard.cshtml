@@ -18,7 +18,7 @@
     @if (String.IsNullOrEmpty((string)HttpContext.Current.Session["Username"]))
     {
         <div class="container body-content">
-            <button type="button" class="btn btn-warning" text="Zaloguj się!" onclick="location.href = '@Url.Action("Login", "Account")'" />
+            <button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Login", "Account")'" >Zaloguj się !</button>
         </div>
         RenderBody();
     }
