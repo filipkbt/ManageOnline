@@ -45,19 +45,65 @@
     }
     else
     {
-        foreach (var item in Model.OffersToProject)
-        {
-            if (item.UserWhoAddOffer.UserId.ToString() == HttpContext.Current.Session["UserId"].ToString())
+        <div data-role="accordion"
+             data-one-frame="false">
+            @foreach (var item in Model.OffersToProject)
             {
-                <p>@item.OfferToProjectId</p>
-                <p>@Html.ActionLink("Edytuj swoją ofertę", "EditOfferToProject", "Project", new {offerId = item.OfferToProjectId}, null);</p>
-            }
-            else
+
+                <div class="frame" style="margin: 15px 0">
+                    <div class="heading bg-dark fg-white">
+                        Oferta użytkownika @item.UserWhoAddOffer.Username @if (item.UserWhoAddOffer.UserId.ToString() == HttpContext.Current.Session["UserId"].ToString())
+                        {
+                           @Html.ActionLink("Edytuj swoją ofertę", "EditOfferToProject", "Project", new { offerId = item.OfferToProjectId }, null);
+                        }
+                    </div>
+                    <div class="content bg-info fg-white">
+                        <div class="row">
+                            <div class="col-3" style="margin: 10px 10px;">
+                                <div data-role="tile" style="width: 200px; height: 200px" data-effect="hover-zoom-right">
+                                    <div class="slide-front">
+                                        <img class="h-100 w-100" src="data:image;base64,@System.Convert.ToBase64String(item.UserWhoAddOffer.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail" />
+                                    </div>
+                                    <div class="slide-back d-flex flex-justify-center flex-align-center p-4 op-green" onclick="location.href = '@Url.Action("ProfileDetails", "Account", new {id = item.UserWhoAddOffer.UserId}, null)'">
+        <p class="text-center">
+            Kliknij, aby przejść do profilu użytkownika
+        </p>
+        </div>
+        <span class="branding-bar text-white text-bold" style="text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">@item.UserWhoAddOffer.Username</span>
+        </div>
+        </div>
+        <div class="col-5" style="margin: 15px 10px">@item.Description</div>
+        <div class="col-3" style="margin: 15px 5px"><h5>Cena: @item.Budget<br />Czas wykonania: @item.EstimatedTimeToFinishProject dni</h5></div>
+        </div>
+        <hr>
+        <div class="col text-white">
+            <h3>Pracownicy, zaoferowani do projektu</h3>
+        </div>
+        <div class="row">
+            @foreach (var worker in item.WorkersProposedToProjectCollection)
             {
-                <p>@item.OfferToProjectId</p>
+                <div class="col-3" style="margin: 10px 10px;">
+                    <div data-role="tile" style="width: 200px; height: 200px" data-effect="hover-zoom-right">
+                        <div class="slide-front">
+                            <img class="h-100 w-100" src="data:image;base64,@System.Convert.ToBase64String(worker.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail" />
+                        </div>
+                        <div class="slide-back d-flex flex-justify-center flex-align-center p-4 op-green" onclick="location.href = '@Url.Action("ProfileDetails", "Account", new {id = worker.UserId}, null)'">
+                            <p class="text-center">
+                                Kliknij, aby przejść do profilu użytkownika
+                            </p>
+                        </div>
+                        <span class="branding-bar text-white text-bold" style="text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">@worker.Username</span>
+                    </div>
+                </div>
             }
-        }
+        </div>
+        </div>
+        </div>
     }
+
+            }
+            </div>
+        }
 
     @if ((Model.OffersToProject.Any(item => item.UserWhoAddOffer.UserId.ToString() == HttpContext.Current.Session["UserId"].ToString()) == false) && (HttpContext.Current.Session["Role"].ToString() == "Manager"))
     {

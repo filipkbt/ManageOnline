@@ -34,6 +34,8 @@ namespace ManageOnline.Controllers
                     {
                         userAccount.Password = Crypto.Hash(userAccount.Password);
                         userAccount.ConfirmPassword = Crypto.Hash(userAccount.ConfirmPassword);
+                        byte[] data = System.Text.Encoding.ASCII.GetBytes("0");
+                        user.UserPhoto = data;
                         db.UserAccounts.Add(userAccount);
                         db.SaveChanges();
                         ModelState.Clear();
@@ -112,7 +114,11 @@ namespace ManageOnline.Controllers
         {
             int UserId = Convert.ToInt32(Session["UserId"]);
 
-            userAfterEdit.Skills = string.Join(",", userAfterEdit.SkillsArray);
+            if(userAfterEdit.Skills != null)
+            {
+                userAfterEdit.Skills = string.Join(",", userAfterEdit.SkillsArray);
+            }
+            
 
             using (DbContextModel db = new DbContextModel())
             {
@@ -143,7 +149,12 @@ namespace ManageOnline.Controllers
                 }
 
                 ViewBag.MessageAfterEditProfileDetails = "Edycja danych przebiegła pomyślnie";
-                user.SkillsArray = user.Skills.Split(',').ToArray();
+
+                if(user.SkillsArray != null)
+                {
+                    user.SkillsArray = user.Skills.Split(',').ToArray();
+                }
+                
                 var skills = db.Skills.ToList();
                 MultiSelectList list = new MultiSelectList(skills, "SkillId", "SkillName");
                 ViewBag.Skills = list;

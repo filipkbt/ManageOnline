@@ -67,6 +67,20 @@ namespace ManageOnline.Controllers
                     .Include("OffersToProject")
                     .Include("OffersToProject.UserWhoAddOffer")
                     .FirstOrDefault(p => p.ProjectId.Equals(id));
+
+                foreach (var offer in projectDetailsInfo.OffersToProject)
+                {
+
+                    offer.WorkersProposedToProjectArray = offer.WorkersProposedToProject.Split(',').ToArray();
+                    foreach (var worker in offer.WorkersProposedToProjectArray)
+                    {
+                        int workerId = Convert.ToInt32(worker);
+                        var workerData = db.UserAccounts.Where(x => x.UserId.Equals((workerId))).FirstOrDefault();
+                        offer.WorkersProposedToProjectCollection.Add(workerData);
+                    }
+                }
+                    
+
                 return View(projectDetailsInfo);
             }
         }

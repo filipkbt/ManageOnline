@@ -160,7 +160,6 @@
     </Compile>
     <Compile Include="Infrastructure\AuthorizationService.cs" />
     <Compile Include="Infrastructure\Crypto.cs" />
-    <Compile Include="Infrastructure\ImageManager.cs" />
     <Compile Include="Migrations\201804091252277_addRoles.cs" />
     <Compile Include="Migrations\201804091252277_addRoles.Designer.cs">
       <DependentUpon>201804091252277_addRoles.cs</DependentUpon>

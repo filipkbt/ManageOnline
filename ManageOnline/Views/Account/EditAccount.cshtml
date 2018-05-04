@@ -18,7 +18,7 @@
         @Html.HiddenFor(model => model.UserId)
 
         <div class="form-group">
-            <img src="data:image;base64,@System.Convert.ToBase64String(Model.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail" style="height:200px; width:200px" />
+            <input type="image" src="data:image;base64,@System.Convert.ToBase64String(Model.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail" style="height:200px; width:200px" onclick="location.href ='@Url.Action("ProfileDetails", "Account")'"/>
         </div>
 
         <div class="text-bold">@Html.DisplayFor(model => model.Username)</div>
