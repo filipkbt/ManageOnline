@@ -54,7 +54,7 @@
                     <div class="heading bg-dark fg-white" style="height:55px">
                         Oferta użytkownika @item.UserWhoAddOffer.Username @if (item.UserWhoAddOffer.UserId.ToString() == HttpContext.Current.Session["UserId"].ToString())
                         {
-                            @Html.ActionLink("Edytuj swoją ofertę", "EditOfferToProject", "Project", new { offerId = item.OfferToProjectId }, null);
+                            <button type="button" class="btn btn-success float-right" onclick="location.href = '@Url.Action( "EditOfferToProject", "Project",  new { offerId = item.OfferToProjectId }, null)'">Edytuj swoją ofertę</button>
                         }
                         @if (HttpContext.Current.Session["UserId"].ToString() == Model.ProjectOwner.UserId.ToString())
                         {

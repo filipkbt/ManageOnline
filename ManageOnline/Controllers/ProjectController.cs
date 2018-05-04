@@ -112,9 +112,6 @@ namespace ManageOnline.Controllers
         [HttpPost]
         public ActionResult SearchProjects(FormCollection form)
         {
-
-
-
             using (DbContextModel db = new DbContextModel())
             {
                 var dataContext = db.Projects
@@ -156,7 +153,7 @@ namespace ManageOnline.Controllers
                         where selectedSkillsArray.Any(val => p.SkillsRequiredToProject.Contains(val))
                         select p;
 
-                    return View(filteredDataContext);
+                   return View(filteredDataContext);
                 }
                 return View(dataContext);
             }
