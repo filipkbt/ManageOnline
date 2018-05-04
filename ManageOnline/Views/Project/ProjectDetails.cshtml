@@ -47,7 +47,7 @@
     {
         <div data-role="accordion"
              data-one-frame="false">
-            @foreach (var item in Model.OffersToProject)
+            @foreach (var item in Model.OffersToProject.OrderBy(x=> x.AddOfferDate))
             {
 
                 <div class="frame" style="margin: 15px 0">
@@ -73,7 +73,7 @@
         </div>
         </div>
         <div class="col-5" style="margin: 15px 10px">@item.Description</div>
-        <div class="col-3" style="margin: 15px 5px"><h5>Cena: @item.Budget<br />Czas wykonania: @item.EstimatedTimeToFinishProject dni</h5></div>
+                            <div class="col-3" style="margin: 15px 5px"><h3>Data dodania oferty: @item.AddOfferDate.Date.ToShortDateString()<br />Cena: @item.Budget zł<br />Czas wykonania: @item.EstimatedTimeToFinishProject dni</h3></div>
         </div>
         <hr>
         <div class="col text-white">

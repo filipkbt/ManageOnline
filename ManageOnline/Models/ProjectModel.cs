@@ -43,7 +43,8 @@ namespace ManageOnline.Models
 
         public string SkillsRequiredToProject { get; set; }
         public virtual ICollection<SkillsModel> SkillsRequiredToProjectCollection { get; set; }
-
+        [NotMapped]
+        public string[] SkillsRequiredToProjectArray { get; set; }
         public ICollection<OfferToProjectModel> OffersToProject { get; set; }
 
         public ProjectStatus ProjectStatus { get; set; }

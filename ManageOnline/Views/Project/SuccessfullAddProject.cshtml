@@ -1,13 +1,12 @@
 ﻿
 @{
     ViewBag.Title = "SuccessfullAddProject";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
-
-<div class="alert alert-success" role="alert" style="margin-bottom:50px">
+<div class="alert alert-success" role="alert" style="margin-top:50px">
     <h4 class="alert-heading">Sukces!</h4>
     <p>Gratulację! Twój projekt został dodany do portalu. Teraz oczekuj na oferty wykonania. </p>
     <hr />
-    <p>Przejdź do rubryki @Html.ActionLink("Moje Projekty", "ShowYourProjects","Project"), aby zobaczeć wszystkie projekty w których bierzesz udział.</p>
+    <p>Przejdź do rubryki @Html.ActionLink("Moje Projekty", "ShowYourProjects", "Project", new { id = Convert.ToInt32(HttpContext.Current.Session["UserId"]) }, null), aby zobaczeć wszystkie projekty w których bierzesz udział.</p>
 </div>
 

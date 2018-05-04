@@ -20,9 +20,15 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
+
+                var skills = db.Skills.ToList();
+                MultiSelectList listSkills = new MultiSelectList(skills, "SkillId", "SkillName");
+                ViewBag.Skills = listSkills;
+
                 var categories = db.Categories.ToList();
                 SelectList list = new SelectList(categories, "CategoryId", "CategoryName");
                 ViewBag.Categories = list;
+
                 return View();
             }
 
@@ -38,8 +44,17 @@ namespace ManageOnline.Controllers
                 project.ProjectOwner = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
                 project.ProjectStatus = ProjectStatus.WaitingForOffers;
 
+                if (project.SkillsRequiredToProjectArray != null)
+                {
+                    project.SkillsRequiredToProject = string.Join(",", project.SkillsRequiredToProjectArray);
+                }
+
                 db.Projects.Add(project);
                 db.SaveChanges();
+
+                var skills = db.Skills.ToList();
+                MultiSelectList listSkills = new MultiSelectList(skills, "SkillId", "SkillName");
+                ViewBag.Skills = listSkills;
 
                 var categories = db.Categories.ToList();
                 SelectList list = new SelectList(categories, "CategoryId", "CategoryName");
