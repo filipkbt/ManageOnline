@@ -19,10 +19,12 @@ namespace ManageOnline.Models
 
         public DateTime TaskCreationDate { get; set; }
         
-        public int WorkerId { get; set; }
-
-        public int? CurrentWorkerAtTaskId { get; set; }
+        public virtual UserBasicModel UserWhoAddTask { get; set; }
 
         public virtual UserBasicModel CurrentWorkerAtTask { get; set; }
+
+        public int RowNumber { get; set; }
+
+        public int ColumnNumber { get; set; }
     }
 }

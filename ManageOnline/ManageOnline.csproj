@@ -156,6 +156,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\ProjectPanelController.cs" />
+    <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -236,6 +237,10 @@
     <Compile Include="Migrations\201805041614172_notificationsdsa.cs" />
     <Compile Include="Migrations\201805041614172_notificationsdsa.Designer.cs">
       <DependentUpon>201805041614172_notificationsdsa.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805052301328_prepareTasksToKanbanBoard.cs" />
+    <Compile Include="Migrations\201805052301328_prepareTasksToKanbanBoard.Designer.cs">
+      <DependentUpon>201805052301328_prepareTasksToKanbanBoard.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
@@ -377,6 +382,7 @@
     <Content Include="Views\Project\ShowProjectsWaitingForOffers.cshtml" />
     <Content Include="Views\Project\ShowProjectsInProgress.cshtml" />
     <Content Include="Views\Project\ShowProjectsFinished.cshtml" />
+    <Content Include="Views\Task\_addTask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -447,6 +453,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805041614172_notificationsdsa.resx">
       <DependentUpon>201805041614172_notificationsdsa.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805052301328_prepareTasksToKanbanBoard.resx">
+      <DependentUpon>201805052301328_prepareTasksToKanbanBoard.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
