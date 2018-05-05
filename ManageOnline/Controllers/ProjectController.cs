@@ -89,8 +89,8 @@ namespace ManageOnline.Controllers
                 var categoriesList = db.Categories.ToList();
                 foreach (var project in dataContext)
                 {
-                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
-                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                    var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                    project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
 
 
                     if (project.SkillsRequiredToProject != null)
@@ -103,7 +103,7 @@ namespace ManageOnline.Controllers
                             project.SkillsRequiredToProjectCollection.Add(skill);
                         }
                     }
-                   
+
                 }
                 return View(dataContext);
             }
@@ -150,10 +150,10 @@ namespace ManageOnline.Controllers
                     var selectedSkillsArray = selectedSkills.Split(',').ToArray();
 
                     var filteredDataContext = from p in dataContext
-                        where selectedSkillsArray.Any(val => p.SkillsRequiredToProject.Contains(val))
-                        select p;
+                                              where selectedSkillsArray.Any(val => p.SkillsRequiredToProject.Contains(val))
+                                              select p;
 
-                   return View(filteredDataContext);
+                    return View(filteredDataContext);
                 }
                 return View(dataContext);
             }
@@ -168,6 +168,22 @@ namespace ManageOnline.Controllers
                     .Include("OffersToProject")
                     .Include("OffersToProject.UserWhoAddOffer")
                     .FirstOrDefault(p => p.ProjectId.Equals(id));
+
+                var categoriesList = db.Categories.ToList();
+                var skills = db.Skills.ToList();
+
+                var projectCategoryId = Convert.ToInt32(projectDetailsInfo.ProjectCategory);
+                projectDetailsInfo.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                if (projectDetailsInfo.SkillsRequiredToProject != null)
+                {
+                    projectDetailsInfo.SkillsRequiredToProjectArray = projectDetailsInfo.SkillsRequiredToProject.Split(',').ToArray();
+                    foreach (var skillId in projectDetailsInfo.SkillsRequiredToProjectArray)
+                    {
+                        var skillIdInt = Convert.ToInt32(skillId);
+                        var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                        projectDetailsInfo.SkillsRequiredToProjectCollection.Add(skill);
+                    }
+                }
 
                 foreach (var offer in projectDetailsInfo.OffersToProject)
                 {
@@ -273,6 +289,235 @@ namespace ManageOnline.Controllers
             }
         }
 
+        public ActionResult ShowYourProjects()
+        {
+            return View();
+        }
+
+        public ActionResult ShowProjectsWaitingForOffers()
+        {
+            string userId = System.Web.HttpContext.Current.Session["UserId"].ToString();
+            using (DbContextModel db = new DbContextModel())
+            {
+                var categoriesList = db.Categories.ToList();
+                ICollection<ProjectModel> projects = db.Projects.Include("ProjectOwner").Include("CategoriesModel").Include("SkillsRequiredToProjectCollection").Where(x=> x.ProjectStatus == ProjectStatus.WaitingForOffers).ToList();
+                ICollection <OfferToProjectModel> offersCollection = db.OfferToProjectModels.Include("UserWhoAddOffer").ToList();
+                ICollection<SkillsModel> skills = db.Skills.ToList();
+                if(System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Pracownik.ToString())
+                {
+                    var filteredProjectsWithOffers = from project in projects
+                        join offer in offersCollection on project.ProjectId equals offer.ProjectId
+                        where offer.WorkersProposedToProject.Contains(userId)
+                        select project;
+
+                    foreach (var project in filteredProjectsWithOffers)
+                    {
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        if (project.SkillsRequiredToProject != null)
+                        {
+                            project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
+                            foreach (var skillId in project.SkillsRequiredToProjectArray)
+                            {
+                                var skillIdInt = Convert.ToInt32(skillId);
+                                var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                                project.SkillsRequiredToProjectCollection.Add(skill);
+                            }
+                        }
+                    }
+
+                    return View(filteredProjectsWithOffers);
+                }
+                if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Manager.ToString())
+                {
+                    var filteredProjectsWithOffers = from project in projects
+                        join offer in offersCollection on project.ProjectId equals offer.ProjectId
+                        where offer.UserWhoAddOffer.UserId.ToString().Equals(userId)
+                        select project;
+
+                    foreach (var project in filteredProjectsWithOffers)
+                    {
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        if (project.SkillsRequiredToProject != null)
+                        {
+                            project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
+                            foreach (var skillId in project.SkillsRequiredToProjectArray)
+                            {
+                                var skillIdInt = Convert.ToInt32(skillId);
+                                var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                                project.SkillsRequiredToProjectCollection.Add(skill);
+                            }
+                        }
+                    }
+
+                    return View(filteredProjectsWithOffers);
+                }
+
+                if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Klient.ToString())
+                {
+                    var filteredProjects = from project in projects
+                        where project.ProjectOwner.UserId.ToString().Equals(userId)
+                        select project;
+
+                    foreach (var project in filteredProjects)
+                    {
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        if (project.SkillsRequiredToProject != null)
+                        {
+                            project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
+                            foreach (var skillId in project.SkillsRequiredToProjectArray)
+                            {
+                                var skillIdInt = Convert.ToInt32(skillId);
+                                var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                                project.SkillsRequiredToProjectCollection.Add(skill);
+                            }
+                        }
+                    }
+
+                    return View(filteredProjects);
+                }
+
+                return View();
+
+            }
+        }
+
+        public ActionResult ShowProjectsInProgress()
+        {
+            string userId = System.Web.HttpContext.Current.Session["UserId"].ToString();
+            using (DbContextModel db = new DbContextModel())
+            {
+                var dataContext = db.Projects
+                    .Include("ProjectOwner")
+                    .Include("SkillsRequiredToProjectCollection")
+                    .Include("CategoriesModel")
+                    .Include("OffersToProject")
+                    .Where(x=> x.ProjectStatus == ProjectStatus.InProgress)
+                    .ToList();
+                var categoriesList = db.Categories.ToList();
+                var skills = db.Skills.ToList();
+
+
+                if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Pracownik.ToString() ||
+                    System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Manager.ToString())
+                {
+                     var filteredDataContext = dataContext.Where(x => x.UsersBelongsToProject.Contains(userId)).ToList();
+
+                    foreach (var project in filteredDataContext)
+                    {
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        if (project.SkillsRequiredToProject != null)
+                        {
+                            project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
+                            foreach (var skillId in project.SkillsRequiredToProjectArray)
+                            {
+                                var skillIdInt = Convert.ToInt32(skillId);
+                                var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                                project.SkillsRequiredToProjectCollection.Add(skill);
+                            }
+                        }
+                    }
+
+                    return View(filteredDataContext);
+                }
+                else if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Klient.ToString())
+                {
+                   var filteredDataContext = dataContext.Where(x => x.ProjectOwner.UserId.ToString().Equals(userId)).ToList();
+
+
+                    foreach (var project in filteredDataContext)
+                    {
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        if (project.SkillsRequiredToProject != null)
+                        {
+                            project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
+                            foreach (var skillId in project.SkillsRequiredToProjectArray)
+                            {
+                                var skillIdInt = Convert.ToInt32(skillId);
+                                var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                                project.SkillsRequiredToProjectCollection.Add(skill);
+                            }
+                        }
+                    }
+
+                    return View(filteredDataContext);
+                }
+
+
+                return View();
+            }
+        }
+
+        public ActionResult ShowProjectsFinished()
+        {
+            string userId = System.Web.HttpContext.Current.Session["UserId"].ToString();
+            using (DbContextModel db = new DbContextModel())
+            {
+                var dataContext = db.Projects
+                    .Include("ProjectOwner")
+                    .Include("SkillsRequiredToProjectCollection")
+                    .Include("CategoriesModel")
+                    .Include("OffersToProject")
+                    .Where(x => x.ProjectStatus == ProjectStatus.Finished)
+                    .ToList();
+
+                var categoriesList = db.Categories.ToList();
+                var skills = db.Skills.ToList();
+
+                if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Pracownik.ToString() ||
+                    System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Manager.ToString())
+                {
+                    var filteredDataContext = dataContext.Where(x => x.UsersBelongsToProject.Contains(userId)).ToList();
+
+                    foreach (var project in filteredDataContext)
+                    {
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        if (project.SkillsRequiredToProject != null)
+                        {
+                            project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
+                            foreach (var skillId in project.SkillsRequiredToProjectArray)
+                            {
+                                var skillIdInt = Convert.ToInt32(skillId);
+                                var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                                project.SkillsRequiredToProjectCollection.Add(skill);
+                            }
+                        }
+                    }
+
+                    return View(filteredDataContext);
+                }
+                else if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Klient.ToString())
+                {
+                   var filteredDataContext = dataContext.Where(x => x.ProjectOwner.UserId.ToString().Equals(userId)).ToList();
+
+                    foreach (var project in filteredDataContext)
+                    {
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        if (project.SkillsRequiredToProject != null)
+                        {
+                            project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
+                            foreach (var skillId in project.SkillsRequiredToProjectArray)
+                            {
+                                var skillIdInt = Convert.ToInt32(skillId);
+                                var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                                project.SkillsRequiredToProjectCollection.Add(skill);
+                            }
+                        }
+                    }
+
+                    return View(filteredDataContext);
+                }
+
+                return View();
+                }
+        }
+
         public ActionResult SuccessfullAddProject()
         {
             return View();
@@ -282,12 +527,6 @@ namespace ManageOnline.Controllers
         {
             return View();
         }
-
-        public ActionResult ShowYourProjects(int id)
-        {
-            return View();
-        }
-
 
         public ActionResult SuccessfullAddOffer()
         {

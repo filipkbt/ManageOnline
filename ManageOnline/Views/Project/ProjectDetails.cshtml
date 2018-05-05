@@ -5,61 +5,87 @@
     Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
 
-<h2>ProjectDetails</h2>
-
-<div>
-    <h4>ProjectModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <h1>@Html.DisplayFor(model => model.ProjectOwner.Username)</h1>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProjectOwner.Username)
-        </dd>
-        <dd>
-            @Html.DisplayFor(model => model.ProjectTitle)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ProjectDescription)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProjectDescription)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ProjectCreationDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProjectCreationDate)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @if (Model.OffersToProject.Count == 0)
+<div class="row " style="margin-top:20px"><h1>@Model.ProjectTitle</h1></div>
+<div class="row" ><h5>@Model.CategoriesModel.CategoryName</h5></div>
+<div class="row " ><h5>
+    @if (Model.SkillsRequiredToProjectCollection != null)
     {
-        <span>Brak ofert</span>
+        foreach (var skill in Model.SkillsRequiredToProjectCollection)
+        {
+            @skill.SkillName@:; 
+        }
+    }
+</h5></div>
+<div class="row bg-lightGray border border-3 border-dark ">
+    <div class="col-3 ">
+        <div class="row ">
+            <div class="content fg-white ">
+                <div class="row">
+                    <div class="col-3 m-2">
+                        <div data-role="tile" style="width: 270px; height: 270px" data-effect="hover-zoom-right">
+                            <div class="slide-front">
+                                <img class="h-100 w-100" src="data:image;base64,@System.Convert.ToBase64String(Model.ProjectOwner.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail" />
+                            </div>
+                            <div class="slide-back d-flex flex-justify-center flex-align-center p-4 op-green " onclick="location.href = '@Url.Action("ProfileDetails", "Account", new {id = Model.ProjectOwner.UserId}, null)'">
+                                <p class="text-center">
+                                    Kliknij, aby przejść do profilu użytkownika
+                                </p>
+                            </div>
+                            <span class="branding-bar text-white text-bold" style="text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">@Model.ProjectOwner.Username</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 mt-2"><h3>Treść ogłoszenia</h3><h5>@Model.ProjectDescription</h5></div>
+    <div class="col-3">
+        <center>
+
+            <div class="row-2" style="margin-top:10px">
+                <h4>Data dodania</h4>
+            </div>
+            <div class="row-2">
+                <h4>@Model.ProjectCreationDate</h4>
+            </div>
+            <div class="row-2">
+                <h4>Budżet</h4>
+            </div>
+            <div class="row-2">
+                <h4>@Model.ProjectBudget zł</h4>
+            </div>
+
+        </center>
+    </div>
+
+</div>
+
+    @if (Model.OffersToProject.Count == 0)
+    {<center>
+<h1>
+    <span>Brak ofert</span>
+</h1>
+     </center>
     }
     else
-    {
+    {<h2>Oferty użytkowników</h2>
         <div data-role="accordion"
-             data-one-frame="false">
+             data-one-frame="false" >
             @foreach (var item in Model.OffersToProject.OrderBy(x => x.AddOfferDate))
             {
 
                 <div class="frame" style="margin: 15px 0">
-                    <div class="heading bg-dark fg-white" style="height:55px">
-                        Oferta użytkownika @item.UserWhoAddOffer.Username @if (item.UserWhoAddOffer.UserId.ToString() == HttpContext.Current.Session["UserId"].ToString())
-                        {
-                            <button type="button" class="btn btn-success float-right" onclick="location.href = '@Url.Action( "EditOfferToProject", "Project",  new { offerId = item.OfferToProjectId }, null)'">Edytuj swoją ofertę</button>
-                        }
-                        @if (HttpContext.Current.Session["UserId"].ToString() == Model.ProjectOwner.UserId.ToString())
-                        {
-                            <button type="button" class="btn btn-success float-right" onclick="location.href = '@Url.Action("AdmitSelectedProject", "Project",  new {projectId = Model.ProjectId, offerId = item.OfferToProjectId}, null)'">Przyznaj projekt</button>
-                        }
+                    <div class="heading bg-dark fg-white" style="height:60px">
+                        <h4>
+                            Oferta użytkownika @item.UserWhoAddOffer.Username  @if (item.UserWhoAddOffer.UserId.ToString() == HttpContext.Current.Session["UserId"].ToString())
+    {
+                        <button type="button" class="btn btn-success float-right" onclick="location.href = '@Url.Action( "EditOfferToProject", "Project",  new { offerId = item.OfferToProjectId }, null)'">Edytuj swoją ofertę</button>
+}
+                            @if (HttpContext.Current.Session["UserId"].ToString() == Model.ProjectOwner.UserId.ToString())
+    {
+                        <button type="button" class="btn btn-success float-right" onclick="location.href = '@Url.Action("AdmitSelectedProject", "Project",  new {projectId = Model.ProjectId, offerId = item.OfferToProjectId}, null)'">Przyznaj projekt</button>
+}
+                        </h4>
                     </div>
                     <div class="content bg-info fg-white">
                         <div class="row">
@@ -115,4 +141,4 @@
     }
 
 
-    </p>
+

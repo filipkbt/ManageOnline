@@ -38,7 +38,7 @@ namespace ManageOnline.Models
         public string UsersBelongsToProject { get; set; }
         public virtual ICollection<UserBasicModel> UsersBelongsToProjectCollection { get; set; }
         [NotMapped]
-        public string UsersBelongsToProjectArray { get; set; }
+        public string[] UsersBelongsToProjectArray { get; set; }
 
         public ICollection<TaskModel> Tasks { get; set; }
 
@@ -48,7 +48,7 @@ namespace ManageOnline.Models
         [NotMapped]
         public string[] SkillsRequiredToProjectArray { get; set; }
 
-        public ICollection<OfferToProjectModel> OffersToProject { get; set; }
+        public virtual ICollection<OfferToProjectModel> OffersToProject { get; set; }
 
         public ProjectStatus ProjectStatus { get; set; }
 

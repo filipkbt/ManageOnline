@@ -26,7 +26,7 @@
     {
         <div class="navbar navbar-expand-lg navbar-light bg-primary">
             <li class="navbar-brand">Navbar</li>
-            <li class="btn-group nav " style="float: right;">
+            <li class="btn-group nav mr-2" style="float: right;">
                 <button type="button" class="btn navbar-btn text-bold text-white" style="background-color: forestgreen">Współpracownicy</button>
                 <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
@@ -40,7 +40,7 @@
                     }
                 </ul>
             </li>
-            <li class="btn-group nav" style="float: right;">
+            <li class="btn-group nav mr-2" style="float: right;">
                 <button type="button" class="btn navbar-btn text-bold text-white" style="background-color: forestgreen">Projekty</button>
                 <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
@@ -59,7 +59,7 @@
 
                 </ul>
             </li>
-            <li class="btn-group nav float-right" >
+            <li class="btn-group nav float-right mr-2" >
                 <button type="button" class="btn navbar-btn text-bold text-white" style="background-color: forestgreen">@HttpContext.Current.Session["Username"]</button>
                 <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
@@ -72,9 +72,11 @@
                 </ul>
             </li>
         </div>
-        <div class="container body-content">
-            @RenderBody()
-        </div>
+
+<div class="container body-content ">
+    @RenderBody()
+</div>
+
     }
 
 
