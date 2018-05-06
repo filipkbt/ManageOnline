@@ -11,6 +11,11 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/metroui")
+    @Scripts.Render("~/bundles/chosen")
+    @RenderSection("scripts", required: false)
 </head>
 <body>
     <script src="https://cdn.metroui.org.ua/v4/js/metro.min.js"></script>
@@ -81,10 +86,6 @@
 
 
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/metroui")
-    @Scripts.Render("~/bundles/chosen")
-    @RenderSection("scripts", required: false)
+
 </body>
 </html>

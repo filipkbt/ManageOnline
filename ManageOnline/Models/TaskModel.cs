@@ -11,7 +11,7 @@ namespace ManageOnline.Models
         [Key]
         public int TaskId { get; set; }
 
-        public ProjectModel ProjectId { get; set; }
+        public ProjectModel Project { get; set; }
 
         public string TaskName { get; set; }
 
