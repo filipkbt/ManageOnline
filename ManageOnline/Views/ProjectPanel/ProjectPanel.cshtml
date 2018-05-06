@@ -4,56 +4,72 @@
     ViewBag.Title = "ProjectPanel";
     Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
-<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-<script>
-    $(document).ready(function() {
-        $("#sortable").sortable({
-            update: function(event, ui) {
-                var itemIds = "";
-                $("#sortable").find(".taskSingleInLine").each(function() {
-                    var itemId = $(this).attr("data-taskid");
-                    itemIds = itemIds + itemId + ",";
-                });
-                $.ajax({
-                    url: '@Url.Action("UpdateTaskPosition","Task")',
-                    data: { itemIds: itemIds },
-                    type: 'POST',
-                    success: function(data) {
 
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
+<script>
+    $(function () {
+        $("#sortable1, #sortable2").sortable({
+            connectWith: ".connectedSortable",
+            update: function () {
+                var order1 = $('#sortable1').sortable('toArray').toString();
+                var order2 = $('#sortable2').sortable('toArray').toString();
+
+                alert("Order 1:" + order1 + "\n Order 2:" + order2); //Just showing update
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UpdateTaskPosition","Task")',
+                    data: {
+                        column1: order1,
+                        column2: order2
                     },
-                    error: function(xhr, status, error) {
+                    success: function (data) {
 
                     }
-
                 });
+
             }
-        });
+        }).disableSelection();
     });
 </script>
-<div class="col-md-6">
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th>TESTOWA TABELAAA</th>
-        </tr>
-        </thead>
-        <tbody id="sortable" style="cursor:pointer;">
-        @foreach (var tasktest in Model.Tasks)
-        {
-            if (tasktest.ColumnNumber == 1)
-            {
-                <tr>
-                <td>@tasktest.TaskName</td>
-                <td class="taskSingleInLine" id="task@(tasktest.TaskId)" data-taskid="@(tasktest.TaskId)">@tasktest.TaskName</td>
-                <td >@tasktest.RowNumber</td>
-            </tr>
-            }
-        }
-        </tbody>
-    </table>
+<div class="col-6" id="kanbanBoard">
+    <div class="row">
+        <div class="col-6 kanbanColumn" style="cursor: pointer">
+            <h3>Do zrobienia</h3>
+            <ul id="sortable1" class="connectedSortable">
+                @foreach (var task in Model.Tasks.Where(task => task.ColumnNumber == 1))
+                {
+                    <div class="card bg-info" id='@task.TaskId'>
+                        <div class="card-body text-center">
+                            <p class="card-text">@task.TaskName</p>
+                        </div>
+                    </div>
+                }
+            </ul>
+        </div>
+
+        <div class="col-6 kanbanColumn" style="cursor: pointer">
+            <h3>W trakcie</h3>
+            <ul id="sortable2" class="connectedSortable">
+                @foreach (var task in Model.Tasks.Where(task => task.ColumnNumber == 2))
+                {
+                    <div class="card bg-success" id='@task.TaskId'>
+                        <div class="card-body text-center">
+                            <p class="card-text">@task.TaskName</p>
+                        </div>
+                    </div>
+                }
+            </ul>
+        </div>
+    </div>
 </div>
+
+
+
 <a class="btn btn-primary" href="@Url.Action("ProjectPanel","ProjectPanel",new { projectId=Model.ProjectId}, null)">update</a>
 
 <h2>ProjectPanel</h2>
+
+
 
 

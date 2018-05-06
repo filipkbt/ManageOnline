@@ -11,7 +11,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @Scripts.Render("~/bundles/metroui")
     @Scripts.Render("~/bundles/chosen")
@@ -30,62 +30,60 @@
     else if (!String.IsNullOrEmpty((string)HttpContext.Current.Session["Username"]))
     {
         <div class="navbar navbar-expand-lg navbar-light bg-primary">
-            <li class="navbar-brand">Navbar</li>
-            <li class="btn-group nav mr-2" style="float: right;">
-                <button type="button" class="btn navbar-btn text-bold text-white" style="background-color: forestgreen">Współpracownicy</button>
-                <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    @Html.ActionLink("Przeglądaj wszystkich pracowników", "EmployeesList", "Employees")
-                    @if ((string) HttpContext.Current.Session["Role"] == "Klient")
-                    {
-                        <li class="navbar-brand">Managerzy, z którymi współpracujesz@*@Html.ActionLink("Wyszukaj projekty", "SearchProjects", "Project")*@</li>
-                    }
-                </ul>
-            </li>
-            <li class="btn-group nav mr-2" style="float: right;">
-                <button type="button" class="btn navbar-btn text-bold text-white" style="background-color: forestgreen">Projekty</button>
-                <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    @if ((string) HttpContext.Current.Session["Role"] == "Manager" || (string) HttpContext.Current.Session["Role"] == "Klient")
-                    {
-                        <li class="navbar-brand">@Html.ActionLink("Wyszukaj projekty", "SearchProjects", "Project")</li>
-                    }
-                    @if ((string) HttpContext.Current.Session["Role"] == "Klient")
-                    {
-                        <li class="navbar-brand">@Html.ActionLink("Dodaj projekt", "AddProject", "Project", new {id = Convert.ToInt32(HttpContext.Current.Session["UserId"])}, null)</li>
-                    }
-                    <li class="navbar-brand">@Html.ActionLink("Twoje projekty", "ShowYourProjects", "Project", new {id = Convert.ToInt32(HttpContext.Current.Session["UserId"])}, null)</li>
+<div class="container">
+    <li class="navbar-brand">Navbar</li>
+    <li class="btn-group nav ">
+        <button type="button" class="btn navbar-btn text-bold text-white" style="background-color: forestgreen">Współpracownicy</button>
+        <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            @Html.ActionLink("Przeglądaj wszystkich pracowników", "EmployeesList", "Employees")
+            @if ((string) HttpContext.Current.Session["Role"] == "Klient")
+            {
+                <li class="navbar-brand">Managerzy, z którymi współpracujesz@*@Html.ActionLink("Wyszukaj projekty", "SearchProjects", "Project")*@</li>
+            }
+        </ul>
+    </li>
+    <li class="btn-group nav ">
+        <button type="button" class="btn navbar-btn text-bold text-white" style="background-color: forestgreen">Projekty</button>
+        <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            @if ((string) HttpContext.Current.Session["Role"] == "Manager" || (string) HttpContext.Current.Session["Role"] == "Klient")
+            {
+                <li class="navbar-brand">@Html.ActionLink("Wyszukaj projekty", "SearchProjects", "Project")</li>
+            }
+            @if ((string) HttpContext.Current.Session["Role"] == "Klient")
+            {
+                <li class="navbar-brand">@Html.ActionLink("Dodaj projekt", "AddProject", "Project", new {id = Convert.ToInt32(HttpContext.Current.Session["UserId"])}, null)</li>
+            }
+            <li class="navbar-brand">@Html.ActionLink("Twoje projekty", "ShowYourProjects", "Project", new {id = Convert.ToInt32(HttpContext.Current.Session["UserId"])}, null)</li>
 
-                </ul>
-            </li>
-            <li class="btn-group nav float-right mr-2" >
-                <button type="button" class="btn navbar-btn text-bold text-white" style="background-color: forestgreen">@HttpContext.Current.Session["Username"]</button>
-                <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
-                    <span class="caret"></span>
-                    <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                    <li class="navbar-brand">@Html.ActionLink("Edytuj profil", "EditAccount", "Account")</li>
-                    <li class="navbar-brand">@Html.ActionLink("Zobacz profil", "ProfileDetails", "Account", new {id = Convert.ToInt32(HttpContext.Current.Session["UserId"])}, null)</li>
-                    <li class="navbar-brand">@Html.ActionLink("Wyloguj się", "LogOut", "Account")</li>
-                </ul>
-            </li>
+        </ul>
+    </li>
+    <li class="btn-group nav ">
+        <button type="button" class="btn navbar-btn text-bold text-white" style="background-color: forestgreen">@HttpContext.Current.Session["Username"]</button>
+        <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li class="navbar-brand">@Html.ActionLink("Edytuj profil", "EditAccount", "Account")</li>
+            <li class="navbar-brand">@Html.ActionLink("Zobacz profil", "ProfileDetails", "Account", new {id = Convert.ToInt32(HttpContext.Current.Session["UserId"])}, null)</li>
+            <li class="navbar-brand">@Html.ActionLink("Wyloguj się", "LogOut", "Account")</li>
+        </ul>
+    </li>
+</div>
         </div>
-
 <div class="container body-content ">
     @RenderBody()
 </div>
 
     }
-
-
-
 
 </body>
 </html>

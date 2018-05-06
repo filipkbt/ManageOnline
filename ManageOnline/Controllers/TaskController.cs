@@ -20,23 +20,26 @@ namespace ManageOnline.Controllers
             return View(("~/Views/Dashboard/DashboardIndex.cshtml"));
         }
 
-        public ActionResult UpdateTaskPosition(string itemIds)
+        public ActionResult UpdateTaskPosition(string[] column1,string[] column2)
         {
-            int count = 1;
+            var sada = column1;
+            var sadasa = column2;
+            var dsada = sada;
+            var gowno = sadasa;
 
-            List<int> itemIdList = new List<int>();
-            itemIdList = itemIds.Split(",".ToCharArray(),StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
-            using (DbContextModel db = new DbContextModel())
-            {
-                foreach (var itemId in itemIdList)
-                { 
-                    TaskModel task = db.Tasks.Where(x => x.TaskId.Equals(itemId)).FirstOrDefault();
-                    task.RowNumber = count;
-                    db.Entry(task).State = EntityState.Modified;
-                    db.SaveChanges();
-                    count++;
-                }
-            }
+            //List<int> itemIdList = new List<int>();
+            //itemIdList = itemIds.Split(",".ToCharArray(),StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+            //using (DbContextModel db = new DbContextModel())
+            //{
+            //    foreach (var itemId in itemIdList)
+            //    { 
+            //        TaskModel task = db.Tasks.Where(x => x.TaskId.Equals(itemId)).FirstOrDefault();
+            //        task.RowNumber = count;
+            //        db.Entry(task).State = EntityState.Modified;
+            //        db.SaveChanges();
+            //        count++;
+            //    }
+            //}
             return Json(true, JsonRequestBehavior.AllowGet);
         }
     }
