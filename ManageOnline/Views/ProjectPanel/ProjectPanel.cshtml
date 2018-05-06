@@ -24,7 +24,8 @@
                         column2: order2
                     },
                     success: function (data) {
-
+                        var toast = Metro.toast.create;
+                        toast("Status zadania został zaktualizowany", null, 3000, "bg-green fg-white"); 
                     }
                 });
 

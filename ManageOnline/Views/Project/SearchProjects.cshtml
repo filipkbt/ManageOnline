@@ -6,7 +6,11 @@
     ViewBag.Title = "SearchProjects";
     Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
-
+<script type="text/javascript">
+    $(function() {
+        $("#multiSelectDropDown").chosen();
+    });
+</script>
 <h2>SearchProjects</h2>
 @using (Html.BeginForm("SearchProjects", "Project"))
 {
@@ -96,8 +100,4 @@
         </tbody>
     </table>
 }
-@section scripts{
-    <script>
-        $("#multiSelectDropDown").chosen();
-    </script>
-}
+

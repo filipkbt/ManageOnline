@@ -10,7 +10,8 @@ namespace ManageOnline
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-{version}.js",
-                "~/Scripts/jquery-ui-1.12.1.js"));
+                "~/Scripts/jquery-ui-1.12.1.js",
+                "~/Scripts/chosen.jquery.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -27,8 +28,7 @@ namespace ManageOnline
             bundles.Add(new ScriptBundle("~/bundles/metroui").Include(
                       "~/Scripts/metro.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/chosen").Include(
-                "~/Scripts/chosen.jquery.js"));
+
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
