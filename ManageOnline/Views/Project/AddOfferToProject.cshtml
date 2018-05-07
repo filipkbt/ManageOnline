@@ -5,6 +5,12 @@
     Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
 
+<script type="text/javascript">
+    $(function () {
+        $("#multiSelectDropDown").chosen();
+    });
+</script>
+
 <h2>AddOfferToProject</h2>
 
 @using (Html.BeginForm())
@@ -58,9 +64,3 @@
     @Html.ActionLink("Wróć do strony z projektem", "ProjectDetails")
 </div>
 
-@section scripts{
-    <script>
-        $("#multiSelectDropDown").chosen();
-    </script>
-
-}

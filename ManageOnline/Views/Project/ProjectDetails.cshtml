@@ -22,7 +22,7 @@
             <div class="content fg-white ">
                 <div class="row">
                     <div class="col-3 m-2">
-                        <div data-role="tile" style="width: 270px; height: 270px" data-effect="hover-zoom-right">
+                        <div data-role="tile" width="50" height="50 "data-effect="hover-zoom-right">
                             <div class="slide-front">
                                 <img class="h-100 w-100" src="data:image;base64,@System.Convert.ToBase64String(Model.ProjectOwner.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail" />
                             </div>
@@ -137,7 +137,8 @@
 
     @if ((Model.OffersToProject.Any(item => item.UserWhoAddOffer.UserId.ToString() == HttpContext.Current.Session["UserId"].ToString()) == false) && (HttpContext.Current.Session["Role"].ToString() == "Manager"))
     {
-        @Html.ActionLink("Dodaj ofertę", "AddOfferToProject", "Project", new { projectId = Model.ProjectId }, null);
+        <button type="button" class="btn btn-success btn-block" onclick="location.href = '@Url.Action( "AddOfferToProject", "Project",  new { projectId = Model.ProjectId }, null)'">Dodaj ofertę do projektu</button>
+
     }
 
 
