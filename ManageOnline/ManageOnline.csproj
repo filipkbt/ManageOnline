@@ -430,6 +430,7 @@
     <Content Include="Views\Project\ShowProjectsInProgress.cshtml" />
     <Content Include="Views\Project\ShowProjectsFinished.cshtml" />
     <Content Include="Views\Task\_addTask.cshtml" />
+    <Content Include="Views\ProjectPanel\KanbanBoard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

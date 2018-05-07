@@ -18,7 +18,8 @@ namespace ManageOnline.Controllers
                     .Include("ProjectOwner")
                     .Include("SkillsRequiredToProjectCollection")
                     .Include("CategoriesModel")
-                    .Include("Tasks")
+                    .Include("Tasks.CurrentWorkerAtTask")
+                    .Include("Tasks.UserWhoAddTask")
                     .Include("UsersBelongsToProjectCollection")
                     .Where(x => x.ProjectId.Equals(projectId))
                     .FirstOrDefault();
@@ -26,7 +27,25 @@ namespace ManageOnline.Controllers
 
                 return View(project);
             }
-            
+        }
+
+        public ActionResult KanbanBoard(int projectId)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                var project = db.Projects
+                    .Include("ProjectOwner")
+                    .Include("SkillsRequiredToProjectCollection")
+                    .Include("CategoriesModel")
+                    .Include("Tasks.CurrentWorkerAtTask")
+                    .Include("Tasks.UserWhoAddTask")
+                    .Include("UsersBelongsToProjectCollection")
+                    .Where(x => x.ProjectId.Equals(projectId))
+                    .FirstOrDefault();
+
+
+                return View(project);
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -11,6 +12,8 @@ namespace ManageOnline.Models
         [Key]
         public int TaskId { get; set; }
 
+        [NotMapped]
+        public int ProjectId { get; set; }
         public ProjectModel Project { get; set; }
 
         public string TaskName { get; set; }

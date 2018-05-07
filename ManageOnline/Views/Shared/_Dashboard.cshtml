@@ -22,7 +22,21 @@
     @RenderSection("scripts", required: false)
 </head>
 <body>
-    
+<style>
+    span.input-group-addon i {
+        color: #009edf;
+        font-size: 17px;
+    }
+    .form-control {
+        height: auto!important;
+        padding: 8px 12px !important;
+    }
+    .input-group {
+        -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
+        -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
+        box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21)!important;
+    }
+</style>
 
     @if (String.IsNullOrEmpty((string)HttpContext.Current.Session["Username"]))
     {
@@ -33,9 +47,10 @@
     }
     else if (!String.IsNullOrEmpty((string)HttpContext.Current.Session["Username"]))
     {
-        <div class="navbar navbar-expand-lg navbar-light bg-primary">
-            <li class="navbar-brand">Navbar</li>
-            <li class="btn-group nav mr-2" style="float: right;">
+        <div class="navbar navbar-expand-lg navbar-light bg-primary justify-content-end">
+<div class="container justify-content-end">
+
+            <li class="btn-group nav mr-2">
                 <button type="button" class="btn navbar-btn text-bold text-white" style="background-color: forestgreen">Współpracownicy</button>
                 <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
@@ -68,7 +83,7 @@
 
                 </ul>
             </li>
-            <li class="btn-group nav float-right mr-2" >
+            <li class="btn-group nav float-right mr-2">
                 <button type="button" class="btn navbar-btn text-bold text-white" style="background-color: forestgreen">@HttpContext.Current.Session["Username"]</button>
                 <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
                     <span class="caret"></span>
@@ -81,7 +96,7 @@
                 </ul>
             </li>
         </div>
-
+            </div>
 <div class="container body-content ">
     @RenderBody()
 </div>
