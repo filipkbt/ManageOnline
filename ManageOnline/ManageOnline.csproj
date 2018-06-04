@@ -246,10 +246,27 @@
     <Compile Include="Migrations\201805052307334_littleTaskEdit.Designer.cs">
       <DependentUpon>201805052307334_littleTaskEdit.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806030939244_PortfolioProject.cs" />
+    <Compile Include="Migrations\201806030939244_PortfolioProject.Designer.cs">
+      <DependentUpon>201806030939244_PortfolioProject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806030946363_IfProjectNeedManager.cs" />
+    <Compile Include="Migrations\201806030946363_IfProjectNeedManager.Designer.cs">
+      <DependentUpon>201806030946363_IfProjectNeedManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806041329519_updatePortfoioProjectModel.cs" />
+    <Compile Include="Migrations\201806041329519_updatePortfoioProjectModel.Designer.cs">
+      <DependentUpon>201806041329519_updatePortfoioProjectModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806041537081_changeInToObjectInOfferWorker.cs" />
+    <Compile Include="Migrations\201806041537081_changeInToObjectInOfferWorker.Designer.cs">
+      <DependentUpon>201806041537081_changeInToObjectInOfferWorker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\DbContextModel.cs" />
+    <Compile Include="Models\EmployeeAdditionalInfoModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\OfferToProjectModel.cs" />
@@ -507,6 +524,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805052307334_littleTaskEdit.resx">
       <DependentUpon>201805052307334_littleTaskEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806030939244_PortfolioProject.resx">
+      <DependentUpon>201806030939244_PortfolioProject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806030946363_IfProjectNeedManager.resx">
+      <DependentUpon>201806030946363_IfProjectNeedManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806041329519_updatePortfoioProjectModel.resx">
+      <DependentUpon>201806041329519_updatePortfoioProjectModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806041537081_changeInToObjectInOfferWorker.resx">
+      <DependentUpon>201806041537081_changeInToObjectInOfferWorker.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

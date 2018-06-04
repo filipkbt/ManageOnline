@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -185,17 +186,7 @@ namespace ManageOnline.Controllers
                     }
                 }
 
-                foreach (var offer in projectDetailsInfo.OffersToProject)
-                {
-
-                    offer.WorkersProposedToProjectArray = offer.WorkersProposedToProject.Split(',').ToArray();
-                    foreach (var worker in offer.WorkersProposedToProjectArray)
-                    {
-                        int workerId = Convert.ToInt32(worker);
-                        var workerData = db.UserAccounts.Where(x => x.UserId.Equals((workerId))).FirstOrDefault();
-                        offer.WorkersProposedToProjectCollection.Add(workerData);
-                    }
-                }
+          
 
 
                 return View(projectDetailsInfo);
@@ -207,9 +198,6 @@ namespace ManageOnline.Controllers
             OfferToProjectModel offerToProject = new OfferToProjectModel();
             using (DbContextModel db = new DbContextModel())
             {
-                var employees = db.UserAccounts.Where(x => x.Role == Roles.Pracownik).ToList();
-                MultiSelectList list = new MultiSelectList(employees, "UserId", "UserName");
-                ViewBag.Employees = list;
                 offerToProject.ProjectWhereOfferWasAdded = db.Projects.FirstOrDefault(p => p.ProjectId.Equals(projectId));
                 return View(offerToProject);
             }
@@ -223,10 +211,9 @@ namespace ManageOnline.Controllers
                 int userId = Convert.ToInt32(Session["UserId"]);
                 offerToProject.UserWhoAddOffer = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(userId));
                 offerToProject.AddOfferDate = DateTime.Now;
-                offerToProject.WorkersProposedToProject = string.Join(",", offerToProject.WorkersProposedToProjectArray);
+                offerToProject.WorkerProposedToProject = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(userId));
                 db.Projects.Attach(offerToProject.ProjectWhereOfferWasAdded);
                 db.OfferToProjectModels.Add(offerToProject);
-
 
                 db.SaveChanges();
                 return View("SuccessfullAddOffer");
@@ -237,13 +224,11 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
+                db.Configuration.LazyLoadingEnabled = false;
+
                 var selectedOffer = db.OfferToProjectModels.Where(x => x.OfferToProjectId == offerId).FirstOrDefault();
-                selectedOffer.WorkersProposedToProjectArray = selectedOffer.WorkersProposedToProject.Split(',').ToArray();
 
-                var employees = db.UserAccounts.Where(x => x.Role == Roles.Pracownik).ToList();
-                MultiSelectList list = new MultiSelectList(employees, "UserId", "UserName");
-                ViewBag.Employees = list;
-
+                Thread.Sleep(50);
                 return View(selectedOffer);
             }
 
@@ -252,9 +237,11 @@ namespace ManageOnline.Controllers
         [HttpPost]
         public ActionResult EditOfferToProject(OfferToProjectModel offerToProject)
         {
-            offerToProject.WorkersProposedToProject = string.Join(",", offerToProject.WorkersProposedToProjectArray);
+            
             using (DbContextModel db = new DbContextModel())
             {
+                db.Configuration.LazyLoadingEnabled = false;
+
                 int offerToProjectId = offerToProject.OfferToProjectId;
 
                 OfferToProjectModel oldOffer = db.OfferToProjectModels.FirstOrDefault(x => x.OfferToProjectId.Equals(offerToProjectId));
@@ -262,7 +249,6 @@ namespace ManageOnline.Controllers
                 oldOffer.Budget = offerToProject.Budget;
                 oldOffer.Description = offerToProject.Description;
                 oldOffer.EstimatedTimeToFinishProject = offerToProject.EstimatedTimeToFinishProject;
-                oldOffer.WorkersProposedToProject = offerToProject.WorkersProposedToProject;
 
                 db.Entry(oldOffer).State = EntityState.Modified;
                 db.SaveChanges();
@@ -276,8 +262,7 @@ namespace ManageOnline.Controllers
             {
                 ProjectModel project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
                 OfferToProjectModel offer = db.OfferToProjectModels.Where(x => x.OfferToProjectId.Equals(offerId)).FirstOrDefault();
-                offer.WorkersProposedToProject += "," + offer.UserWhoAddOffer.UserId;
-                project.UsersBelongsToProject = string.Join(",", offer.WorkersProposedToProject);
+                project.UsersBelongsToProject = string.Join(",", offer.WorkerProposedToProject); 
 
                 project.ProjectStartDate = DateTime.Now;
                 project.ProjectStatus = ProjectStatus.InProgress;
@@ -307,7 +292,7 @@ namespace ManageOnline.Controllers
                 {
                     var filteredProjectsWithOffers = from project in projects
                         join offer in offersCollection on project.ProjectId equals offer.ProjectId
-                        where offer.WorkersProposedToProject.Contains(userId)
+                        where offer.WorkerProposedToProject.UserId.Equals(userId)
                         select project;
 
                     foreach (var project in filteredProjectsWithOffers)

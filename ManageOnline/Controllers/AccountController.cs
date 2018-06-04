@@ -64,7 +64,7 @@ namespace ManageOnline.Controllers
                         System.Web.HttpContext.Current.Session["UserId"] = currentUser.UserId.ToString();
                         System.Web.HttpContext.Current.Session["Username"] = currentUser.Username.ToString();
                         System.Web.HttpContext.Current.Session["Role"] = currentUser.Role.ToString();
-
+                        Session.Timeout = 30;
                         return RedirectToAction("DashboardIndex", "Dashboard");
                     }
                     else

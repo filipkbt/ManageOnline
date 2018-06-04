@@ -7,15 +7,15 @@
 
 <div class="row " style="margin-top:20px"><h1>@Model.ProjectTitle</h1></div>
 <div class="row" ><h5>@Model.CategoriesModel.CategoryName</h5></div>
-<div class="row " ><h5>
+<div class="row " ><h7>
     @if (Model.SkillsRequiredToProjectCollection != null)
-    {
+    {<b>Wymagane umiejętności:</b>
         foreach (var skill in Model.SkillsRequiredToProjectCollection)
         {
             @skill.SkillName@:; 
         }
     }
-</h5></div>
+</h7></div>
 <div class="row bg-lightGray border border-3 border-dark ">
     <div class="col-3 ">
         <div class="row ">
@@ -105,28 +105,7 @@
         <div class="col-5" style="margin: 15px 10px">@item.Description</div>
         <div class="col-3" style="margin: 15px 5px"><h3>Data dodania oferty: @item.AddOfferDate.Date.ToShortDateString()<br />Cena: @item.Budget zł<br />Czas wykonania: @item.EstimatedTimeToFinishProject dni</h3></div>
         </div>
-        <hr>
-        <div class="col text-white">
-            <h3>Pracownicy, zaoferowani do projektu</h3>
-        </div>
-        <div class="row">
-            @foreach (var worker in item.WorkersProposedToProjectCollection)
-            {
-                <div class="col-3" style="margin: 10px 10px;">
-                    <div data-role="tile" style="width: 200px; height: 200px" data-effect="hover-zoom-right">
-                        <div class="slide-front">
-                            <img class="h-100 w-100" src="data:image;base64,@System.Convert.ToBase64String(worker.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail" />
-                        </div>
-                        <div class="slide-back d-flex flex-justify-center flex-align-center p-4 op-green" onclick="location.href = '@Url.Action("ProfileDetails", "Account", new {id = worker.UserId}, null)'">
-                            <p class="text-center">
-                                Kliknij, aby przejść do profilu użytkownika
-                            </p>
-                        </div>
-                        <span class="branding-bar text-white text-bold" style="text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;">@worker.Username</span>
-                    </div>
-                </div>
-            }
-        </div>
+       
         </div>
         </div>
     }
@@ -135,7 +114,7 @@
             </div>
         }
 
-    @if ((Model.OffersToProject.Any(item => item.UserWhoAddOffer.UserId.ToString() == HttpContext.Current.Session["UserId"].ToString()) == false) && (HttpContext.Current.Session["Role"].ToString() == "Manager"))
+    @if ((Model.OffersToProject.Any(item => item.UserWhoAddOffer.UserId.ToString() == HttpContext.Current.Session["UserId"].ToString()) == false) && ((HttpContext.Current.Session["Role"].ToString() == "Pracownik")))
     {
         <button type="button" class="btn btn-success btn-block" onclick="location.href = '@Url.Action( "AddOfferToProject", "Project",  new { projectId = Model.ProjectId }, null)'">Dodaj ofertę do projektu</button>
 

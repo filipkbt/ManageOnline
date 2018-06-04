@@ -52,10 +52,15 @@ namespace ManageOnline.Models
         [NotMapped]
         public string[] SkillsArray { get; set; }
         
+        public virtual ICollection<PortoflioProjectModel> PortfolioProjectsCollection { get; set; }
+        [NotMapped]
+        public string[] PortfolioProjectsArray { get; set; }
+
         public virtual ICollection<MessageModel> Messages { get; set; }
 
         public virtual ICollection<MessageModel> Notifications { get; set; }
 
         public virtual ICollection<UserBasicModel> Coworkers { get; set; }
+
     }
 }

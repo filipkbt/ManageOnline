@@ -71,10 +71,7 @@
                     <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu" role="menu">
-                    @if ((string) HttpContext.Current.Session["Role"] == "Manager" || (string) HttpContext.Current.Session["Role"] == "Klient")
-                    {
                         <li class="navbar-brand">@Html.ActionLink("Wyszukaj projekty", "SearchProjects", "Project")</li>
-                    }
                     @if ((string) HttpContext.Current.Session["Role"] == "Klient")
                     {
                         <li class="navbar-brand">@Html.ActionLink("Dodaj projekt", "AddProject", "Project", new {id = Convert.ToInt32(HttpContext.Current.Session["UserId"])}, null)</li>

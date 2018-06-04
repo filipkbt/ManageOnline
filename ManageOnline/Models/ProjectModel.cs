@@ -57,5 +57,7 @@ namespace ManageOnline.Models
         public string ProjectCategory { get; set; }
         public virtual CategoriesModel CategoriesModel { get; set; }
 
+        public bool IsRequiredManager { get; set; }
+
     }
 }
