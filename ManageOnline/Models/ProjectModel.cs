@@ -23,9 +23,14 @@ namespace ManageOnline.Models
         [Key]
         public int ProjectId { get; set; }
         [Required]
+        [DisplayName("Nazwa projektu")]
         public string ProjectTitle { get; set; }
         [Required]
+        [DisplayName("Opis")]
         public string ProjectDescription { get; set; }
+        [Required]
+        [DisplayName("Zakres prac do wykonania")]
+        public string ProjectResponsibilities { get; set; }
 
         public DateTime ProjectCreationDate { get; set; }
 
@@ -41,7 +46,6 @@ namespace ManageOnline.Models
         public string[] UsersBelongsToProjectArray { get; set; }
 
         public ICollection<TaskModel> Tasks { get; set; }
-
 
         public string SkillsRequiredToProject { get; set; }
         public virtual ICollection<SkillsModel> SkillsRequiredToProjectCollection { get; set; }

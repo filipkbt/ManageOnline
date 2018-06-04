@@ -25,8 +25,10 @@ namespace ManageOnline.Models
         public double Budget { get; set; }
         [DisplayName("Czas realizacji")]
         public int EstimatedTimeToFinishProject { get; set; }
+        [DisplayName("Zakres obowiązków")]
+        public int Responsibilities { get; set; }
 
-        public UserBasicModel WorkerProposedToProject { get; set; }
+        public virtual UserBasicModel WorkerProposedToProject { get; set; }
         public virtual ICollection<UserBasicModel> WorkersProposedToProjectCollection { get; set; }
 
         [NotMapped]

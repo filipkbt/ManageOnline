@@ -82,135 +82,130 @@
     });
 
 </script>
-<center>
-    <h2>@Model.ProjectTitle</h2>
-</center>
-<ul class="nav nav-pills nav-fill" style="margin-top: 30px">
-    <li class="nav-item">
-        <a onclick="location.href = '@Url.Action("ProjectPanel", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Informacje</a>
-    </li>
-    <li class="nav-item">
-        <a onclick="location.href = '@Url.Action("KanbanBoard", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link active">Kanban board</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Pokój konferencyjny</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="#">Pracownicy</a>
-    </li>
-</ul>
+<div class="card text-center">
 
-<div>
-    @Html.Action("AddTask", "Task", Model.ProjectId)
-</div>
-
-<div class="col-12" id="kanbanBoard">
-    <div class="row">
-        <div class="col-4 kanbanColumn" style="cursor: pointer">
-            <h3>Do zrobienia</h3>
-            <ul id="sortable1" class="connectedSortable">
-                @foreach (var task in Model.Tasks.Where(task => task.ColumnNumber == 1))
-                {
-                    <div class="uk-margin" id='@task.TaskId'>
-                        <div class="uk-card uk-card-hover uk-card-default uk-card-small" >
-                            <div class="uk-card-body">
-                                <h3 class="uk-card-title uk-margin-remove">
-                                    @task.TaskName
-                                </h3>
-                                <p class="uk-text-meta uk-margin-remove">Lorem ipsum dolor sit amet</p>
-                            </div>
-                            <div class="uk-card-footer uk-background-muted">
-                                @if (task.CurrentWorkerAtTask != null)
-                                {
-                                    <ul class="user-group">
-                                        <img class="uk-border-circle uk-box-shadow-hover-medium" style="height: 40px; width: 40px" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)">
-                                        bebe
-                                    </ul>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                }
-            </ul>
-        </div>
-
-        <div class="col-4 kanbanColumn" style="cursor: pointer">
-            <h3>W trakcie</h3>
-            <ul id="sortable2" class="connectedSortable">
-                @foreach (var task in Model.Tasks.Where(task => task.ColumnNumber == 2))
-                {
-                    <div class="uk-margin" id='@task.TaskId'>
-                        <div class="uk-card uk-card-hover uk-card-default uk-card-small" >
-                            <div class="uk-card-body">
-                                <h3 class="uk-card-title uk-margin-remove">Job title <small class="uk-text-muted uk-float-right">#1001</small></h3>
-                                <p class="uk-text-meta uk-margin-remove">Lorem ipsum dolor sit amet</p>
-                                @if (task.CurrentWorkerAtTask != null)
-                                {
-                                    <ul class="user-group">
-                                        <img class="uk-border-circle uk-box-shadow-hover-medium" style="height: 40px; width: 40px" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)">
-                                        bebe
-                                    </ul>
-                                }
-                            </div>
-                            <div class="uk-card-footer uk-background-muted">
-                                bebe
-                            </div>
-                        </div>
-                    </div>
-                }
-            </ul>
-        </div>
-        <div class="col-4 kanbanColumn" style="cursor: pointer">
-            <h3>Zakończone</h3>
-            <ul id="sortable3" class="connectedSortable">
-                @foreach (var task in Model.Tasks.Where(task => task.ColumnNumber == 3))
-                {
-                    <div class="uk-margin" id='@task.TaskId'>
-                        <div class="uk-card uk-card-hover uk-card-default uk-card-small" >
-                            <div class="uk-card-body">
-                                <h3 class="uk-card-title uk-margin-remove">Job title <small class="uk-text-muted uk-float-right">#1001</small></h3>
-                                <p class="uk-text-meta uk-margin-remove">Lorem ipsum dolor sit amet</p>
-                                @if (task.CurrentWorkerAtTask != null)
-    {
-                            <ul class="user-group">
-                                <img class="uk-border-circle uk-box-shadow-hover-medium" style="height: 40px; width: 40px" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)">
-                                bebe
-                            </ul>}
-                            </div>
-                            <div class="uk-card-footer uk-background-muted">
-                                bebe
-                            </div>
-                        </div>
-                    </div>
-                }
-            </ul>
+    <div class="card-header">
+        <ul class="nav nav-pills card-header-pills">
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("ProjectPanel", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Informacje</a>
+            </li>
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("KanbanBoard", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link active">Kanban board</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Pokój konferencyjny</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Pracownicy</a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-header">
+        <div>
+            @Html.Action("AddTask", "Task", Model.ProjectId)
         </div>
     </div>
-</div>
-
-<div id="detailsPlace"></div>
-
-<a class="btn btn-primary" href="@Url.Action("ProjectPanel","ProjectPanel",new { projectId=Model.ProjectId}, null)">update</a>
-
-<h2>ProjectPanel</h2>
 
 
-
-<div class="modal fade" id="taskModal">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+    <div class="col-12" id="kanbanBoard">
+        <div class="row">
+            <div class="col-4 kanbanColumn" style="cursor: pointer">
+                <h3>Do zrobienia</h3>
+                <ul id="sortable1" class="connectedSortable">
+                    @foreach (var task in Model.Tasks.Where(task => task.ColumnNumber == 1))
+                    {
+                        <div class="uk-margin" id='@task.TaskId'>
+                            <div class="uk-card uk-card-hover uk-card-default uk-card-small">
+                                <div class="uk-card-body">
+                                    <h3 class="uk-card-title uk-margin-remove">
+                                        @task.TaskName
+                                    </h3>
+                                    <p class="uk-text-meta uk-margin-remove">Lorem ipsum dolor sit amet</p>
+                                </div>
+                                <div class="uk-card-footer uk-background-muted">
+                                    @if (task.CurrentWorkerAtTask != null)
+                                    {
+                                        <ul class="user-group">
+                                            <img class="uk-border-circle uk-box-shadow-hover-medium" style="height: 40px; width: 40px" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)">
+                                            bebe
+                                        </ul>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </ul>
             </div>
-            <div class="modal-body" id="modalBodyAddTask">
 
+            <div class="col-4 kanbanColumn" style="cursor: pointer">
+                <h3>W trakcie</h3>
+                <ul id="sortable2" class="connectedSortable">
+                    @foreach (var task in Model.Tasks.Where(task => task.ColumnNumber == 2))
+                    {
+                        <div class="uk-margin" id='@task.TaskId'>
+                            <div class="uk-card uk-card-hover uk-card-default uk-card-small">
+                                <div class="uk-card-body">
+                                    <h3 class="uk-card-title uk-margin-remove">Job title <small class="uk-text-muted uk-float-right">#1001</small></h3>
+                                    <p class="uk-text-meta uk-margin-remove">Lorem ipsum dolor sit amet</p>
+                                    @if (task.CurrentWorkerAtTask != null)
+                                    {
+                                        <ul class="user-group">
+                                            <img class="uk-border-circle uk-box-shadow-hover-medium" style="height: 40px; width: 40px" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)">
+                                            bebe
+                                        </ul>
+                                    }
+                                </div>
+                                <div class="uk-card-footer uk-background-muted">
+                                    bebe
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </ul>
+            </div>
+            <div class="col-4 kanbanColumn" style="cursor: pointer">
+                <h3>Zakończone</h3>
+                <ul id="sortable3" class="connectedSortable">
+                    @foreach (var task in Model.Tasks.Where(task => task.ColumnNumber == 3))
+                    {
+                        <div class="uk-margin" id='@task.TaskId'>
+                            <div class="uk-card uk-card-hover uk-card-default uk-card-small">
+                                <div class="uk-card-body">
+                                    <h3 class="uk-card-title uk-margin-remove">Job title <small class="uk-text-muted uk-float-right">#1001</small></h3>
+                                    <p class="uk-text-meta uk-margin-remove">Lorem ipsum dolor sit amet</p>
+                                    @if (task.CurrentWorkerAtTask != null)
+                                    {
+                                        <ul class="user-group">
+                                            <img class="uk-border-circle uk-box-shadow-hover-medium" style="height: 40px; width: 40px" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)">
+                                            bebe
+                                        </ul>}
+                                </div>
+                                <div class="uk-card-footer uk-background-muted">
+                                    bebe
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </ul>
             </div>
         </div>
     </div>
-</div>
+
+    <div id="detailsPlace"></div>
+    <div class="modal fade" id="taskModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalBodyAddTask">
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 

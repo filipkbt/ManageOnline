@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading;
@@ -164,10 +165,12 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
+                db.Configuration.LazyLoadingEnabled = false;
                 var projectDetailsInfo = db.Projects
                     .Include("ProjectOwner")
                     .Include("OffersToProject")
                     .Include("OffersToProject.UserWhoAddOffer")
+                    .Include("OffersToProject.WorkerProposedToProject")
                     .FirstOrDefault(p => p.ProjectId.Equals(id));
 
                 var categoriesList = db.Categories.ToList();
@@ -178,6 +181,7 @@ namespace ManageOnline.Controllers
                 if (projectDetailsInfo.SkillsRequiredToProject != null)
                 {
                     projectDetailsInfo.SkillsRequiredToProjectArray = projectDetailsInfo.SkillsRequiredToProject.Split(',').ToArray();
+                    projectDetailsInfo.SkillsRequiredToProjectCollection = new Collection<SkillsModel>();
                     foreach (var skillId in projectDetailsInfo.SkillsRequiredToProjectArray)
                     {
                         var skillIdInt = Convert.ToInt32(skillId);
@@ -260,12 +264,18 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
+                db.Configuration.LazyLoadingEnabled = false;
                 ProjectModel project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
-                OfferToProjectModel offer = db.OfferToProjectModels.Where(x => x.OfferToProjectId.Equals(offerId)).FirstOrDefault();
-                project.UsersBelongsToProject = string.Join(",", offer.WorkerProposedToProject); 
-
-                project.ProjectStartDate = DateTime.Now;
-                project.ProjectStatus = ProjectStatus.InProgress;
+                OfferToProjectModel offer = db.OfferToProjectModels.Where(x => x.OfferToProjectId.Equals(offerId)).Include("WorkerProposedToProject").FirstOrDefault();
+                if(project.UsersBelongsToProject == null )
+                {
+                    project.UsersBelongsToProject = offer.WorkerProposedToProject.UserId.ToString();
+                }
+                else
+                {
+                    project.UsersBelongsToProject += "," + offer.WorkerProposedToProject.UserId;
+                }
+               
 
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
@@ -274,6 +284,20 @@ namespace ManageOnline.Controllers
             }
         }
 
+        public ActionResult StartProject(int projectId)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                ProjectModel project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
+                project.ProjectStartDate = DateTime.Now;
+                project.ProjectStatus = ProjectStatus.InProgress;
+
+                db.Entry(project).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return View("StartProject");
+            }
+        }
         public ActionResult ShowYourProjects()
         {
             return View();
@@ -284,15 +308,19 @@ namespace ManageOnline.Controllers
             string userId = System.Web.HttpContext.Current.Session["UserId"].ToString();
             using (DbContextModel db = new DbContextModel())
             {
+                db.Configuration.LazyLoadingEnabled = false;
                 var categoriesList = db.Categories.ToList();
-                ICollection<ProjectModel> projects = db.Projects.Include("ProjectOwner").Include("CategoriesModel").Include("SkillsRequiredToProjectCollection").Where(x=> x.ProjectStatus == ProjectStatus.WaitingForOffers).ToList();
+                ICollection<ProjectModel> projects = db.Projects.Include("ProjectOwner")
+                                                                .Include("CategoriesModel")
+                                                                .Include("SkillsRequiredToProjectCollection")
+                                                                .Where(x=> x.ProjectStatus == ProjectStatus.WaitingForOffers).ToList();
                 ICollection <OfferToProjectModel> offersCollection = db.OfferToProjectModels.Include("UserWhoAddOffer").ToList();
                 ICollection<SkillsModel> skills = db.Skills.ToList();
                 if(System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Pracownik.ToString())
                 {
                     var filteredProjectsWithOffers = from project in projects
                         join offer in offersCollection on project.ProjectId equals offer.ProjectId
-                        where offer.WorkerProposedToProject.UserId.Equals(userId)
+                        where offer.UserWhoAddOffer.UserId.ToString().Equals(userId)
                         select project;
 
                     foreach (var project in filteredProjectsWithOffers)

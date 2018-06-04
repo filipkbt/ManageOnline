@@ -262,6 +262,14 @@
     <Compile Include="Migrations\201806041537081_changeInToObjectInOfferWorker.Designer.cs">
       <DependentUpon>201806041537081_changeInToObjectInOfferWorker.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806041746514_addResponsibilitiesToOffer.cs" />
+    <Compile Include="Migrations\201806041746514_addResponsibilitiesToOffer.Designer.cs">
+      <DependentUpon>201806041746514_addResponsibilitiesToOffer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806041935313_newMigration.cs" />
+    <Compile Include="Migrations\201806041935313_newMigration.Designer.cs">
+      <DependentUpon>201806041935313_newMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -448,6 +456,7 @@
     <Content Include="Views\Project\ShowProjectsFinished.cshtml" />
     <Content Include="Views\Task\_addTask.cshtml" />
     <Content Include="Views\ProjectPanel\KanbanBoard.cshtml" />
+    <Content Include="Views\Project\StartProject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -536,6 +545,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806041537081_changeInToObjectInOfferWorker.resx">
       <DependentUpon>201806041537081_changeInToObjectInOfferWorker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806041746514_addResponsibilitiesToOffer.resx">
+      <DependentUpon>201806041746514_addResponsibilitiesToOffer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806041935313_newMigration.resx">
+      <DependentUpon>201806041935313_newMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
