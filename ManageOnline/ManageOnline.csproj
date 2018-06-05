@@ -154,14 +154,17 @@
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\ProjectPanelController.cs" />
+    <Compile Include="Controllers\ProjectPortfolioController.cs" />
     <Compile Include="Controllers\TaskController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\AuthorizationService.cs" />
     <Compile Include="Infrastructure\Crypto.cs" />
+    <Compile Include="Infrastructure\FileHandler.cs" />
     <Compile Include="Migrations\201804091252277_addRoles.cs" />
     <Compile Include="Migrations\201804091252277_addRoles.Designer.cs">
       <DependentUpon>201804091252277_addRoles.cs</DependentUpon>
@@ -270,11 +273,23 @@
     <Compile Include="Migrations\201806041935313_newMigration.Designer.cs">
       <DependentUpon>201806041935313_newMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806051728167_addPortfolioProjects.cs" />
+    <Compile Include="Migrations\201806051728167_addPortfolioProjects.Designer.cs">
+      <DependentUpon>201806051728167_addPortfolioProjects.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806051838460_ChangeNamePortfolioProject.cs" />
+    <Compile Include="Migrations\201806051838460_ChangeNamePortfolioProject.Designer.cs">
+      <DependentUpon>201806051838460_ChangeNamePortfolioProject.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806051840321_fix1.cs" />
+    <Compile Include="Migrations\201806051840321_fix1.Designer.cs">
+      <DependentUpon>201806051840321_fix1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\DbContextModel.cs" />
-    <Compile Include="Models\EmployeeAdditionalInfoModel.cs" />
+    <Compile Include="Models\PortfolioProjectModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\OfferToProjectModel.cs" />
@@ -457,9 +472,13 @@
     <Content Include="Views\Task\_addTask.cshtml" />
     <Content Include="Views\ProjectPanel\KanbanBoard.cshtml" />
     <Content Include="Views\Project\StartProject.cshtml" />
+    <Content Include="Views\ProjectPortfolio\_addProjectToPortfolio.cshtml" />
+    <Content Include="Views\ProjectPortfolio\_projectsFromPortfolio.cshtml" />
+    <Content Include="Views\ProjectPortfolio\EditPortfolio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Messages\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -551,6 +570,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806041935313_newMigration.resx">
       <DependentUpon>201806041935313_newMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806051728167_addPortfolioProjects.resx">
+      <DependentUpon>201806051728167_addPortfolioProjects.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806051838460_ChangeNamePortfolioProject.resx">
+      <DependentUpon>201806051838460_ChangeNamePortfolioProject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806051840321_fix1.resx">
+      <DependentUpon>201806051840321_fix1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

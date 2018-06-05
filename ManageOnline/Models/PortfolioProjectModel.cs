@@ -6,7 +6,7 @@ using System.Web;
 
 namespace ManageOnline.Models
 {
-    public class PortoflioProjectModel
+    public class PortfolioProjectModel
     {   [Key]
         public int PortfolioProjectId { get; set; }
 

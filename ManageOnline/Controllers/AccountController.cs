@@ -131,7 +131,7 @@ namespace ManageOnline.Controllers
                 user.Description = userAfterEdit.Description;
                 if (file != null)
                 {
-                    byte[] data = GetBytesFromFile(file);
+                    byte[] data = FileHandler.GetBytesFromFile(file);
                     user.UserPhoto = data;
                 }
 
@@ -159,20 +159,6 @@ namespace ManageOnline.Controllers
                 MultiSelectList list = new MultiSelectList(skills, "SkillId", "SkillName");
                 ViewBag.Skills = list;
                 return View(user);
-            }
-        }
-
-        private byte[] GetBytesFromFile(HttpPostedFileBase file)
-        {
-            using (Stream inputStream = file.InputStream)
-            {
-                MemoryStream memoryStream = inputStream as MemoryStream;
-                if (memoryStream == null)
-                {
-                    memoryStream = new MemoryStream();
-                    inputStream.CopyTo(memoryStream);
-                }
-                return memoryStream.ToArray();
             }
         }
 

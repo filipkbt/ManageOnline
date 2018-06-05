@@ -9,69 +9,78 @@
         $("#multiSelectDropDown").chosen();
     });
 </script>
-<h2>EditAccount</h2>
 
-@using (Html.BeginForm("EditAccount", "Account", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
+<div class="card text-center">
 
-    <div class="form-horizontal">
-        <h4>UserBasicModel</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.UserId)
-
-        <div class="form-group">
-            <input type="image" src="data:image;base64,@System.Convert.ToBase64String(Model.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail" style="height:200px; width:200px" onclick="location.href ='@Url.Action("ProfileDetails", "Account")'"/>
-        </div>
-
-        <div class="text-bold">@Html.DisplayFor(model => model.Username)</div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.DisplayedRole, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DisplayedRole, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DisplayedRole, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.MobileNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.MobileNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.ListBoxFor(model => model.SkillsArray, ViewBag.Skills as MultiSelectList, new { id = "multiSelectDropDown", multiple = "multiple" })
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(m => m.UserPhoto, new { @class = "col-md-2 control-label" })
-            <div class="col-md-10">
-                <input type="file" name="file" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-        <h2>@ViewBag.MessageAfterEditProfileDetails</h2>
+    <div class="card-header">
+        <ul class="nav nav-pills card-header-pills">
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("EditAccount", "Account")'" class="nav-link active" style="cursor: pointer;">Edycja profilu</a>
+            </li>
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("EditPortfolio", "ProjectPortfolio")'" class="nav-link " style="cursor: pointer;">Edycja portfolio</a>
+            </li>
+        </ul>
     </div>
-}
 
-<div>
-    @Html.ActionLink("Wróć do menu głównego", "DashboardIndex", "Dashboard", "Default", null)
+    <div class="card-body">
+        @using (Html.BeginForm("EditAccount", "Account", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.UserId)
+                <div class="row">
+                    <div class="form-group col-3">
+                        <input type="image" src="data:image;base64,@System.Convert.ToBase64String(Model.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail" style="height:250px; width:250px" onclick="location.href ='@Url.Action("ProfileDetails", "Account")'" />
+                    </div>
+
+                    <div class="col-3">
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.DisplayedRole, htmlAttributes: new { @class = "control-label float-left" })
+                            @Html.EditorFor(model => model.DisplayedRole, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.DisplayedRole, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.MobileNumber, htmlAttributes: new { @class = "control-label float-left" })
+                            @Html.EditorFor(model => model.MobileNumber, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label float-left" })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Skills, htmlAttributes: new { @class = "control-label float-left" })
+                            @Html.ListBoxFor(model => model.SkillsArray, ViewBag.Skills as MultiSelectList, new { id = "multiSelectDropDown", multiple = "multiple" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <div class="form-group row">
+                        @Html.LabelFor(m => m.UserPhoto, new { @class = " control-label float-left" })
+                        <input type="file" name="file" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" style="width:400px;height:50px;" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label float-left" })
+                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control col", @cols = "100", @rows = "8" })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    <div>
+                        <input type="submit" value="Zapisz" class="btn btn-primary" />
+                    </div>
+                </div>
+                <h2>@ViewBag.MessageAfterEditProfileDetails</h2>
+            </div>
+        }
+    </div>
 </div>
+
 

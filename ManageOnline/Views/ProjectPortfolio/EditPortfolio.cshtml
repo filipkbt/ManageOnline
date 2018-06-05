@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "EditPortfolio";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        <ul class="nav nav-pills card-header-pills">
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("EditAccount", "Account")'" class="nav-link " style="cursor: pointer;">Edycja profilu</a>
+            </li>
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("EditPortfolio", "ProjectPortfolio")'" class="nav-link active" style="cursor: pointer;">Edycja portfolio</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+        </div>
+        @Html.Action("ProjectsFromPortfolio", "ProjectPortfolio")
+        @Html.Action("AddProjectToPortfolio", "ProjectPortfolio")
+        <div class="row">
+        </div>
+    </div>
+</div>

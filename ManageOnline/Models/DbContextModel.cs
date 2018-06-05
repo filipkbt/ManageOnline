@@ -27,6 +27,6 @@ namespace ManageOnline.Models
 
         public DbSet<NotificationModel> Notifications { get; set; }
 
-        public DbSet<PortoflioProjectModel> EmployeeAdditionalInfo { get; set; }
+        public DbSet<PortfolioProjectModel> PortfolioProjects { get; set; }
     }
 }
