@@ -475,6 +475,8 @@
     <Content Include="Views\ProjectPortfolio\_addProjectToPortfolio.cshtml" />
     <Content Include="Views\ProjectPortfolio\_projectsFromPortfolio.cshtml" />
     <Content Include="Views\ProjectPortfolio\EditPortfolio.cshtml" />
+    <Content Include="Views\ProjectPortfolio\_projectsFromPortfolioSelectedUser.cshtml" />
+    <Content Include="Views\Employees\EmployeesFromProject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

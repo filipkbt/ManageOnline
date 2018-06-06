@@ -61,7 +61,24 @@ namespace ManageOnline.Controllers
                 
             }            
         }
-        
+
+        public ActionResult ProjectsFromPortfolioSelectedUser(int userId)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                var ProjectsFromPortfolio = db.PortfolioProjects.Where(x => x.EmployeeId.UserId.Equals(userId)).ToList();
+
+                if (ProjectsFromPortfolio != null)
+                {
+                    return PartialView("_ProjectsFromPortfolioSelectedUser", ProjectsFromPortfolio);
+                }
+                else
+                {
+                    return PartialView("_ProjectsFromPortfolioSelectedUser");
+                }
+
+            }
+        }
 
     }
 }

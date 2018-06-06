@@ -5,7 +5,7 @@
                 @Html.AntiForgeryToken()
 
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog form-horizontal" role="document">
+        <div class="modal-dialog " role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Dodaj projekt do portfolio</h5>
@@ -14,48 +14,38 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-horizontal">
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="form-group">
-                            @Html.LabelFor(model => model.ProjectName, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
+                                <b>Nazwa projektu</b>
                                 @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
-                            </div>
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.ProjectDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.ProjectDescription, new { htmlAttributes = new { @class = "form-control" } })
+                               <b>Opis</b>
+                                @Html.TextAreaFor(model => model.ProjectDescription, new { htmlAttributes =  new { @class = "form-control col", @cols = "200", @rows = "10" } })
                                 @Html.ValidationMessageFor(model => model.ProjectDescription, "", new { @class = "text-danger" })
-                            </div>
                         </div>
 
                         <div class="form-group">
-                            @Html.LabelFor(model => model.ProjectLink, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
+                                <b>Odnośnik</b> 
                                 @Html.EditorFor(model => model.ProjectLink, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.ProjectLink, "", new { @class = "text-danger" })
-                            </div>
                         </div>
                         <div class="form-group">
-                            @Html.LabelFor(model => model.ProjectImage, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
+                                <b>Zdjęcie podglądowe</b>
                                 <input type="file" name="file" id="file" accept=".png,.jpg,.jpeg,.gif,.tif" style="width:400px;height:50px;" />
-                            </div>
                         </div>
                     </div>
+
                     <div class="modal-footer">
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Dodaj</button>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-    </div>
 } <div class="text-center" style="margin-top:10px;">    
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
         Dodaj projekt do portfolio

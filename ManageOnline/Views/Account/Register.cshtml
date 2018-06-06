@@ -4,71 +4,76 @@
     ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Register</h2>
-<div class="card text-white bg-info" style="margin: 0 auto; width: 50%; height: auto">
+<div class="card text-white bg-info" style="margin: 5% 25%; width: 50%; height: auto">
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Rejestracja</h4>
+        <center><h4>Rejestracja</h4></center>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        
 
-        <div class="form-group">
-            <div class="col-md-12">
-                <p class="control-label">Login</p>
-                <div class="input-group">
+        <center>
+            <div class="form-group">
+                <div class="col-md-12" style="max-width: 70%;">
+                    <p class="control-label">Login</p>
                     @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
-                    </div>
                 </div>
             </div>
 
-        <div class="form-group">
-            <div class="col-md-12">
-                <p class="control-label">Email</p>
-                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <div class="col-md-12" style="max-width: 70%;">
+                    <p class="control-label">Email</p>
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-12">
-                <p class="control-label">Hasło</p>
-                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            <div class="form-group">
+                <div class="col-md-12" style="max-width: 70%;">
+                    <p class="control-label">Hasło</p>
+                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
-    <div class="form-group">
-        <div class="col-md-12">
-            <p class="control-label">Potwierdź hasło</p>
-            @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
-        </div>
+            <div class="form-group">
+                <div class="col-md-12" style="max-width: 70%;">
+                    <p class="control-label">Potwierdź hasło</p>
+                    @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12" style="max-width: 70%;">
+                    <p class="control-label">Rejestruję się jako:</p>
+                    @Html.EnumDropDownListFor(model => model.Role)
+                    @Html.ValidationMessageFor(model => model.Role)
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Załóż konto" class="btn btn-default" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10 center">
+                    <input type="button" value="Wróc do panelu logowania" class="btn btn-default" onclick="location.href='Login'" />
+                </div>
+            </div>
+            
+        </center>
+        <h1>@ViewBag.Message</h1>
+    </div>
+        
+
+    }
+    <div>
+        @Html.ActionLink("Wróć do panelu logowania", "Login", "Account", "Default")
     </div>
 
-        <div class="form-group">
-            <div class="col-md-12">
-                <p class="control-label">Rejestruję się jako:</p>
-                @Html.EnumDropDownListFor(model => model.Role)
-                @Html.ValidationMessageFor(model => model.Role)
-            </div>
-        </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Create" class="btn btn-default" />
-                    </div>
-                </div>
-                <h1>@ViewBag.Message</h1>
-            </div>
-            }
-            <div>
-                @Html.ActionLink("Wróć do panelu logowania", "Login", "Account", "Default")
-            </div>
-
-        </div>
+</div>
 

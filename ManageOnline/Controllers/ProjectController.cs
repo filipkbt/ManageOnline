@@ -188,10 +188,7 @@ namespace ManageOnline.Controllers
                         var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
                         projectDetailsInfo.SkillsRequiredToProjectCollection.Add(skill);
                     }
-                }
-
-          
-
+                }     
 
                 return View(projectDetailsInfo);
             }
@@ -274,8 +271,7 @@ namespace ManageOnline.Controllers
                 else
                 {
                     project.UsersBelongsToProject += "," + offer.WorkerProposedToProject.UserId;
-                }
-               
+                }               
 
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
@@ -531,6 +527,11 @@ namespace ManageOnline.Controllers
                 }
         }
 
+
+        public ActionResult SetProjectAsFinished(int projectId)
+        {
+            return null;
+        }
         public ActionResult SuccessfullAddProject()
         {
             return View();

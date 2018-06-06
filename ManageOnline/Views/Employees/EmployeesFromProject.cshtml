@@ -1,0 +1,48 @@
+﻿@model ManageOnline.Models.ProjectModel
+
+@{
+    ViewBag.Title = "EmployeesFromProject";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<div class="card text-center">
+
+    <div class="card-header">
+        <ul class="nav nav-pills card-header-pills">
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("ProjectPanel", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link">Informacje</a>
+            </li>
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("KanbanBoard", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Kanban board</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Pokój konferencyjny</a>
+            </li>
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("EmployeesFromProject", "Employees", new { projectId=Model.ProjectId}, null)'" class="nav-link active">Pracownicy</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            @foreach (var employee in Model.UsersBelongsToProjectCollection)
+            {
+                <div class="col-3">
+                    <div class="card" style="height:100%">
+                        <div class="card-header">
+                            <h4>Pracownik</h4>
+                        </div>
+                        <img style="width:200px;height:200px; background: #FFFFFF;margin: auto; margin-top:10px" src="data:image;base64,@System.Convert.ToBase64String(employee.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail">
+                        <div class="card-body">
+                            <h4 class="card-title"><b>@employee.Username</b></h4>
+                            <p class="card-text"><b>Email: </b><br />@employee.Email</p>
+                            <p class="card-text"><b>Telefon kontaktowy: <br /></b>@employee.MobileNumber</p>
+                            <a href="#" class="btn btn-primary">Wyślij wiadomość</a><br />
+
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>

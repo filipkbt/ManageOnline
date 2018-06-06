@@ -1,0 +1,20 @@
+﻿@model IEnumerable<ManageOnline.Models.PortfolioProjectModel>
+<div class="card">
+    <div class="card-header bg-info"><h2>Portfolio użytkownika</h2></div>
+    <div class="card-deck ">
+        @foreach (var item in Model)
+
+        {
+            <div class="col-4 text-center">
+                <div class="card">
+                    <input type="image" src="data:image;base64,@System.Convert.ToBase64String(item.ProjectImage)" alt="Brak zdjęcia profilowego" class="img-thumbnail card-img" style="height:auto; width:auto" />
+                    <div class="card-body">
+                        <h5 class="card-title">@item.ProjectName</h5>
+                        <p class="card-text">@item.ProjectDescription</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

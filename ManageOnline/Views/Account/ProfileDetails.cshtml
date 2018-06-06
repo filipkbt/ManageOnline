@@ -4,13 +4,17 @@
     ViewBag.Title = "ProfileDetails";
     Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
-
-<h2>ProfileDetails</h2>
-
+@Html.HiddenFor(x => x.UserId)
 @using (Html.BeginForm())
 {
-    @Html.DisplayFor(model => model.Username)
-    @Html.DisplayFor(model => model.UserId)
+
+<div class="card">
+    <div class="card-header bg-info"><h2>Informacje o @Model.Username</h2></div>
+    <div class="card-body">
+       
+    </div>
+</div>
+    @Html.Action("ProjectsFromPortfolioSelectedUser", "ProjectPortfolio", new { userId = Model.UserId })
 }
 
 
