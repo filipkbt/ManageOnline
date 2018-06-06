@@ -54,6 +54,8 @@ namespace ManageOnline.Models
 
         public virtual ICollection<OfferToProjectModel> OffersToProject { get; set; }
 
+        public virtual ICollection<RateModel> RatesCollection { get; set; }
+
         public ProjectStatus ProjectStatus { get; set; }
 
         public string ProjectBudget { get; set; }
@@ -62,6 +64,8 @@ namespace ManageOnline.Models
         public virtual CategoriesModel CategoriesModel { get; set; }
 
         public bool IsRequiredManager { get; set; }
+
+        public UserBasicModel Manager { get; set; }
 
     }
 }

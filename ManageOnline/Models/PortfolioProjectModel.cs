@@ -11,8 +11,9 @@ namespace ManageOnline.Models
         public int PortfolioProjectId { get; set; }
 
         public virtual UserBasicModel EmployeeId { get; set; }
-
+        [Required]
         public string ProjectName { get; set; }
+        [Required]
         public string ProjectDescription { get; set; }
         public string ProjectLink { get; set; }
         public byte[] ProjectImage { get; set; }

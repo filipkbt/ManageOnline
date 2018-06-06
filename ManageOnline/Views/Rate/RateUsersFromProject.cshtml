@@ -1,7 +1,7 @@
 ﻿@model ManageOnline.Models.ProjectModel
 
 @{
-    ViewBag.Title = "EmployeesFromProject";
+    ViewBag.Title = "RateUsersFromProject";
     Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
 
@@ -19,33 +19,33 @@
                 <a class="nav-link" href="#">Pokój konferencyjny</a>
             </li>
             <li class="nav-item">
-                <a onclick="location.href = '@Url.Action("EmployeesFromProject", "Employees", new { projectId=Model.ProjectId}, null)'" class="nav-link active">Pracownicy</a>
+                <a onclick="location.href = '@Url.Action("EmployeesFromProject", "Employees", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Pracownicy</a>
             </li>
             @if (Model.ProjectStatus.ToString() == "Finished")
-    {
-        <button type="button" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=Model.ProjectId}, null)'" class="btn btn-success float-right" style="margin-left:10px">Wystaw oceny za projekt</button>
-}
+            {
+                    <button type="button" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=Model.ProjectId}, null)'" class="btn btn-success float-right">Oceny za projekt</button>
+            }
+
         </ul>
     </div>
 
     <div class="card-body">
         <div class="row">
-            @foreach (var employee in Model.UsersBelongsToProjectCollection)
+            @foreach (var user in Model.UsersBelongsToProjectCollection)
             {
                 <div class="col-3">
                     <div class="card" style="height:100%">
                         <div class="card-header">
-                            <h4>Pracownik</h4>
+                            <h4><b>@user.Role</b></h4>
                         </div>
-                        <img style="width:200px;height:200px; background: #FFFFFF;margin: auto; margin-top:10px" src="data:image;base64,@System.Convert.ToBase64String(employee.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail">
+                        <img style="width:200px;height:200px; background: #FFFFFF;margin: auto; margin-top:10px" src="data:image;base64,@System.Convert.ToBase64String(user.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail">
                         <div class="card-body">
-                            <h3 class="card-title"><b>@employee.Username</b></h3>
-                            <p class="card-text"><b>Email: </b><br />@employee.Email</p>
-                            <p class="card-text"><b>Telefon kontaktowy: <br /></b>@employee.MobileNumber</p>
-                            <a href="#" class="btn btn-primary">Wyślij wiadomość</a><br />
+                            <h4 class="card-title"><b>@user.Username</b></h4>
+                            <button type="button" class="btn btn-success" onclick="location.href = '@Url.Action( "RateUser", "Rate",  new { projectId = Model.ProjectId }, null)'">Wystaw ocenę</button>
                         </div>
                     </div>
                 </div>
             }
         </div>
     </div>
+</div>

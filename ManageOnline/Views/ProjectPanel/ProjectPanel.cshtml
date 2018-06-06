@@ -66,20 +66,30 @@
             <li class="nav-item">
                 <a onclick="location.href = '@Url.Action("EmployeesFromProject", "Employees", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Pracownicy</a>
             </li>
+            @if (Model.ProjectStatus.ToString() == "Finished")
+            {
+                <button type="button" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=Model.ProjectId}, null)'" class="btn btn-success float-right">Wystaw oceny za projekt</button>
+            }
         </ul>
     </div>
 
     <div class="card-body">
+        @if (Model.ProjectStatus.ToString() == "Finished")
+        {
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading"><strong>Project został zakończony.</strong></h4> Jeśli jeszcze nie wystawiłeś ocen osobom zaangażowanym w projekt - zrób to !
+            </div>
+        }
         <h2 class="card-title" style="text-align:left;margin-bottom:5px"><b>@Model.ProjectTitle</b></h2>
         <h4 class="card-title" style="text-align:left;margin-top:5px"><b>@Model.CategoriesModel.CategoryName</b></h4>
         <h6 class="card-title" style="text-align:left;margin-top:5px">
             @if (Model.SkillsRequiredToProjectCollection != null)
-        {<b>Wymagane umiejętności:</b>
-        foreach (var skill in Model.SkillsRequiredToProjectCollection)
-        {
-            @skill.SkillName@:;
-    }
-}
+            {<b>Wymagane umiejętności:</b>
+                foreach (var skill in Model.SkillsRequiredToProjectCollection)
+                {
+                    @skill.SkillName@:;
+                }
+            }
         </h6>
 
         <div class="row">
@@ -94,10 +104,10 @@
                         <p class="card-text"><b>Email: </b><br /></b4>@Model.ProjectOwner.Email</p>
                         <p class="card-text"><b>Telefon kontaktowy: <br /></b>@Model.ProjectOwner.MobileNumber</p>
                         <a href="#" class="btn btn-primary">Wyślij wiadomość</a><br />
-                        @if ((HttpContext.Current.Session["UserId"].ToString() == Model.ProjectOwner.UserId.ToString()))
-    {
-                    <a class="btn btn-success text-white" style="margin-top:10px" onclick="location.href = '@Url.Action("SetProjectAsFinished", "Project", new { projectId = Model.ProjectId }, null)'">Zakończ projekt</a>
-}
+                        @if ((HttpContext.Current.Session["UserId"].ToString() == Model.ProjectOwner.UserId.ToString()) && Model.ProjectStatus.ToString() != "Finished")
+                        {
+                            <a class="btn btn-success text-white" style="margin-top:10px" onclick="location.href = '@Url.Action("SetProjectAsFinished", "Project", new { projectId = Model.ProjectId }, null)'">Zakończ projekt</a>
+                        }
                     </div>
                 </div>
             </div>

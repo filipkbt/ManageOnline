@@ -98,13 +98,21 @@
             <li class="nav-item">
                 <a onclick="location.href = '@Url.Action("EmployeesFromProject", "Employees", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Pracownicy</a>
             </li>
+            @if (Model.ProjectStatus.ToString() == "Finished")
+            {
+                <button type="button" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=Model.ProjectId}, null)'" class="btn btn-success float-right">Wystaw oceny za projekt</button>
+            }
         </ul>
     </div>
-    <div class="card-header">
-        <div>
-            @Html.Action("AddTask", "Task", Model.ProjectId)
+    @if (Model.ProjectStatus.ToString() == "InProgress")
+    {
+        <div class="card-header">
+            <div>
+                @Html.Action("AddTask", "Task", Model.ProjectId)
+            </div>
         </div>
-    </div>
+    }
+
 
 
     <div class="col-12" id="kanbanBoard">
@@ -115,7 +123,7 @@
                     @foreach (var task in Model.Tasks.Where(task => task.ColumnNumber == 1))
                     {
                         <div class="uk-margin" id='@task.TaskId'>
-                            <div class="uk-card uk-card-hover uk-card-default uk-card-small" >
+                            <div class="uk-card uk-card-hover uk-card-default uk-card-small">
                                 <div class="uk-card-body">
                                     <h3 class="uk-card-title uk-margin-remove">
                                         @task.TaskName
@@ -143,7 +151,7 @@
                     @foreach (var task in Model.Tasks.Where(task => task.ColumnNumber == 2))
                     {
                         <div class="uk-margin" id='@task.TaskId'>
-                            <div class="uk-card uk-card-hover uk-card-default uk-card-small"> 
+                            <div class="uk-card uk-card-hover uk-card-default uk-card-small">
                                 <div class="uk-card-body">
                                     <h3 class="uk-card-title uk-margin-remove">Job title <small class="uk-text-muted uk-float-right">#1001</small></h3>
                                     <p class="uk-text-meta uk-margin-remove">Lorem ipsum dolor sit amet</p>
@@ -169,7 +177,7 @@
                     @foreach (var task in Model.Tasks.Where(task => task.ColumnNumber == 3))
                     {
                         <div class="uk-margin" id='@task.TaskId'>
-                            <div class="uk-card uk-card-hover uk-card-default uk-card-small" >
+                            <div class="uk-card uk-card-hover uk-card-default uk-card-small">
                                 <div class="uk-card-body">
                                     <h3 class="uk-card-title uk-margin-remove">Job title <small class="uk-text-muted uk-float-right">#1001</small></h3>
                                     <p class="uk-text-meta uk-margin-remove">Lorem ipsum dolor sit amet</p>
@@ -191,7 +199,7 @@
         </div>
     </div>
 
-   
+
 
 
 

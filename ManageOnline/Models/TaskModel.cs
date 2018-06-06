@@ -15,13 +15,15 @@ namespace ManageOnline.Models
         [NotMapped]
         public int ProjectId { get; set; }
         public ProjectModel Project { get; set; }
-
+        [Required]
         public string TaskName { get; set; }
-
+        [Required]
         public string TaskDescription { get; set; }
 
         public DateTime TaskCreationDate { get; set; }
-        
+
+        public DateTime TaskFinishDate { get; set; }
+
         public virtual UserBasicModel UserWhoAddTask { get; set; }
 
         public virtual UserBasicModel CurrentWorkerAtTask { get; set; }

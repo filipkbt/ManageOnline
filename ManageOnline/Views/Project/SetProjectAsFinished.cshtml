@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "SetProjectAsFinished";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<div class="alert alert-success" role="alert" style="margin-top:50px">
+    <h4 class="alert-heading">Sukces!</h4>
+    <p>Gratulację! Twój projekt został zakończony. </p>
+    <hr />
+    <p>Przejdź do rubryki @Html.ActionLink("Oceny", "RateUsersFromProject", "Rate", new { projectId = ViewBag.ProjectId }, null), aby wystawić komentarz i oceny osobom uczestniczącym w projekcie.</p>
+</div>
+
+

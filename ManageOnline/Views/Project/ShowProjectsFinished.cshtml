@@ -45,36 +45,36 @@
         {
             if (item.ProjectStatus == ManageOnline.Models.ProjectStatus.Finished)
             {
-                <tr onclick="location.href = '@Url.Action("ProjectDetails", "Project",  new { id=item.ProjectId}, null)'">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProjectOwner.Username)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProjectTitle)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProjectBudget)
-                    </td>
+        <tr onclick="location.href = '@Url.Action("ProjectPanel", "ProjectPanel",  new { projectId=item.ProjectId}, null)'">
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectOwner.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectBudget)
+            </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProjectCreationDate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ProjectStatus)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CategoriesModel.CategoryName)
-                    </td>
-                    <td>
-                        @if (item.SkillsRequiredToProjectCollection != null)
-                        {
-                            foreach (var skill in item.SkillsRequiredToProjectCollection)
-                            {
-                                @skill.SkillName@:;
-                            }
-                        }
-                    </td>
-                </tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectCreationDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProjectStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoriesModel.CategoryName)
+            </td>
+            <td>
+                @if (item.SkillsRequiredToProjectCollection != null)
+        {
+            foreach (var skill in item.SkillsRequiredToProjectCollection)
+            {
+                @skill.SkillName@:;
+    }
+}
+            </td>
+        </tr>
             }
         }
     </tbody>

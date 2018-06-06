@@ -530,7 +530,28 @@ namespace ManageOnline.Controllers
 
         public ActionResult SetProjectAsFinished(int projectId)
         {
-            return null;
+            ViewBag.ProjectId = projectId;
+            using (DbContextModel db = new DbContextModel())
+            {
+                ProjectModel project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
+                project.ProjectFinishDate = DateTime.Now;
+                project.ProjectStatus = ProjectStatus.Finished;
+
+                db.Entry(project).State = EntityState.Modified;
+                try
+                {
+                    db.SaveChanges();
+                }
+                
+                catch (Exception exception)
+                {
+
+                }
+{
+
+}
+            }
+            return View();
         }
         public ActionResult SuccessfullAddProject()
         {

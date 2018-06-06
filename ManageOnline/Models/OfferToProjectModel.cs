@@ -19,12 +19,16 @@ namespace ManageOnline.Models
         public virtual UserBasicModel UserWhoAddOffer { get; set; }
 
         public DateTime AddOfferDate { get; set; }
+        [Required]
         [DisplayName("Opis")]
         public string Description { get; set; }
+        [Required]
         [DisplayName("Koszt")]
         public double Budget { get; set; }
+        [Required]
         [DisplayName("Czas realizacji")]
         public int EstimatedTimeToFinishProject { get; set; }
+        [Required]
         [DisplayName("Zakres obowiązków")]
         public int Responsibilities { get; set; }
 
