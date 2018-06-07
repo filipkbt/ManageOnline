@@ -338,6 +338,10 @@
     <Compile Include="Migrations\201806072240205_addMessagesaeae1.Designer.cs">
       <DependentUpon>201806072240205_addMessagesaeae1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806072251567_addSender.cs" />
+    <Compile Include="Migrations\201806072251567_addSender.Designer.cs">
+      <DependentUpon>201806072251567_addSender.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -678,6 +682,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806072240205_addMessagesaeae1.resx">
       <DependentUpon>201806072240205_addMessagesaeae1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806072251567_addSender.resx">
+      <DependentUpon>201806072251567_addSender.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

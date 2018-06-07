@@ -28,7 +28,7 @@ namespace ManageOnline.Controllers
                 var senderIdInt = Convert.ToInt32(System.Web.HttpContext.Current.Session["UserId"]);
                 var receiverUserId = message.Receiver.UserId;
                 message.Receiver = db.UserAccounts.Where(x => x.UserId.Equals(receiverUserId)).FirstOrDefault();
-                //message.Sender = db.UserAccounts.Where(x => x.UserId.Equals(senderIdInt)).FirstOrDefault();
+                message.Sender = db.UserAccounts.Where(x => x.UserId.Equals(senderIdInt)).FirstOrDefault();
                 message.DateSend = DateTime.Now;
                 db.Messages.Add(message);
                 try
@@ -42,7 +42,7 @@ namespace ManageOnline.Controllers
 
             }
 
-            return null;//RedirectToAction("ShowSendedMessages");
+            return RedirectToAction("ShowSendedMessages");
         }
 
         public ActionResult ShowReceivedMessages()
@@ -62,10 +62,11 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
-                //ICollection<MessageModel> messages = db.Messages
-                //                                    .Include("Receiver")
-                //                                    .Include("Sender")
-                //                                    .Where(x => x.Sender.UserId.Equals(System.Web.HttpContext.Current.Session["UserId"])).ToList();
+                int senderIdInt = Convert.ToInt32(System.Web.HttpContext.Current.Session["UserId"]);
+                ICollection<MessageModel> messages = db.Messages
+                                                    .Include("Receiver")
+                                                    .Include("Sender")
+                                                    .Where(x => x.Sender.UserId.Equals(senderIdInt)).ToList();
                 return View();
             }
         }

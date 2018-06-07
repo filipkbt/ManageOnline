@@ -17,6 +17,8 @@ namespace ManageOnline.Models
 
         public DateTime DateSend { get; set; }
 
+        public virtual UserBasicModel Sender { get; set; }
+
         public virtual UserBasicModel Receiver { get; set; }
 
         public string Title { get; set; }
