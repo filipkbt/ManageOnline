@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -74,29 +75,63 @@ namespace ManageOnline.Controllers
             return View();
         }
 
-        public ActionResult RateUser(int projectId, int userId)
+        public async Task<ActionResult> RateUser(int projectId, int userId)
         {
             RateModel rate = new RateModel();
             using (DbContextModel db = new DbContextModel())
             {
                 rate.Project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
-                rate.UserWhoGetRate = db.UserAccounts.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
+                rate.UserWhoGetRate =  db.UserAccounts.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
             }
-            rate.Communication = 0;
-            return PartialView("_rateUser", rate);
+             return PartialView("_rateUser", rate);
         }
 
         [HttpPost]
-        public ActionResult RateUser(RateModel rate)
+        public async Task<ActionResult> RateUser(RateModel rate)
         {
-            var bleble = rate;
-            var asdadad = bleble;
+            float RatesSum = 0;
             using (DbContextModel db = new DbContextModel())
             {
+
                 rate.Project = db.Projects.Where(x => x.ProjectId.Equals(rate.Project.ProjectId)).FirstOrDefault();
                 rate.UserWhoGetRate = db.UserAccounts.Where(x => x.UserId.Equals(rate.UserWhoGetRate.UserId)).FirstOrDefault();
+
+                RatesSum += rate.Communication;
+                RatesSum += rate.MeetingTheConditions;
+                RatesSum += rate.Professionalism;
+                RatesSum += rate.WantToCoworkAgain;
+                if (rate.UserWhoGetRate.Role.ToString() == "Pracownik")
+                {
+                    RatesSum += (float)rate.Punctuality;
+                    RatesSum += (float)rate.Quality;
+                    RatesSum += (float)rate.Skills;
+                    rate.AverageRate = RatesSum / 7;
+                }
+
+                else if (rate.UserWhoGetRate.Role.ToString() == "Menadzer")
+                {
+                    RatesSum += (float)rate.ManageSkills;
+                    rate.AverageRate = RatesSum / 5;
+                }
+                else
+                {
+                    rate.AverageRate = RatesSum / 4;
+                }
+                db.Rates.Add(rate);
+                db.SaveChanges();
             }
             return RedirectToAction("RateUsersFromProject", new { projectId = rate.Project.ProjectId });
+        }
+
+        public async Task<ActionResult> ShowRateDetails(int projectId, int userId)
+        {            
+            using (DbContextModel db = new DbContextModel())
+            {
+                var rate = db.Rates.Where(x => x.Project.ProjectId == projectId && x.UserWhoGetRate.UserId == userId).FirstOrDefault();
+                rate.Project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
+                rate.UserWhoGetRate = db.UserAccounts.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
+                return PartialView("_rateUserDetails", rate);
+            }            
         }
 
         private bool CheckIfUserIsRated(int projectId, int userId)

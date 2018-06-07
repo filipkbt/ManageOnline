@@ -294,6 +294,10 @@
     <Compile Include="Migrations\201806062050490_addManagerToProject.Designer.cs">
       <DependentUpon>201806062050490_addManagerToProject.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806070300053_RateModelLittleEdits.cs" />
+    <Compile Include="Migrations\201806070300053_RateModelLittleEdits.Designer.cs">
+      <DependentUpon>201806070300053_RateModelLittleEdits.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -490,6 +494,7 @@
     <Content Include="Views\Project\SetProjectAsFinished.cshtml" />
     <Content Include="Views\Rate\RateUsersFromProject.cshtml" />
     <Content Include="Views\Rate\_rateUser.cshtml" />
+    <Content Include="Views\Rate\_rateUserDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -600,6 +605,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806062050490_addManagerToProject.resx">
       <DependentUpon>201806062050490_addManagerToProject.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806070300053_RateModelLittleEdits.resx">
+      <DependentUpon>201806070300053_RateModelLittleEdits.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

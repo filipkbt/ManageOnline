@@ -19,7 +19,7 @@ namespace ManageOnline.Models
         [Required]
         public string Comment { get; set; }
 
-        public int AverageRate { get; set; }
+        public float AverageRate { get; set; }
 
         //all
         public int Communication { get; set; }
@@ -27,16 +27,15 @@ namespace ManageOnline.Models
         public int Professionalism { get; set; }
 
         public int MeetingTheConditions { get; set; }
+
+        public int WantToCoworkAgain { get; set; }
         //employee
         public int? Skills { get; set; }
 
         public int? Punctuality { get; set; }
 
         public int? Quality { get; set; }
-        //manager and employee by employer
-        public int? ChanceToBeHiredAgain { get; set; }
-        //employer by manager and employee
-        public int? WantToCoworkAgain { get; set; }
+
         //manager
         public int? ManageSkills { get; set; }
 

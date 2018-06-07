@@ -4,7 +4,12 @@
     ViewBag.Title = "RateUsersFromProject";
     Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
-
+<script>
+    function createModal(url) {
+        $('#modelContent').load(url);
+        $('#myModal').modal('show');
+    }
+</script>
 <div class="card text-center">
 
     <div class="card-header">
@@ -23,7 +28,7 @@
             </li>
             @if (Model.ProjectStatus.ToString() == "Finished")
             {
-                    <button type="button" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=Model.ProjectId}, null)'" class="btn btn-success float-right">Oceny za projekt</button>
+                <button type="button" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=Model.ProjectId}, null)'" class="btn btn-success float-right">Oceny za projekt</button>
             }
 
         </ul>
@@ -41,7 +46,14 @@
                         <img style="width:200px;height:200px; background: #FFFFFF;margin: auto; margin-top:10px" src="data:image;base64,@System.Convert.ToBase64String(user.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail">
                         <div class="card-body">
                             <h4 class="card-title"><b>@user.Username</b></h4>
-                            @Html.Action("RateUser", "Rate", new { projectId = Model.ProjectId, userId = user.UserId })
+                            @if (!user.IsRatedAtCurrentProject)
+                            {
+                                @Html.Action("RateUser", "Rate", new { projectId = Model.ProjectId, userId = user.UserId })
+                            }
+                            else
+                            {
+                                @Html.Action("ShowRateDetails", "Rate", new { projectId = Model.ProjectId, userId = user.UserId })
+                            }
                         </div>
                     </div>
                 </div>
