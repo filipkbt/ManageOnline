@@ -92,9 +92,10 @@ namespace ManageOnline.Controllers
             float RatesSum = 0;
             using (DbContextModel db = new DbContextModel())
             {
-
+                int userWhoAddRateIdInt = Convert.ToInt32(System.Web.HttpContext.Current.Session["UserId"]);
                 rate.Project = db.Projects.Where(x => x.ProjectId.Equals(rate.Project.ProjectId)).FirstOrDefault();
                 rate.UserWhoGetRate = db.UserAccounts.Where(x => x.UserId.Equals(rate.UserWhoGetRate.UserId)).FirstOrDefault();
+                rate.UserWhoAddRate = db.UserAccounts.Where(x => x.UserId.Equals(userWhoAddRateIdInt)).FirstOrDefault();
 
                 RatesSum += rate.Communication;
                 RatesSum += rate.MeetingTheConditions;
@@ -117,6 +118,7 @@ namespace ManageOnline.Controllers
                 {
                     rate.AverageRate = RatesSum / 4;
                 }
+                
                 db.Rates.Add(rate);
                 db.SaveChanges();
             }
