@@ -64,5 +64,7 @@ namespace ManageOnline.Models
 
         public virtual ICollection<UserBasicModel> Coworkers { get; set; }        
 
+        [NotMapped]
+        public bool IsRatedAtCurrentProject { get; set; }
     }
 }

@@ -489,6 +489,7 @@
     <Content Include="Views\Employees\EmployeesFromProject.cshtml" />
     <Content Include="Views\Project\SetProjectAsFinished.cshtml" />
     <Content Include="Views\Rate\RateUsersFromProject.cshtml" />
+    <Content Include="Views\Rate\_rateUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

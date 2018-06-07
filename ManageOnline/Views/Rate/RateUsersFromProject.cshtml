@@ -41,7 +41,7 @@
                         <img style="width:200px;height:200px; background: #FFFFFF;margin: auto; margin-top:10px" src="data:image;base64,@System.Convert.ToBase64String(user.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail">
                         <div class="card-body">
                             <h4 class="card-title"><b>@user.Username</b></h4>
-                            <button type="button" class="btn btn-success" onclick="location.href = '@Url.Action( "RateUser", "Rate",  new { projectId = Model.ProjectId }, null)'">Wystaw ocenę</button>
+                            @Html.Action("RateUser", "Rate", new { projectId = Model.ProjectId, userId = user.UserId })
                         </div>
                     </div>
                 </div>

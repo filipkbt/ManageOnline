@@ -18,11 +18,14 @@ namespace ManageOnline.Controllers
                 if (System.Web.HttpContext.Current.Session["Role"].ToString() == "Pracownik")
                 {
                     var projectOwner = db.UserAccounts.Where(x => x.UserId.Equals(project.ProjectOwner.UserId)).FirstOrDefault();
+                    projectOwner.IsRatedAtCurrentProject = CheckIfUserIsRated(projectId, project.ProjectOwner.UserId);
+
                     project.UsersBelongsToProjectCollection.Add(projectOwner);
 
                     if (project.IsRequiredManager)
                     {
                         var manager = db.UserAccounts.Where(x => x.UserId.Equals(project.Manager.UserId)).FirstOrDefault();
+                        manager.IsRatedAtCurrentProject = CheckIfUserIsRated(projectId, project.Manager.UserId);
                         project.UsersBelongsToProjectCollection.Add(manager);
                     }
 
@@ -37,9 +40,11 @@ namespace ManageOnline.Controllers
                     {
                         int userIdInt = Convert.ToInt32(userId);
                         var user = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
+                        user.IsRatedAtCurrentProject = CheckIfUserIsRated(projectId, userIdInt);
                         project.UsersBelongsToProjectCollection.Add(user);
                     }
                     var projectOwner = db.UserAccounts.Where(x => x.UserId.Equals(project.ProjectOwner.UserId)).FirstOrDefault();
+                    projectOwner.IsRatedAtCurrentProject = CheckIfUserIsRated(projectId, project.ProjectOwner.UserId);
                     project.UsersBelongsToProjectCollection.Add(projectOwner);
                     return View(project);
                 }
@@ -52,12 +57,14 @@ namespace ManageOnline.Controllers
                     {
                         int userIdInt = Convert.ToInt32(userId);
                         var user = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
+                        user.IsRatedAtCurrentProject = CheckIfUserIsRated(projectId, userIdInt);
                         project.UsersBelongsToProjectCollection.Add(user);
                     }
 
                     if (project.IsRequiredManager)
                     {
                         var manager = db.UserAccounts.Where(x => x.UserId.Equals(project.Manager.UserId)).FirstOrDefault();
+                        manager.IsRatedAtCurrentProject = CheckIfUserIsRated(projectId, project.Manager.UserId);
                         project.UsersBelongsToProjectCollection.Add(manager);
                     }
                     return View(project);
@@ -65,6 +72,31 @@ namespace ManageOnline.Controllers
             }
 
             return View();
+        }
+
+        public ActionResult RateUser(int projectId, int userId)
+        {
+            RateModel rate = new RateModel();
+            using (DbContextModel db = new DbContextModel())
+            {
+                rate.Project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
+                rate.UserWhoGetRate = db.UserAccounts.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
+            }
+            rate.Communication = 0;
+            return PartialView("_rateUser", rate);
+        }
+
+        [HttpPost]
+        public ActionResult RateUser(RateModel rate)
+        {
+            var bleble = rate;
+            var asdadad = bleble;
+            using (DbContextModel db = new DbContextModel())
+            {
+                rate.Project = db.Projects.Where(x => x.ProjectId.Equals(rate.Project.ProjectId)).FirstOrDefault();
+                rate.UserWhoGetRate = db.UserAccounts.Where(x => x.UserId.Equals(rate.UserWhoGetRate.UserId)).FirstOrDefault();
+            }
+            return RedirectToAction("RateUsersFromProject", new { projectId = rate.Project.ProjectId });
         }
 
         private bool CheckIfUserIsRated(int projectId, int userId)
