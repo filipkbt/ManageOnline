@@ -15,13 +15,12 @@ namespace ManageOnline.Models
         [DefaultValue(false)]
         public bool IsSeen { get; set; }
 
-        public virtual UserBasicModel Sender { get; set; }
+        public DateTime DateSend { get; set; }
 
         public virtual UserBasicModel Receiver { get; set; }
 
-        public DateTime DateSend { get; set; }
+        public string Title { get; set; }
 
         public string Content { get; set; }
-
     }
 }

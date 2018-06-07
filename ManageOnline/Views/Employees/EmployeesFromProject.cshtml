@@ -42,7 +42,7 @@
                             <h3 class="card-title"><b>@employee.Username</b></h3>
                             <p class="card-text"><b>Email: </b><br />@employee.Email</p>
                             <p class="card-text"><b>Telefon kontaktowy: <br /></b>@employee.MobileNumber</p>
-                            <a href="#" class="btn btn-primary">Wyślij wiadomość</a><br />
+                            @Html.Action("SendMessage", "Messages", new { userId = Model.ProjectOwner.UserId })
                         </div>
                     </div>
                 </div>

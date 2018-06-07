@@ -15,7 +15,7 @@ namespace ManageOnline.Models
         [DefaultValue(false)]
         public bool IsSeen { get; set; }
 
-        public virtual UserBasicModel Receiver { get; set; }
+        public virtual UserBasicModel NotificationReceiver{ get; set; }
 
         public DateTime DateSend { get; set; }
 
