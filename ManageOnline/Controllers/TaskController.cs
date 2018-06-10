@@ -52,6 +52,10 @@ namespace ManageOnline.Controllers
                 task.RowNumber = 1;
                 task.ColumnNumber = 1;
                 db.Tasks.AddOrUpdate(task);
+                if(task.UserWhoAddTask != task.CurrentWorkerAtTask)
+                {
+                    db.Notifications.Add(new NotificationModel { Project = task.Project, NotificationType = NotificationTypes.NoweZadanie, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = task.CurrentWorkerAtTask, Content = string.Format("Użytkownik {0} przypisał Ci zadanie: {1}", task.UserWhoAddTask.Username, task.TaskName) });
+                }
                 db.SaveChanges();
             }
             return RedirectToAction("KanbanBoard", "ProjectPanel", new { projectId = ProjectId });

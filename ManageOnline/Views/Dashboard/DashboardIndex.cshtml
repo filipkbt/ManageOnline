@@ -13,7 +13,7 @@
         {
             if (notification.NotificationType.ToString() == "WybranieOfertyRealizacjiProjektu" || notification.NotificationType.ToString() == "NowaOcena" || notification.NotificationType.ToString() == "ZakonczenieProjektu")
             {
-        <div class="alert alert-success " role="alert">
+        <div class="alert alert-success" role="alert">
             <h5 class="alert-heading">@notification.Content <b><a class="alert-link">@Html.ActionLink("Naciśnij, aby przejść do projektu.", "ProjectPanel", "ProjectPanel", new { projectId = @notification.Project.ProjectId }, null)</a></b></h5>
             <h7>@notification.DateSend</h7>
         </div>

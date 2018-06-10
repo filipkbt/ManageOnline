@@ -1,6 +1,7 @@
 ﻿using ManageOnline.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -121,6 +122,17 @@ namespace ManageOnline.Controllers
                     string roundedAverageRate = string.Format("{0:0.00}", RatesSum / 4);
                     rate.AverageRate = Convert.ToDouble(roundedAverageRate);
                 }
+                var userRates = db.Rates.Where(x => x.UserWhoGetRate.UserId.Equals(x.UserWhoGetRate.UserId)).ToList();
+                double oldRatesSum = 0;
+                foreach(var oldRate in userRates)
+                {
+                    oldRatesSum += oldRate.AverageRate;
+                }
+                oldRatesSum += rate.AverageRate;
+                double oldRatesCount = Convert.ToDouble(userRates.Count());
+                oldRatesCount++;
+                rate.UserWhoGetRate.AverageRate = oldRatesSum / oldRatesCount;
+                db.Entry(rate.UserWhoGetRate).State = EntityState.Modified;
                 db.Notifications.Add(new NotificationModel {Project = rate.Project, NotificationType = NotificationTypes.NowaOcena, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = rate.UserWhoGetRate, Content = string.Format("Użytkownik {0} wystawił Ci ocenę za projekt {1}. Średnia ocen to: {2}", rate.UserWhoAddRate.Username, rate.Project.ProjectTitle, rate.AverageRate)});
                 db.Rates.Add(rate);
                 db.SaveChanges();

@@ -58,10 +58,9 @@ namespace ManageOnline.Models
         [NotMapped]
         public string[] PortfolioProjectsArray { get; set; }
 
-        //public virtual ICollection<MessageModel> Messages { get; set; }
-
-        public virtual ICollection<NotificationModel> Notifications { get; set; }
-        public virtual ICollection<UserBasicModel> Coworkers { get; set; }        
+        public virtual ICollection<UserBasicModel> Coworkers { get; set; }  
+        
+        public double AverageRate { get; set; }
 
         [NotMapped]
         public bool IsRatedAtCurrentProject { get; set; }

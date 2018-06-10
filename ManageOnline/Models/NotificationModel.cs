@@ -15,6 +15,7 @@ namespace ManageOnline.Models
         WybranieOfertyRealizacjiProjektu, //
         NowaOfertaRealizacjiProjektu, //
         ZakonczenieProjektu,
+        NoweZadanie,
         DodaniePlikuDoProjektu //
     }
 
