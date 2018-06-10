@@ -48,7 +48,7 @@
         {
             if (item.ProjectStatus == ManageOnline.Models.ProjectStatus.InProgress)
             {
-                <tr onclick="location.href = '@Url.Action("ProjectPanel", "ProjectPanel",  new { projectId=item.ProjectId}, null)'">
+                <tr onclick="location.href = '@Url.Action("ProjectPanel", "ProjectPanel",  new { projectId=item.ProjectId}, null)'" style="cursor:pointer">
                     <td>
                         @Html.DisplayFor(modelItem => item.ProjectOwner.Username)
                     </td>

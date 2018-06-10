@@ -22,9 +22,9 @@
                 <a onclick="location.href = '@Url.Action("EmployeesFromProject", "Employees", new { projectId=Model.ProjectId}, null)'" class="nav-link active">Pracownicy</a>
             </li>
             @if (Model.ProjectStatus.ToString() == "Finished")
-    {
-        <button type="button" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=Model.ProjectId}, null)'" class="btn btn-success float-right" style="margin-left:10px">Wystaw oceny za projekt</button>
-}
+            {
+                <button type="button" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=Model.ProjectId}, null)'" class="btn btn-success float-right" style="margin-left:10px">Wystaw oceny za projekt</button>
+            }
         </ul>
     </div>
 
@@ -42,7 +42,10 @@
                             <h3 class="card-title"><b>@employee.Username</b></h3>
                             <p class="card-text"><b>Email: </b><br />@employee.Email</p>
                             <p class="card-text"><b>Telefon kontaktowy: <br /></b>@employee.MobileNumber</p>
-                            @Html.Action("SendMessage", "Messages", new { userId = Model.ProjectOwner.UserId })
+                            @if (HttpContext.Current.Session["UserId"].ToString() != employee.UserId.ToString())
+                            {
+                                @Html.Action("SendMessage", "Messages", new { userId = employee.UserId })
+                            }
                         </div>
                     </div>
                 </div>

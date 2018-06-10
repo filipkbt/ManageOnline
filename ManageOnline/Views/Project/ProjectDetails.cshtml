@@ -42,7 +42,10 @@
                                 <h4 class="card-title"><b>@Model.ProjectOwner.Username</b></h4>
                                 <p class="card-text"><b>Email: </b><br /></b4>@Model.ProjectOwner.Email</p>
                                 <p class="card-text"><b>Telefon kontaktowy: <br /></b>@Model.ProjectOwner.MobileNumber</p>
-                                <a href="#" class="btn btn-primary">Wyślij wiadomość</a>
+                                @if ((HttpContext.Current.Session["UserId"].ToString() != Model.ProjectOwner.UserId.ToString()))
+    {
+                            @Html.Action("SendMessage", "Messages", new { userId = Model.ProjectOwner.UserId })
+}
                             </div>
                         </div>
                     </div>

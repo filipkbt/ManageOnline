@@ -1,0 +1,36 @@
+﻿@model ManageOnline.Models.MessageModel
+
+    @Html.AntiForgeryToken()
+    <div class="modal fade" id="showMessage_@Model.Receiver.UserId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><b>Szczegóły wiadomości</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <center>
+                        @Html.HiddenFor(x => x.Receiver.UserId)
+                        <div>
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                            <div>
+                                <h3><b>@Model.Title</b></h3>
+                            </div>
+                            <div>
+                                Nadawca: <text class="text-info">@Model.Sender.Username</text> Odbiorca: <text class="text-info">@Model.Receiver.Username</text>
+                            </div>
+                            <div class="form-group">
+                                @Model.Content
+                            </div>
+                    </center>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#showMessage_@Model.Receiver.UserId">
+        Pokaż wiadomość
+    </button>

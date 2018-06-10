@@ -103,11 +103,16 @@
                         <h4 class="card-title"><b>@Model.ProjectOwner.Username</b></h4>
                         <p class="card-text"><b>Email: </b><br /></b4>@Model.ProjectOwner.Email</p>
                         <p class="card-text"><b>Telefon kontaktowy: <br /></b>@Model.ProjectOwner.MobileNumber</p>
-                        @Html.Action("SendMessage", "Messages", new {userId = Model.ProjectOwner.UserId })
+
+                        @if ((HttpContext.Current.Session["UserId"].ToString() != Model.ProjectOwner.UserId.ToString()) )
+                        {
+                            @Html.Action("SendMessage", "Messages", new { userId = Model.ProjectOwner.UserId })
+                        }
+
                         @if ((HttpContext.Current.Session["UserId"].ToString() == Model.ProjectOwner.UserId.ToString()) && Model.ProjectStatus.ToString() != "Finished")
-    {
-                    <a class="btn btn-success text-white" style="margin-top:10px" onclick="location.href = '@Url.Action("SetProjectAsFinished", "Project", new { projectId = Model.ProjectId }, null)'">Zakończ projekt</a>
-}
+                        {
+                            <a class="btn btn-success text-white" style="margin-top:10px" onclick="location.href = '@Url.Action("SetProjectAsFinished", "Project", new { projectId = Model.ProjectId }, null)'">Zakończ projekt</a>
+                        }
                     </div>
                 </div>
             </div>

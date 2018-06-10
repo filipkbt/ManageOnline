@@ -540,6 +540,10 @@
     <Content Include="Views\Rate\_rateUser.cshtml" />
     <Content Include="Views\Rate\_rateUserDetails.cshtml" />
     <Content Include="Views\Messages\_sendMessage.cshtml" />
+    <Content Include="Views\Messages\ShowReceivedMessages.cshtml" />
+    <Content Include="Views\Messages\_messagesInfo.cshtml" />
+    <Content Include="Views\Messages\ShowSendedMessages.cshtml" />
+    <Content Include="Views\Messages\_messageDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
