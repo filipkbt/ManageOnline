@@ -12,7 +12,6 @@ namespace ManageOnline.Models
         [Key]
         public int MessageId { get; set; }
 
-        [DefaultValue(false)]
         public bool IsSeen { get; set; }
 
         public DateTime DateSend { get; set; }

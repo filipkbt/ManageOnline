@@ -33,11 +33,12 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
+                int userIdInt = Convert.ToInt32(System.Web.HttpContext.Current.Session["UserId"]);
                 var message = db.Messages.Include("Receiver")
                                          .Include("Sender")
                                          .Where(x => x.MessageId.Equals(messageId)).FirstOrDefault();
 
-                if (!message.IsSeen)
+                if (!message.IsSeen && message.Receiver.UserId == userIdInt)
                     message.IsSeen = true;
                 db.Entry(message).State = EntityState.Modified;
                 db.SaveChanges();
@@ -67,7 +68,7 @@ namespace ManageOnline.Controllers
                 message.DateSend = DateTime.Now;
                 message.IsSeen = false;
                 db.Messages.Add(message);
-                    db.SaveChanges();
+                db.SaveChanges();
             }
 
             return RedirectToAction("ShowSendedMessages");
@@ -81,6 +82,7 @@ namespace ManageOnline.Controllers
                 ICollection<MessageModel> messages = db.Messages
                                                     .Include("Receiver")
                                                     .Include("Sender")
+                                                    .OrderBy(x => x.DateSend)
                                                     .Where(x => x.Receiver.UserId.Equals(userIdInt)).ToList();
                 return View(messages);
             }
@@ -95,6 +97,7 @@ namespace ManageOnline.Controllers
                 ICollection<MessageModel> messages = db.Messages
                                                     .Include("Receiver")
                                                     .Include("Sender")
+                                                    .OrderBy(x => x.DateSend)
                                                     .Where(x => x.Sender.UserId.Equals(senderIdInt)).ToList();
                 return View(messages);
             }

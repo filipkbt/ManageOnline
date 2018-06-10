@@ -358,6 +358,10 @@
     <Compile Include="Migrations\201806101625525_updateTask.Designer.cs">
       <DependentUpon>201806101625525_updateTask.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806101721048_repairMessages.cs" />
+    <Compile Include="Migrations\201806101721048_repairMessages.Designer.cs">
+      <DependentUpon>201806101721048_repairMessages.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -721,6 +725,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806101625525_updateTask.resx">
       <DependentUpon>201806101625525_updateTask.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806101721048_repairMessages.resx">
+      <DependentUpon>201806101721048_repairMessages.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
