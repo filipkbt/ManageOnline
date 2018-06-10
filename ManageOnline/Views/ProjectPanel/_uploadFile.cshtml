@@ -1,0 +1,48 @@
+﻿@model ManageOnline.Models.FileModel
+
+@using (Html.BeginForm("UploadFile", "ProjectPanel", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.Project.ProjectId)
+    @Html.AntiForgeryToken()
+    <div class="modal fade" id="sendFile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><b>Prześlij plik</b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @Html.HiddenFor(x => x.Project.ProjectId)
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <div class="col-12">
+                                <div>
+                                    <row>
+                                        <h3><b>Nazwa pliku</b></h3>
+                                        @Html.TextBoxFor(model => model.FileName)<br />
+                                    </row>
+                                    <row>
+                                        <input type="file" name="file" id="file" style="width:400px;height:50px;" />
+                                    </row>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                        <button type="submit" class="btn btn-primary">Prześlij plik</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#sendFile" style="display: block; margin: 10px auto; ">
+        Prześlij plik  
+</button>

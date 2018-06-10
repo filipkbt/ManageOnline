@@ -30,5 +30,7 @@ namespace ManageOnline.Models
         public DbSet<PortfolioProjectModel> PortfolioProjects { get; set; }
 
         public DbSet<RateModel> Rates { get; set; }
+
+        public DbSet<FileModel> Files { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
     @Html.AntiForgeryToken()
     <div class="modal fade" id="showMessage_@Model.Receiver.UserId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"><b>Szczegóły wiadomości</b></h5>
@@ -13,20 +13,24 @@
                 <div class="modal-body">
                     <center>
                         @Html.HiddenFor(x => x.Receiver.UserId)
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="col">
+                            <h5><b>@Model.Title</b></h5>
+                            <hr />
+                        </div>
                         <div>
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                            <div>
-                                <h3><b>@Model.Title</b></h3>
-                            </div>
-                            <div>
-                                Nadawca: <text class="text-info">@Model.Sender.Username</text> Odbiorca: <text class="text-info">@Model.Receiver.Username</text>
-                            </div>
-                            <div class="form-group">
-                                @Model.Content
-                            </div>
+                            Nadawca: <text class="text-info">@Model.Sender.Username</text> Odbiorca: <text class="text-info">@Model.Receiver.Username</text>
+                            <hr />
+                        </div>
+                        <div class="form-group">
+                            @Model.Content
+                        </div>
                     </center>
-
+                    <div class="modal-footer">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

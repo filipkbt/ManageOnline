@@ -342,10 +342,23 @@
     <Compile Include="Migrations\201806072251567_addSender.Designer.cs">
       <DependentUpon>201806072251567_addSender.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806101312366_addFileModel.cs" />
+    <Compile Include="Migrations\201806101312366_addFileModel.Designer.cs">
+      <DependentUpon>201806101312366_addFileModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806101330419_addNameToFile.cs" />
+    <Compile Include="Migrations\201806101330419_addNameToFile.Designer.cs">
+      <DependentUpon>201806101330419_addNameToFile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806101339528_changePropertyNameFile.cs" />
+    <Compile Include="Migrations\201806101339528_changePropertyNameFile.Designer.cs">
+      <DependentUpon>201806101339528_changePropertyNameFile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\DbContextModel.cs" />
+    <Compile Include="Models\FileModel.cs" />
     <Compile Include="Models\MessageModel.cs" />
     <Compile Include="Models\PortfolioProjectModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
@@ -544,9 +557,12 @@
     <Content Include="Views\Messages\_messagesInfo.cshtml" />
     <Content Include="Views\Messages\ShowSendedMessages.cshtml" />
     <Content Include="Views\Messages\_messageDetails.cshtml" />
+    <Content Include="Views\ProjectPanel\_uploadFile.cshtml" />
+    <Content Include="Views\ProjectPanel\ProjectFiles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Files\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -689,6 +705,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806072251567_addSender.resx">
       <DependentUpon>201806072251567_addSender.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806101312366_addFileModel.resx">
+      <DependentUpon>201806101312366_addFileModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806101330419_addNameToFile.resx">
+      <DependentUpon>201806101330419_addNameToFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806101339528_changePropertyNameFile.resx">
+      <DependentUpon>201806101339528_changePropertyNameFile.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
