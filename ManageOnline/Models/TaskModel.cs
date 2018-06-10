@@ -22,7 +22,7 @@ namespace ManageOnline.Models
 
         public DateTime TaskCreationDate { get; set; }
 
-        public DateTime TaskFinishDate { get; set; }
+        public DateTime? TaskFinishDate { get; set; }
 
         public virtual UserBasicModel UserWhoAddTask { get; set; }
 

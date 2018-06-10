@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.Mvc;
 using ManageOnline.Models;
 
@@ -101,7 +102,10 @@ namespace ManageOnline.Controllers
             if (file.ContentLength > 0)
             {
                 string fileName = Path.GetFileName(file.FileName);
-                string path = Path.Combine(Server.MapPath("~/Files/"), fileName);
+                string filePath = "~/Files/" + projectId +"/";
+                if(!Directory.Exists(filePath))
+                    Directory.CreateDirectory(HostingEnvironment.ApplicationPhysicalPath + "/Files/" + projectId + "/");
+                string path = Path.Combine(Server.MapPath(filePath), fileName);
                 file.SaveAs(path);
                 using (DbContextModel db = new DbContextModel())
                 {

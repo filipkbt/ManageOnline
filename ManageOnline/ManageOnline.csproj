@@ -354,6 +354,10 @@
     <Compile Include="Migrations\201806101339528_changePropertyNameFile.Designer.cs">
       <DependentUpon>201806101339528_changePropertyNameFile.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806101625525_updateTask.cs" />
+    <Compile Include="Migrations\201806101625525_updateTask.Designer.cs">
+      <DependentUpon>201806101625525_updateTask.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -714,6 +718,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806101339528_changePropertyNameFile.resx">
       <DependentUpon>201806101339528_changePropertyNameFile.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806101625525_updateTask.resx">
+      <DependentUpon>201806101625525_updateTask.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

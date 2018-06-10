@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
@@ -16,8 +17,25 @@ namespace ManageOnline.Controllers
         public ActionResult AddTask(int projectId)
         {
             TaskModel task = new TaskModel();
+            task.CurrentWorkerAtTask = new UserBasicModel();
             task.ProjectId = projectId;
-            return PartialView("_addTask");
+            using(DbContextModel db = new DbContextModel())
+            {
+                ICollection<UserBasicModel> usersBelongsToProject = new Collection<UserBasicModel>();
+
+                var project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
+                project.UsersBelongsToProjectArray = project.UsersBelongsToProject.Split(',').ToArray();
+
+                foreach (var userId in project.UsersBelongsToProjectArray)
+                {
+                    int userIdInt = Convert.ToInt32(userId);
+                    var user = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
+                    usersBelongsToProject.Add(user);
+                }
+
+                ViewBag.Users = usersBelongsToProject;
+            }
+            return PartialView("_addTask", task);
         }
 
         [HttpPost]
@@ -27,10 +45,10 @@ namespace ManageOnline.Controllers
             int ProjectId = task.ProjectId;
             using (DbContextModel db = new DbContextModel())
             {
-
                 task.TaskCreationDate = DateTime.Now;
                 task.Project = db.Projects.Where(x => x.ProjectId.Equals(ProjectId)).FirstOrDefault();
                 task.UserWhoAddTask = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
+                task.CurrentWorkerAtTask = db.UserAccounts.Where(x => x.UserId.Equals(task.CurrentWorkerAtTask.UserId)).FirstOrDefault();
                 task.RowNumber = 1;
                 task.ColumnNumber = 1;
                 db.Tasks.AddOrUpdate(task);
