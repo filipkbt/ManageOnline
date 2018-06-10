@@ -89,7 +89,7 @@ namespace ManageOnline.Controllers
         [HttpPost]
         public async Task<ActionResult> RateUser(RateModel rate)
         {
-            float RatesSum = 0;
+            double RatesSum = 0;
             using (DbContextModel db = new DbContextModel())
             {
                 int userWhoAddRateIdInt = Convert.ToInt32(System.Web.HttpContext.Current.Session["UserId"]);
@@ -97,28 +97,31 @@ namespace ManageOnline.Controllers
                 rate.UserWhoGetRate = db.UserAccounts.Where(x => x.UserId.Equals(rate.UserWhoGetRate.UserId)).FirstOrDefault();
                 rate.UserWhoAddRate = db.UserAccounts.Where(x => x.UserId.Equals(userWhoAddRateIdInt)).FirstOrDefault();
 
-                RatesSum += rate.Communication;
-                RatesSum += rate.MeetingTheConditions;
-                RatesSum += rate.Professionalism;
-                RatesSum += rate.WantToCoworkAgain;
+                RatesSum += (double)rate.Communication;
+                RatesSum += (double)rate.MeetingTheConditions;
+                RatesSum += (double)rate.Professionalism;
+                RatesSum += (double)rate.WantToCoworkAgain;
                 if (rate.UserWhoGetRate.Role.ToString() == "Pracownik")
                 {
-                    RatesSum += (float)rate.Punctuality;
-                    RatesSum += (float)rate.Quality;
-                    RatesSum += (float)rate.Skills;
-                    rate.AverageRate = RatesSum / 7;
+                    RatesSum += (double)rate.Punctuality;
+                    RatesSum += (double)rate.Quality;
+                    RatesSum += (double)rate.Skills;
+                    string roundedAverageRate = string.Format("{0:0.00}", RatesSum / 7);
+                   rate.AverageRate = Convert.ToDouble(roundedAverageRate);
                 }
 
                 else if (rate.UserWhoGetRate.Role.ToString() == "Menadzer")
                 {
-                    RatesSum += (float)rate.ManageSkills;
-                    rate.AverageRate = RatesSum / 5;
+                    RatesSum += (double)rate.ManageSkills;
+                    string roundedAverageRate = string.Format("{0:0.00}", RatesSum / 5);
+                    rate.AverageRate = Convert.ToDouble(roundedAverageRate);
                 }
                 else
                 {
-                    rate.AverageRate = RatesSum / 4;
+                    string roundedAverageRate = string.Format("{0:0.00}", RatesSum / 4);
+                    rate.AverageRate = Convert.ToDouble(roundedAverageRate);
                 }
-                db.Notifications.Add(new NotificationModel {NotificationType = NotificationTypes.NowaOcena, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = rate.UserWhoGetRate, Content = string.Format("Użytkownik {0} wystawił Ci ocenę za projekt {1}. Średnia ocen to: {2}", rate.UserWhoAddRate.Username, rate.Project.ProjectTitle, rate.AverageRate)});
+                db.Notifications.Add(new NotificationModel {Project = rate.Project, NotificationType = NotificationTypes.NowaOcena, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = rate.UserWhoGetRate, Content = string.Format("Użytkownik {0} wystawił Ci ocenę za projekt {1}. Średnia ocen to: {2}", rate.UserWhoAddRate.Username, rate.Project.ProjectTitle, rate.AverageRate)});
                 db.Rates.Add(rate);
                 db.SaveChanges();
             }

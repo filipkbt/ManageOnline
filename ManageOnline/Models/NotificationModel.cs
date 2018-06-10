@@ -14,7 +14,8 @@ namespace ManageOnline.Models
         ProjektZZakresuUmiejetnosci,
         WybranieOfertyRealizacjiProjektu, //
         NowaOfertaRealizacjiProjektu, //
-        ZakonczenieProjektu //
+        ZakonczenieProjektu,
+        DodaniePlikuDoProjektu //
     }
 
     public class NotificationModel
@@ -32,5 +33,7 @@ namespace ManageOnline.Models
         public DateTime DateSend { get; set; }
 
         public string Content { get; set; }
+
+        public ProjectModel Project { get; set; }
     }
 }

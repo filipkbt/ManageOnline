@@ -31,7 +31,7 @@
             </li>
             @if (Model.ProjectStatus.ToString() == "Finished")
     {
-        <button onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=Model.ProjectId}, null)'" class="btn btn-success float-right">Oceny za projekt</button>
+        <button style="margin-left:10px;" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=Model.ProjectId}, null)'" class="btn btn-success float-right">Oceny za projekt</button>
 }
 
         </ul>

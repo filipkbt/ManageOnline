@@ -19,7 +19,7 @@ namespace ManageOnline.Models
         [Required]
         public string Comment { get; set; }
 
-        public float AverageRate { get; set; }
+        public double AverageRate { get; set; }
 
         //all
         public int Communication { get; set; }

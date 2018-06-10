@@ -26,7 +26,7 @@
         </li>
         @if (ViewBag.ProjectStatus.ToString() == "Finished")
         {
-            <button type="button" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=ViewBag.ProjectId}, null)'" class="btn btn-success float-right">Wystaw oceny za projekt</button>
+            <button type="button" style="margin-left:10px;" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=ViewBag.ProjectId}, null)'" class="btn btn-success float-right">Wystaw oceny za projekt</button>
         }
     </ul>
 </div>

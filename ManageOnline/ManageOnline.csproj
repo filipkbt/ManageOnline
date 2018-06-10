@@ -370,6 +370,14 @@
     <Compile Include="Migrations\201806101847440_littleFixNotification.Designer.cs">
       <DependentUpon>201806101847440_littleFixNotification.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806102142005_addProjectToNotifications.cs" />
+    <Compile Include="Migrations\201806102142005_addProjectToNotifications.Designer.cs">
+      <DependentUpon>201806102142005_addProjectToNotifications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806102229248_changeFloatToDoubleAtRate.cs" />
+    <Compile Include="Migrations\201806102229248_changeFloatToDoubleAtRate.Designer.cs">
+      <DependentUpon>201806102229248_changeFloatToDoubleAtRate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -575,6 +583,7 @@
     <Content Include="Views\Messages\_messageDetails.cshtml" />
     <Content Include="Views\ProjectPanel\_uploadFile.cshtml" />
     <Content Include="Views\ProjectPanel\ProjectFiles.cshtml" />
+    <Content Include="Views\Dashboard\_notificationsInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -742,6 +751,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806101847440_littleFixNotification.resx">
       <DependentUpon>201806101847440_littleFixNotification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806102142005_addProjectToNotifications.resx">
+      <DependentUpon>201806102142005_addProjectToNotifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806102229248_changeFloatToDoubleAtRate.resx">
+      <DependentUpon>201806102229248_changeFloatToDoubleAtRate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

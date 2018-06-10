@@ -113,9 +113,26 @@ namespace ManageOnline.Controllers
                 {
                     fileObject.FilePath = path;
                     fileObject.DateUploadFile = DateTime.Now;
-                    fileObject.Project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
+                    fileObject.Project = db.Projects.Include("ProjectOwner").Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
                     fileObject.UserWhoAddFile = db.UserAccounts.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
                     db.Files.Add(fileObject);
+
+                    fileObject.Project.UsersBelongsToProjectArray = fileObject.Project.UsersBelongsToProject.Split(',').ToArray();
+
+                    foreach (var userInProject in fileObject.Project.UsersBelongsToProjectArray)
+                    {
+                        int userInProjectIdInt = Convert.ToInt32(userInProject);                        
+                        var user = db.UserAccounts.Where(x => x.UserId.Equals(userInProjectIdInt)).FirstOrDefault();
+                        if(user.UserId != userId)
+                        {
+                            db.Notifications.Add(new NotificationModel { Project = fileObject.Project, NotificationType = NotificationTypes.DodaniePlikuDoProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = user, Content = string.Format("Użytkownik {0} przesłał plik {1} do projektu {2}", fileObject.UserWhoAddFile, fileObject.FileName, fileObject.Project.ProjectTitle) });
+                        }                        
+                    }
+                    if (fileObject.Project.ProjectOwner.UserId != userId)
+                    {
+                        db.Notifications.Add(new NotificationModel { Project = fileObject.Project, NotificationType = NotificationTypes.DodaniePlikuDoProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = fileObject.Project.ProjectOwner, Content = string.Format("Użytkownik {0} przesłał plik {1} do projektu {2}", fileObject.UserWhoAddFile.Username, fileObject.FileName, fileObject.Project.ProjectTitle) });
+                    }                  
+
                     db.SaveChanges();
                 }
             }
