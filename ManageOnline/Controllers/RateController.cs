@@ -118,7 +118,7 @@ namespace ManageOnline.Controllers
                 {
                     rate.AverageRate = RatesSum / 4;
                 }
-                
+                db.Notifications.Add(new NotificationModel {NotificationType = NotificationTypes.NowaOcena, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = rate.UserWhoGetRate, Content = string.Format("Użytkownik {0} wystawił Ci ocenę za projekt {1}. Średnia ocen to: {2}", rate.UserWhoAddRate.Username, rate.Project.ProjectTitle, rate.AverageRate)});
                 db.Rates.Add(rate);
                 db.SaveChanges();
             }

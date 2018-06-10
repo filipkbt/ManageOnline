@@ -63,7 +63,6 @@ namespace ManageOnline.Controllers
                     .Where(x => x.ProjectId.Equals(projectId))
                     .FirstOrDefault();
 
-
                 return View(project);
             }
         }
@@ -75,7 +74,11 @@ namespace ManageOnline.Controllers
                 var project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
                 ViewBag.ProjectStatus = project.ProjectStatus;
                 ViewBag.ProjectId = projectId;
-                var files = db.Files.Include("Project").Include("UserWhoAddFile").Where(x => x.Project.ProjectId.Equals(projectId)).ToList();
+                var files = db.Files.Include("Project")
+                                    .Include("UserWhoAddFile")
+                                    .OrderBy(x => x.DateUploadFile)
+                                    .Where(x => x.Project.ProjectId.Equals(projectId))
+                                    .ToList();
                 
                 return View(files);
             }
@@ -88,8 +91,7 @@ namespace ManageOnline.Controllers
             using(DbContextModel db = new DbContextModel())
             {
                 file.Project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
-            }
-            
+            }            
 
             return PartialView("_uploadFile",file);
         }
@@ -126,7 +128,7 @@ namespace ManageOnline.Controllers
             {
                 var file = db.Files.Where(x => x.FileId.Equals(fileId)).First();
 
-                return File(file.FilePath,"application/force-download",Path.GetFileName(file.FilePath));
+                return File(file.FilePath,"application/force-download", Path.GetFileName(file.FilePath));
             }
         }
     }

@@ -1,21 +1,32 @@
-﻿@using ManageOnline.Models
-
+﻿
+@model IEnumerable<ManageOnline.Models.NotificationModel>
 @{
     ViewBag.Title = "DashboardIndex";
     Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
+<div class="card">
+    <div class="card-header">
+        <h2>Aktualności</h2>
+    </div>
+    <div class="card-body">
 
-<h2>Dashboard</h2>
-
-@if (Session["UserId"] != null)
-{
-    <h4>hello @Session["Username"].ToString() bleble  @ViewBag.UserName</h4>
-    <input data-role="rating"
-           data-value="3"
-           data-star-color="cyan"
-           data-stared-color="pink">
-
-
-   
+        @foreach (var notification in Model)
+    {
+        if (notification.NotificationType.ToString() == "WybranieOfertyRealizacjiProjektu" || notification.NotificationType.ToString() == "NowaOcena" || notification.NotificationType.ToString() == "ZakonczenieProjektu")
+        {
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">@notification.Content</h4>
+                <h7>@notification.DateSend</h7>
+            </div>
+    }
+    else if (notification.NotificationType.ToString() == "ZaproszenieDoProjektu" || notification.NotificationType.ToString() == "owaOfertaRealizacjiProjektu")
+    {
+        <h4 class="alert-heading">@notification.Content</h4>
+        <h7>@notification.DateSend</h7>
 }
+}
+    </div>
+</div>
 
+
+@*ProjektZZakresuUmiejetnosci,*@

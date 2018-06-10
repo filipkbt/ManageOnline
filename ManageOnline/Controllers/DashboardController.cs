@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ManageOnline.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,17 +12,13 @@ namespace ManageOnline.Controllers
         // GET: Dashboard
         public ActionResult DashboardIndex()
         {
-            if (Session["UserId"] != null)
+            using (DbContextModel db = new DbContextModel())
             {
-                ViewBag.UserName = User.Identity.Name;
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "Account");
+                var userId = Convert.ToInt32(System.Web.HttpContext.Current.Session["UserId"]);
+                var notifications = db.Notifications.Include("NotificationReceiver").OrderByDescending(x=>x.DateSend).Where(x => x.NotificationReceiver.UserId.Equals(userId)).ToList();
+
+                return View(notifications);
             }
         }
-
-
     }
 }

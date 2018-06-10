@@ -133,7 +133,6 @@ namespace ManageOnline.Controllers
                     var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
                     project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
 
-
                     if (project.SkillsRequiredToProject != null)
                     {
                         project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
@@ -188,7 +187,7 @@ namespace ManageOnline.Controllers
                         var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
                         projectDetailsInfo.SkillsRequiredToProjectCollection.Add(skill);
                     }
-                }     
+                }
 
                 return View(projectDetailsInfo);
             }
@@ -215,7 +214,8 @@ namespace ManageOnline.Controllers
                 offerToProject.WorkerProposedToProject = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(userId));
                 db.Projects.Attach(offerToProject.ProjectWhereOfferWasAdded);
                 db.OfferToProjectModels.Add(offerToProject);
-
+                var project = db.Projects.Include("ProjectOwner").Where(x => x.ProjectId.Equals(offerToProject.ProjectWhereOfferWasAdded.ProjectId)).FirstOrDefault();
+                db.Notifications.Add(new NotificationModel { NotificationType = NotificationTypes.NowaOfertaRealizacjiProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = project.ProjectOwner, Content = string.Format("W twoim projekie {0} została dodana nowa oferta realizacji przez użytkownika {1}.", project.ProjectTitle, offerToProject.UserWhoAddOffer.Username) });
                 db.SaveChanges();
                 return View("SuccessfullAddOffer");
             }
@@ -238,7 +238,6 @@ namespace ManageOnline.Controllers
         [HttpPost]
         public ActionResult EditOfferToProject(OfferToProjectModel offerToProject)
         {
-            
             using (DbContextModel db = new DbContextModel())
             {
                 db.Configuration.LazyLoadingEnabled = false;
@@ -264,14 +263,16 @@ namespace ManageOnline.Controllers
                 db.Configuration.LazyLoadingEnabled = false;
                 ProjectModel project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
                 OfferToProjectModel offer = db.OfferToProjectModels.Where(x => x.OfferToProjectId.Equals(offerId)).Include("WorkerProposedToProject").FirstOrDefault();
-                if(project.UsersBelongsToProject == null )
+                if (project.UsersBelongsToProject == null)
                 {
                     project.UsersBelongsToProject = offer.WorkerProposedToProject.UserId.ToString();
                 }
                 else
                 {
                     project.UsersBelongsToProject += "," + offer.WorkerProposedToProject.UserId;
-                }               
+                }
+
+                db.Notifications.Add(new NotificationModel { NotificationType = NotificationTypes.WybranieOfertyRealizacjiProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = offer.WorkerProposedToProject, Content = string.Format("Twoja oferta realizacji projektu została wybrana w projekcie {0}.", project.ProjectTitle) });
 
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
@@ -309,15 +310,15 @@ namespace ManageOnline.Controllers
                 ICollection<ProjectModel> projects = db.Projects.Include("ProjectOwner")
                                                                 .Include("CategoriesModel")
                                                                 .Include("SkillsRequiredToProjectCollection")
-                                                                .Where(x=> x.ProjectStatus == ProjectStatus.WaitingForOffers).ToList();
-                ICollection <OfferToProjectModel> offersCollection = db.OfferToProjectModels.Include("UserWhoAddOffer").ToList();
+                                                                .Where(x => x.ProjectStatus == ProjectStatus.WaitingForOffers).ToList();
+                ICollection<OfferToProjectModel> offersCollection = db.OfferToProjectModels.Include("UserWhoAddOffer").ToList();
                 ICollection<SkillsModel> skills = db.Skills.ToList();
-                if(System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Pracownik.ToString())
+                if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Pracownik.ToString())
                 {
                     var filteredProjectsWithOffers = from project in projects
-                        join offer in offersCollection on project.ProjectId equals offer.ProjectId
-                        where offer.UserWhoAddOffer.UserId.ToString().Equals(userId)
-                        select project;
+                                                     join offer in offersCollection on project.ProjectId equals offer.ProjectId
+                                                     where offer.UserWhoAddOffer.UserId.ToString().Equals(userId)
+                                                     select project;
 
                     foreach (var project in filteredProjectsWithOffers)
                     {
@@ -340,9 +341,9 @@ namespace ManageOnline.Controllers
                 if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Manager.ToString())
                 {
                     var filteredProjectsWithOffers = from project in projects
-                        join offer in offersCollection on project.ProjectId equals offer.ProjectId
-                        where offer.UserWhoAddOffer.UserId.ToString().Equals(userId)
-                        select project;
+                                                     join offer in offersCollection on project.ProjectId equals offer.ProjectId                                            
+                                                     where offer.UserWhoAddOffer.UserId.ToString().Equals(userId)
+                                                     select project;
 
                     foreach (var project in filteredProjectsWithOffers)
                     {
@@ -366,8 +367,8 @@ namespace ManageOnline.Controllers
                 if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Klient.ToString())
                 {
                     var filteredProjects = from project in projects
-                        where project.ProjectOwner.UserId.ToString().Equals(userId)
-                        select project;
+                                           where project.ProjectOwner.UserId.ToString().Equals(userId)
+                                           select project;
 
                     foreach (var project in filteredProjects)
                     {
@@ -403,7 +404,7 @@ namespace ManageOnline.Controllers
                     .Include("SkillsRequiredToProjectCollection")
                     .Include("CategoriesModel")
                     .Include("OffersToProject")
-                    .Where(x=> x.ProjectStatus == ProjectStatus.InProgress)
+                    .Where(x => x.ProjectStatus == ProjectStatus.InProgress)
                     .ToList();
                 var categoriesList = db.Categories.ToList();
                 var skills = db.Skills.ToList();
@@ -412,7 +413,7 @@ namespace ManageOnline.Controllers
                 if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Pracownik.ToString() ||
                     System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Manager.ToString())
                 {
-                     var filteredDataContext = dataContext.Where(x => x.UsersBelongsToProject.Contains(userId)).ToList();
+                    var filteredDataContext = dataContext.Where(x => x.UsersBelongsToProject.Contains(userId)).ToList();
 
                     foreach (var project in filteredDataContext)
                     {
@@ -434,7 +435,7 @@ namespace ManageOnline.Controllers
                 }
                 else if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Klient.ToString())
                 {
-                   var filteredDataContext = dataContext.Where(x => x.ProjectOwner.UserId.ToString().Equals(userId)).ToList();
+                    var filteredDataContext = dataContext.Where(x => x.ProjectOwner.UserId.ToString().Equals(userId)).ToList();
 
 
                     foreach (var project in filteredDataContext)
@@ -502,7 +503,7 @@ namespace ManageOnline.Controllers
                 }
                 else if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Klient.ToString())
                 {
-                   var filteredDataContext = dataContext.Where(x => x.ProjectOwner.UserId.ToString().Equals(userId)).ToList();
+                    var filteredDataContext = dataContext.Where(x => x.ProjectOwner.UserId.ToString().Equals(userId)).ToList();
 
                     foreach (var project in filteredDataContext)
                     {
@@ -524,7 +525,7 @@ namespace ManageOnline.Controllers
                 }
 
                 return View();
-                }
+            }
         }
 
 
@@ -533,23 +534,23 @@ namespace ManageOnline.Controllers
             ViewBag.ProjectId = projectId;
             using (DbContextModel db = new DbContextModel())
             {
-                ProjectModel project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
+                ProjectModel project = db.Projects.Include("ProjectOwner").Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
                 project.ProjectFinishDate = DateTime.Now;
                 project.ProjectStatus = ProjectStatus.Finished;
 
                 db.Entry(project).State = EntityState.Modified;
-                try
-                {
-                    db.SaveChanges();
-                }
-                
-                catch (Exception exception)
-                {
 
-                }
-{
+                project.UsersBelongsToProjectArray = project.UsersBelongsToProject.Split(',').ToArray();
 
-}
+                foreach (var userId in project.UsersBelongsToProjectArray)
+                {
+                    int userIdInt = Convert.ToInt32(userId);
+                    var user = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
+                    db.Notifications.Add(new NotificationModel { NotificationType = NotificationTypes.WybranieOfertyRealizacjiProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = user, Content = string.Format("Projekt {0} został zakończony. Możesz teraz ocenić inne osoby, które brały udział w projekcie.", project.ProjectTitle) });
+                }
+                db.Notifications.Add(new NotificationModel { NotificationType = NotificationTypes.WybranieOfertyRealizacjiProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = project.ProjectOwner, Content = string.Format("Projekt {0} został zakończony. Możesz teraz ocenić inne osoby, które brały udział w projekcie.", project.ProjectTitle) });
+                db.SaveChanges();
+
             }
             return View();
         }

@@ -7,6 +7,16 @@ using System.Web;
 
 namespace ManageOnline.Models
 {
+    public enum NotificationTypes : int
+    {
+        NowaOcena, //
+        ZaproszenieDoProjektu,
+        ProjektZZakresuUmiejetnosci,
+        WybranieOfertyRealizacjiProjektu, //
+        NowaOfertaRealizacjiProjektu, //
+        ZakonczenieProjektu //
+    }
+
     public class NotificationModel
     {
         [Key]
@@ -14,6 +24,8 @@ namespace ManageOnline.Models
 
         [DefaultValue(false)]
         public bool IsSeen { get; set; }
+
+        public NotificationTypes NotificationType { get; set; }
 
         public virtual UserBasicModel NotificationReceiver{ get; set; }
 

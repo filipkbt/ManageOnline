@@ -82,7 +82,7 @@ namespace ManageOnline.Controllers
                 ICollection<MessageModel> messages = db.Messages
                                                     .Include("Receiver")
                                                     .Include("Sender")
-                                                    .OrderBy(x => x.DateSend)
+                                                    .OrderByDescending(x => x.DateSend)
                                                     .Where(x => x.Receiver.UserId.Equals(userIdInt)).ToList();
                 return View(messages);
             }
@@ -97,7 +97,7 @@ namespace ManageOnline.Controllers
                 ICollection<MessageModel> messages = db.Messages
                                                     .Include("Receiver")
                                                     .Include("Sender")
-                                                    .OrderBy(x => x.DateSend)
+                                                    .OrderByDescending(x => x.DateSend)
                                                     .Where(x => x.Sender.UserId.Equals(senderIdInt)).ToList();
                 return View(messages);
             }

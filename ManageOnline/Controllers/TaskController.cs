@@ -88,10 +88,8 @@ namespace ManageOnline.Controllers
                 int counter3 = 1;
                 foreach (var itemId in column3Tasks)
                 {
-
                     TaskModel task = db.Tasks.Where(x => x.TaskId.Equals(itemId)).FirstOrDefault();
-                    task.RowNumber = counter3
-                        ;
+                    task.RowNumber = counter3;
                     task.ColumnNumber = 3;
                     db.Entry(task).State = EntityState.Modified;
                     db.SaveChanges();
