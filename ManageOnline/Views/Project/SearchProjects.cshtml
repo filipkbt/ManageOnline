@@ -1,95 +1,98 @@
 ﻿@model IEnumerable<ManageOnline.Models.ProjectModel>
 
 @{
-
     ViewBag.Title = "SearchProjects";
     Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
 <script type="text/javascript">
-    $(function() {
+    $(function () {
         $("#multiSelectDropDown").chosen();
     });
 </script>
-<h2>SearchProjects</h2>
 
 @using (Html.BeginForm("SearchProjects", "Project"))
-{
-    <form>
-        <div class="form-row">
-            <div class="form-group col-3 float-left">
-                <div class="form-group">
-                    <label>Wymagane umiejętności</label>
-                    @Html.ListBox("Skills", @TempData["Skills"] as MultiSelectList, new { id = "multiSelectDropDown", multiple = "multiple" })
-                </div>
-            </div>
-            <div class="form-group col-3 float-right">
-                <div class="form-group">
-                    <input type="submit" class="btn btn-info float-right" value="Szukaj" />
-                </div>
-            </div>
+{<div class="card">
+        <div class="card-header">
+            <h3>Wyszukiwarka projektów</h3>
         </div>
-    </form>
-
-    <table class="table table-hover" style="margin-top:30px">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">
-                    Klient
-                </th>
-                <th scope="col">
-                    Tytuł
-                </th>
-                <th scope="col">
-                    Budżet
-                </th>
-                <th scope="col">
-                    Kategoria
-                </th>
-                <th scope="col">
-                    Data publikacji
-                </th>
-                <th scope="col">
-                    Umiejętności
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-
-
-
-            @foreach (var item in Model)
-            {
-                if (item.ProjectStatus == ManageOnline.Models.ProjectStatus.WaitingForOffers)
-                {
-                    <tr onclick="location.href = '@Url.Action("ProjectDetails", "Project",  new { id=item.ProjectId}, null)'">
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProjectOwner.Username)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProjectTitle)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProjectBudget)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CategoriesModel.CategoryName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProjectCreationDate)
-                        </td>
-                        <td>
-                            @if (item.SkillsRequiredToProjectCollection != null)
-                            {
-                                foreach (var skill in item.SkillsRequiredToProjectCollection)
-                                {
-                                    @skill.SkillName@:;
-                                }
-                            }
-                        </td>
+        <div class="card-header">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-3 float-left">
+                        <div class="form-group">
+                            <label>Wymagane umiejętności</label>
+                            @Html.ListBox("Skills", @TempData["Skills"] as MultiSelectList, new { id = "multiSelectDropDown", multiple = "multiple" })
+                        </div>
+                    </div>
+                    <div class="form-group col-3 float-right">
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-info float-right" value="Szukaj" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover" style="margin-top:30px">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">
+                            Klient
+                        </th>
+                        <th scope="col">
+                            Tytuł
+                        </th>
+                        <th scope="col">
+                            Budżet
+                        </th>
+                        <th scope="col">
+                            Kategoria
+                        </th>
+                        <th scope="col">
+                            Data publikacji
+                        </th>
+                        <th scope="col">
+                            Umiejętności
+                        </th>
                     </tr>
-                }
-            }
-        </tbody>
-    </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        if (item.ProjectStatus == ManageOnline.Models.ProjectStatus.WaitingForOffers)
+                        {
+                            <tr onclick="location.href = '@Url.Action("ProjectDetails", "Project",  new { id=item.ProjectId}, null)'">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProjectOwner.Username)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProjectTitle)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProjectBudget)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CategoriesModel.CategoryName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProjectCreationDate)
+                                </td>
+                                <td>
+                                    @if (item.SkillsRequiredToProjectCollection != null)
+                                    {
+                                        foreach (var skill in item.SkillsRequiredToProjectCollection)
+                                        {
+                                            @skill.SkillName@:;
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 }
+
 
