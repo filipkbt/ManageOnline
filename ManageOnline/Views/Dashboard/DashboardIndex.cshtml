@@ -21,7 +21,7 @@
             else if (notification.NotificationType.ToString() == "ZaproszenieDoProjektu" || notification.NotificationType.ToString() == "NowaOfertaRealizacjiProjektu")
             {
                 <div class="alert alert-primary">
-                    <h5 class="alert-heading">@notification.Content <b><a class="alert-link">@Html.ActionLink("Naciśnij, aby przejść do projektu.", "ProjectDetails", "Project", new { projectId = @notification.Project.ProjectId }, null)</a></b></h5>
+                    <h5 class="alert-heading">@notification.Content <b><a class="alert-link">@Html.ActionLink("Naciśnij, aby przejść do projektu.", "ProjectDetails", "Project", new {id = @notification.Project.ProjectId }, null)</a></b></h5>
                     <h7>@notification.DateSend</h7>
                 </div>
             }

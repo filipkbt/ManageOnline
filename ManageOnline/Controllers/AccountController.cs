@@ -168,6 +168,17 @@ namespace ManageOnline.Controllers
 
             UserBasicModel userDetails = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(id));
 
+            if (userDetails.Skills != null)
+            {
+                userDetails.SkillsArray = userDetails.Skills.Split(',').ToArray();
+                foreach (var skillId in userDetails.SkillsArray)
+                {
+                    var skillIdInt = Convert.ToInt32(skillId);
+                    var skill = db.Skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                    userDetails.SkillsCollection.Add(skill);
+                }
+            }
+
             return View(userDetails);
         }
 

@@ -10,72 +10,62 @@
         $("#multiSelectDropDown").chosen();
     });
 </script>
-<h2>AddProject</h2>
+<div class="card">
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h4>ProjectModel</h4>
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="form-group">
-        @Html.LabelFor(model => model.ProjectTitle, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.ProjectTitle, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ProjectTitle, "", new { @class = "text-danger" })
+        <div class="form-horizontal">
+            <div class="card-header">
+                <h4>Dodaj projekt</h4>
+            </div>
+            <div class="card-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="col-md-12 row">
+                    <p class="control-label"><h5>Tytuł</h5></p>
+                    @Html.EditorFor(model => model.ProjectTitle, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ProjectTitle, "", new { @class = "text-danger" })
+                </div>
+                <div class="row" style="margin-top:10px;">
+                    <div class="col-md-6">
+                        <p class="control-label"><h5>Opis</h5></p>
+                        @Html.TextAreaFor(model => model.ProjectDescription, new { @class = "form-control", @cols = "100", @rows = "8" })
+                        @Html.ValidationMessageFor(model => model.ProjectDescription, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-6">
+                        <p class="control-label"><h5>Wymagania</h5></p>
+                        @Html.TextAreaFor(model => model.ProjectResponsibilities, new { @class = "form-control col", @cols = "100", @rows = "8" })
+                        @Html.ValidationMessageFor(model => model.ProjectResponsibilities, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row" style="margin-top:10px;">
+                    <div class="col-md-3">
+                        <p class="control-label"><h5>Budżet</h5></p>
+                        @Html.EditorFor(model => model.ProjectBudget, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ProjectBudget, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-3">
+                        <p class="control-label"><h5>Rodzaj projektu</h5></p>
+                        @Html.DropDownListFor(model => model.ProjectCategory, ViewBag.Categories as IEnumerable<SelectListItem>)
+                    </div>               
+                <div class="col-md-6">
+                    <p class="control-label"><h5>Wymagane umiejętności</h5></p>
+                    @Html.ListBoxFor(model => model.SkillsRequiredToProjectArray, ViewBag.Skills as MultiSelectList, new { id = "multiSelectDropDown", multiple = "multiple" })
+                </div>
+                     </div>
+                <div class="col-md-12 row" style="margin-top:10px;">
+                    <p class="control-label"><h5>Czy chcesz zatrudnić menadżera do nadzoru nad projektem?</h5></p>
+                    @Html.CheckBoxFor(model => model.IsRequiredManager, new { @checked = "checked", style = "width:100px;height:25px" })
+                </div>
+                <div class="col-md-offset-2 col-md-10" style="margin-top:10px;margin-right:10px;">
+                    <input type="submit" value="Dodaj projekt" class="btn btn-success" />
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.ProjectDescription, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.ProjectDescription, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ProjectDescription, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.ProjectResponsibilities, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.ProjectResponsibilities, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ProjectResponsibilities, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.ProjectBudget, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.ProjectBudget, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.ProjectBudget, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-12">
-            <p class="control-label">Rodzaj projektu</p>
-            @Html.DropDownListFor(model => model.ProjectCategory, ViewBag.Categories as IEnumerable<SelectListItem>))
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-12">
-            <p class="control-label">Wymagane umiejętności</p>
-            @Html.ListBoxFor(model => model.SkillsRequiredToProjectArray, ViewBag.Skills as MultiSelectList, new { id = "multiSelectDropDown", multiple = "multiple" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-12">
-            <p class="control-label">Czy chcesz zatrudnić menadżera do nadzoru nad projektem?</p>
-            @Html.CheckBoxFor(model => model.IsRequiredManager, new { @checked = "checked" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Dodaj projekt" class="btn btn-default" />
-        </div>
-    </div>
+    }
 </div>
-}
-
 @section scripts{
     <script>
         $("#multiSelectDropDown").chosen();

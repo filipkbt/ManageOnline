@@ -8,14 +8,70 @@
 @using (Html.BeginForm())
 {
 
-<div class="card">
-    <div class="card-header bg-info"><h2>Informacje o @Model.Username</h2></div>
-    <div class="card-body">
-       
+    <div class="card">
+        <div class="card-header bg-info"><h2>Informacje o @Model.Username</h2></div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4">
+                    <div class="card text-center" style="height:100%">
+                        <div class="card-header ">
+                            <h3><b>@Model.Username</b></h3>
+                            <h5>@Model.Role.ToString()</h5>
+                        </div>
+                        <img style="width:200px;height:200px; background: #FFFFFF;margin: auto; margin-top:10px" src="data:image;base64,@System.Convert.ToBase64String(Model.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail">
+                        <div class="card-body">
+                            @*<h3 class="card-title">*@
+                            <p class="card-text"><b>Profesja: <br /></b>@Model.DisplayedRole</p>
+                            <p class="card-text"><b>Projekty w toku: </b><br />@Model.ProjectsInProgress</p>
+                            <p class="card-text"><b>Zakończone projekty: </b><br />@Model.FinishedProjects</p>
+                            <p class="card-text"><b>Średnia ocen: </b><br />@Model.AverageRate</p>
+                            @if (HttpContext.Current.Session["UserId"].ToString() != Model.UserId.ToString())
+    {
+                        @Html.Action("SendMessage", "Messages", new { userId = Model.UserId })
+}
+                            @if (HttpContext.Current.Session["UserId"].ToString() != Model.UserId.ToString() && HttpContext.Current.Session["Role"].ToString() == "Klient")
+    {
+                        @Html.Action("SendInvitationToProject", "Project", new { userId = Model.UserId })
+}
+                            @if(TempData["SuccessfulSendInvitation"]  != null)
+                            {
+                                <div class="alert alert-success" style="margin-top:10px">
+                                    <p>@TempData["SuccessfulSendInvitation"]</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8">
+                    <div class="card row">
+                        <div class="card-header">
+                            <h4>Umiejętności</h4>
+                        </div>
+                        <div class="card-body card-text">
+                            @if (Model.SkillsCollection != null)
+                            {
+                                foreach (var skill in Model.SkillsCollection)
+                                {
+                                    @skill.SkillName@:;
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="card row">
+                        <div class="card-header">
+                            <h4>Opis</h4>
+                        </div>
+                        <div class="card-body card-text">
+                            @Model.Description
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+
     @Html.Action("ProjectsFromPortfolioSelectedUser", "ProjectPortfolio", new { userId = Model.UserId })
-    @Html.Action("UserRates","Rate", new { userId = Model.UserId})
+    @Html.Action("UserRates", "Rate", new { userId = Model.UserId })
 }
 
 

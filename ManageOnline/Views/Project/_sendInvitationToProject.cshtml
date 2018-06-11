@@ -1,0 +1,39 @@
+﻿@model ManageOnline.Models.NotificationModel
+
+@using (Html.BeginForm("SendInvitationToProject", "Project", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="modal fade" id="sendInvitation_@Model.NotificationReceiver.UserId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"><b>Wyślij zaproszenie do projektu użytkownikowi <text class="text-info">@Model.NotificationReceiver.Username</text></b></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    @Html.HiddenFor(x => x.NotificationReceiver.UserId)
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                Wybierz projekt
+                                @Html.DropDownListFor(model => model.Project.ProjectId, new SelectList(ViewBag.projectsFromUser, "ProjectId", "ProjectTitle"))
+                            </div>
+                        </div>                       
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                        <button type="submit" class="btn btn-primary">Wyślij zaproszenie</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<button type="button" style="margin-top:10px;"class="btn btn-success" data-toggle="modal" data-target="#sendInvitation_@Model.NotificationReceiver.UserId">
+    Wyślij zaproszenie do projektu
+</button>

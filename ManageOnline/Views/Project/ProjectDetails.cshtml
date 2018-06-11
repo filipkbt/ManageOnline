@@ -21,7 +21,6 @@
 }
 }
         </h6>
-
                 <div class="row">
                     <div class="col-3">
                         <div class="card" style="height:100%">
@@ -40,8 +39,8 @@
                             </div>
                             <div class="card-body">
                                 <h4 class="card-title"><b>@Model.ProjectOwner.Username</b></h4>
-                                <p class="card-text"><b>Email: </b><br /></b4>@Model.ProjectOwner.Email</p>
-                                <p class="card-text"><b>Telefon kontaktowy: <br /></b>@Model.ProjectOwner.MobileNumber</p>
+                                <p class="card-text"><b>Liczba zakończonych projektów:</b><br /></b>@Model.ProjectOwner.FinishedProjects</p>
+                                <p class="card-text"><b>Średnia ocena: <br /></b>@Model.ProjectOwner.AverageRate</p>
                                 @if ((HttpContext.Current.Session["UserId"].ToString() != Model.ProjectOwner.UserId.ToString()))
     {
                             @Html.Action("SendMessage", "Messages", new { userId = Model.ProjectOwner.UserId })
@@ -59,8 +58,6 @@
                                 <p class="card-text">@Model.ProjectDescription
                             </div>
                         </div>
-
-
                     </div>
                     <div class="col-4">
                         <div class="card" style="height:100%">

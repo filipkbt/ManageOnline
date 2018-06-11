@@ -62,6 +62,10 @@ namespace ManageOnline.Models
         
         public double AverageRate { get; set; }
 
+        public int FinishedProjects{ get; set; }
+
+        public int ProjectsInProgress { get; set; }
+
         [NotMapped]
         public bool IsRatedAtCurrentProject { get; set; }
     }

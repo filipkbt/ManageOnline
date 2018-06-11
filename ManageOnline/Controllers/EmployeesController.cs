@@ -75,7 +75,12 @@ namespace ManageOnline.Controllers
                 List<UserBasicModel> filteredDataContext = new List<UserBasicModel>();
                 string rateValue= form["rateValueText"];
                 string rateValuePreparedToDoubleConvert = rateValue.Replace(".", ",");
-                double minimumAverageRate = Convert.ToDouble(rateValuePreparedToDoubleConvert);
+                double minimumAverageRate = 0;
+                if (rateValue != "")
+                {
+                    minimumAverageRate = Convert.ToDouble(rateValuePreparedToDoubleConvert);
+                }
+
                 if (form["Skills"] != null || form["rateValueText"] != null)
                 {
                     if (form["Skills"] != null)
