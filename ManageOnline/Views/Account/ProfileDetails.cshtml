@@ -15,6 +15,7 @@
     </div>
 </div>
     @Html.Action("ProjectsFromPortfolioSelectedUser", "ProjectPortfolio", new { userId = Model.UserId })
+    @Html.Action("UserRates","Rate", new { userId = Model.UserId})
 }
 
 

@@ -21,6 +21,8 @@ namespace ManageOnline.Models
 
         public double AverageRate { get; set; }
 
+        public DateTime RateDate { get; set; }
+
         //all
         public int Communication { get; set; }
 

@@ -133,6 +133,7 @@ namespace ManageOnline.Controllers
                 oldRatesCount++;
                 string roundedAverageRateOverall = string.Format("{0:0.00}", oldRatesSum / oldRatesCount);
                 rate.UserWhoGetRate.AverageRate = Convert.ToDouble(roundedAverageRateOverall);
+                rate.RateDate = DateTime.Now;
                 db.Entry(rate.UserWhoGetRate).State = EntityState.Modified;
                 db.Notifications.Add(new NotificationModel {Project = rate.Project, NotificationType = NotificationTypes.NowaOcena, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = rate.UserWhoGetRate, Content = string.Format("Użytkownik {0} wystawił Ci ocenę za projekt {1}. Średnia ocen to: {2}", rate.UserWhoAddRate.Username, rate.Project.ProjectTitle, rate.AverageRate)});
                 db.Rates.Add(rate);
@@ -152,6 +153,21 @@ namespace ManageOnline.Controllers
             }            
         }
 
+        public ActionResult UserRates(int userId)
+        {
+            using(DbContextModel db = new DbContextModel())
+            {
+                var ratesConnectedWithUser = db.Rates
+                                                .Include("UserWhoGetRate")
+                                                .Include("UserWhoAddRate")
+                                                .Include("Project")
+                                                .OrderByDescending(x=> x.RateDate)
+                                                .Where(x => x.UserWhoGetRate.UserId.Equals(userId)).ToList();
+                return PartialView("_userRates", ratesConnectedWithUser);
+
+            }
+        }
+
         private bool CheckIfUserIsRated(int projectId, int userId)
         {
             using (DbContextModel db = new DbContextModel())
@@ -162,5 +178,7 @@ namespace ManageOnline.Controllers
                 return false;
             }
         }
+
+       
     }
 }

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<ManageOnline.Models.RateModel>
+<div class="card">
+    <div class="card-header bg-info"><h2>Oceny użytkownika</h2></div>
+    <div class="card-body">
+        @foreach (var item in Model)
+    {
+        <div class="col card card-body">
+            <div class="row">
+                <div class="col-3">
+                    <div data-role="tile" width="80" height="80" data-effect="hover-zoom-right" style="margin:auto;">
+                        <div class="slide-front">
+                            <img src="data:image;base64,@System.Convert.ToBase64String(item.UserWhoAddRate.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail" />
+                        </div>
+                        <div class="slide-back d-flex flex-justify-center flex-align-center p-4 op-green " onclick="location.href = '@Url.Action("ProfileDetails", "Account", new {id = item.UserWhoAddRate.UserId}, null)'">
+                            <p class="text-center">
+                                Kliknij, aby przejść do profilu użytkownika
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label>Użytkownik: @item.UserWhoAddRate.Username</label>
+                    </div>
+                    <div class="row">
+                        <label>Projekt: <b onclick="location.href = '@Url.Action("ProjectDetails", "Project",  new { id=item.Project.ProjectId}, null)'" style="cursor:pointer">@item.Project.ProjectTitle</b></label>
+                    </div>
+                    <div class="row">
+                        <label>Średnia ocena: @item.AverageRate</label>
+                    </div>
+                    <div class="row">
+                        <label>Data dodania oceny: @item.RateDate</label>
+                    </div>
+                    <div class="row">
+
+                    </div>
+                </div>
+                <div class="col-2">
+                    <row>
+                        <label>Komunikacja</label>
+                    </row>
+                    <row>
+                        <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.Communication" data-static="true">
+                    </row>
+                    <label>Spełnienie warunków projektu</label>
+                    <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.MeetingTheConditions" data-static="true">
+                    <label>Profesjonalizm</label>
+                    <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.Professionalism" data-static="true">
+                    <label>Chęć do ponownej współpracy</label>
+                    <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.WantToCoworkAgain" data-static="true">
+                </div>
+
+                @if (item.UserWhoGetRate.Role.ToString() == "Pracownik")
+            {
+                <div class="col-2">
+                    <label>Terminowość</label>
+                    <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.Punctuality" data-static="true">
+                    <label>Jakość</label>
+                    <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.Quality" data-static="true">
+                    <label>Umiejętności</label>
+                    <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.Skills" data-static="true">
+                </div>
+        }
+        else if (item.UserWhoGetRate.Role.ToString() == "Manager")
+        {
+            <div class="col-2">
+                Umiejętności zarządzania projektem
+                <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.ManageSkills" data-static="true">
+            </div>
+    }
+                <div class="col-4">
+                    <h3>Komentarz:</h3>
+                    @item.Comment
+                </div>
+            </div>
+        </div>
+}
+    </div>
+</div>
+
+
+

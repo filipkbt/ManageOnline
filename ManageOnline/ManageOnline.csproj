@@ -382,6 +382,10 @@
     <Compile Include="Migrations\201806102314169_addAVerageRateToUser.Designer.cs">
       <DependentUpon>201806102314169_addAVerageRateToUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806111653539_ADdRateDate.cs" />
+    <Compile Include="Migrations\201806111653539_ADdRateDate.Designer.cs">
+      <DependentUpon>201806111653539_ADdRateDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -589,6 +593,7 @@
     <Content Include="Views\ProjectPanel\ProjectFiles.cshtml" />
     <Content Include="Views\Dashboard\_notificationsInfo.cshtml" />
     <Content Include="Views\ProjectPanel\ConferenceRoom.cshtml" />
+    <Content Include="Views\Rate\_userRates.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -765,6 +770,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806102314169_addAVerageRateToUser.resx">
       <DependentUpon>201806102314169_addAVerageRateToUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806111653539_ADdRateDate.resx">
+      <DependentUpon>201806111653539_ADdRateDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
