@@ -390,6 +390,10 @@
     <Compile Include="Migrations\201806111851196_addVariablesToUserBasicModel.Designer.cs">
       <DependentUpon>201806111851196_addVariablesToUserBasicModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806112257523_UpdateUserModel.cs" />
+    <Compile Include="Migrations\201806112257523_UpdateUserModel.Designer.cs">
+      <DependentUpon>201806112257523_UpdateUserModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -781,6 +785,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806111851196_addVariablesToUserBasicModel.resx">
       <DependentUpon>201806111851196_addVariablesToUserBasicModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806112257523_UpdateUserModel.resx">
+      <DependentUpon>201806112257523_UpdateUserModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -33,6 +33,7 @@ namespace ManageOnline.Models
         [DisplayName("Potwierdź hasło")]
         [Compare("Password", ErrorMessage = "Potwierdź swoje hasło.")]
         [DataType(DataType.Password)]
+        [NotMapped]
         public string ConfirmPassword { get; set; }
         [DisplayName("Rola")]
         [Required(ErrorMessage = "Podanie roli konta jest wymagane.")]
@@ -46,19 +47,11 @@ namespace ManageOnline.Models
         [DisplayName("Zdjęcie profilowe")]
         public byte[] UserPhoto { get; set; }
 
-        public virtual ICollection<ProjectModel> Projects { get; set; }
         [DisplayName("Umiejętności")]
         public string Skills { get; set; }
         public virtual ICollection<SkillsModel> SkillsCollection { get; set; }
         [NotMapped]
         public string[] SkillsArray { get; set; }
-
-        public string PortfolioProjects { get; set; }
-        public virtual ICollection<PortfolioProjectModel> PortfolioProjectsCollection { get; set; }
-        [NotMapped]
-        public string[] PortfolioProjectsArray { get; set; }
-
-        public virtual ICollection<UserBasicModel> Coworkers { get; set; }  
         
         public double AverageRate { get; set; }
 
