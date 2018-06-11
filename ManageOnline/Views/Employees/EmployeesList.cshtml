@@ -5,47 +5,108 @@
     Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
 
-<h2>EmployeesList</h2>
+<script type="text/javascript">
+    $(function () {
+        $("#multiSelectDropDown").chosen();
+    });
+</script>
+<script>
+    $(function () {
+        $("#progress-observe-value").on("input change", function () {
+            $("#progress-observe").attr('data-value', this.value);
+        });
+    })
+</script>
+<script>
+    function fetch() {
+        var getValue = document.getElementById("rateValueRange").value;
+        document.getElementById("rateValueText").value = getValue;
+    }
+    function fetchToRange() {
+        var getValue = document.getElementById("rateValueText").value;
+        document.getElementById("rateValueRange").value = getValue;
+    }
+</script>
+
+@using (Html.BeginForm("EmployeesList", "Employees"))
+{
+<div class="card">
+    <div class="card-header">
+        <h3>Wyszukiwarka pracowników</h3>
+    </div>
+    <div class="card-header">
+        <form>
+            <div class="form-row">
+                <div class="col-4 float-left">
+                    <div class="form-group">
+                        <label>Umiejętności</label>
+                        @Html.ListBox("Skills", @TempData["Skills"] as MultiSelectList, new { id = "multiSelectDropDown", multiple = "multiple" })
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label>Minimalna średnia ocen</label>
+                        <div class="row" data-role="rangesslider">
+                            <input type="range" min="0.0" max="5.0" step="0.1" id="rateValueRange" onchange="fetch()" style="margin-left:16px; margin-right:5px; width:270px;" />
+                            <input type="text" name="rateValueText" id="rateValueText" onchange="fetchToRange()" style="width:50px" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row col-3 float-left">
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-info float-left" value="Szukaj" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="card-body">
 
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Username)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Role)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DisplayedRole)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MobileNumber)
-        </th>
-    </tr>
+        <table class="table table-hover" style="margin-top:30px">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">
+                        Nazwa
+                    </th>
+                    <th scope="col">
+                        Profesja
+                    </th>
+                    <th scope="col">
+                        Umiejętności
+                    </th>
+                    <th scope="col">
+                        Średnia ocen
+                    </th>
+                </tr>
+            </thead>
 
-@foreach (var employee in Model) {
-    <tr>
-        @Html.HiddenFor(modelItem => employee.UserId)
-        <td>
-            @Html.DisplayFor(modelItem => employee.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => employee.Username)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => employee.DisplayedRole)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => employee.MobileNumber)
-        </td>
-        <td>
-            @Html.ActionLink("Zobacz profil", "ProfileDetails", "Account", new { id = employee.UserId }, null)
-        </td>
-    </tr>
+            @foreach (var employee in Model)
+        {
+            <tr onclick="location.href = '@Url.Action("ProfileDetails", "Account", new { id = employee.UserId }, null)">
+                @Html.HiddenFor(modelItem => employee.UserId)
+                <td>
+                    @Html.DisplayFor(modelItem => employee.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => employee.DisplayedRole)
+                </td>
+                <td>
+                    @if (employee.SkillsCollection != null)
+                {
+                    foreach (var skill in employee.SkillsCollection)
+                    {
+                        @skill.SkillName@:;
+                }
+            }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => employee.AverageRate)
+                </td>
+            </tr>
+    }
+        </table>
+    </div>
+</div>
 }
-
-</table>
