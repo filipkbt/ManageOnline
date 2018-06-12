@@ -289,7 +289,7 @@ namespace ManageOnline.Controllers
 
                 if (project.Manager != null)
                 {
-                    project.UsersBelongsToProject += project.Manager.UserId;
+                    project.UsersBelongsToProject += string.Format(",{0}",project.Manager.UserId);
                 }
 
                 project.UsersBelongsToProjectArray = project.UsersBelongsToProject.Split(',').ToArray();

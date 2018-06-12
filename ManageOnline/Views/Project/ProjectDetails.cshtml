@@ -14,9 +14,11 @@
         @if (Model.IsRequiredManager == true)
     {
         <h4 class="card-title text-info" style="text-align:left">
-            <b>Projekt z menadżerem</b>
+            Projekt z menadżerem @if (Model.Manager != null)
+    {<a style="cursor:pointer;"onclick="location.href = '@Url.Action("ProfileDetails", "Account", new { id = Model.ProjectOwner.UserId }, null)'"><b>@Model.Manager.Username </b></a>}
         </h4>
 }
+
         <h4 class="card-title" style="text-align:left"><b>@Model.CategoriesModel.CategoryName</b></h4>
         <h6 class="card-title" style="text-align:left">
             @if (Model.SkillsRequiredToProjectCollection != null)
