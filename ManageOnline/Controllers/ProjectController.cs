@@ -73,6 +73,7 @@ namespace ManageOnline.Controllers
                     .Include("ProjectOwner")
                     .Include("SkillsRequiredToProjectCollection")
                     .Include("CategoriesModel")
+                    .OrderByDescending(x=>x.ProjectCreationDate)
                     .ToList();
 
                 var skills = db.Skills.ToList();
@@ -117,6 +118,7 @@ namespace ManageOnline.Controllers
                     .Include("ProjectOwner")
                     .Include("SkillsRequiredToProjectCollection")
                     .Include("CategoriesModel")
+                    .OrderByDescending(x => x.ProjectCreationDate)
                     .ToList();
 
                 var skills = db.Skills.ToList();
@@ -166,6 +168,7 @@ namespace ManageOnline.Controllers
                     .Include("ProjectOwner")
                     .Include("OffersToProject")
                     .Include("OffersToProject.UserWhoAddOffer")
+                    .Include("Manager")
                     .Include("OffersToProject.WorkerProposedToProject")
                     .FirstOrDefault(p => p.ProjectId.Equals(id));
 
@@ -264,7 +267,7 @@ namespace ManageOnline.Controllers
                 }
                 else
                 {
-                    project.UsersBelongsToProject += "," + offer.WorkerProposedToProject.UserId;
+                    project.UsersBelongsToProject += "," + offer.WorkerProposedToProject.UserId.ToString();
                 }
 
                 db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.WybranieOfertyRealizacjiProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = offer.WorkerProposedToProject, Content = string.Format("Twoja oferta realizacji projektu została wybrana w projekcie {0}.", project.ProjectTitle) });
@@ -280,9 +283,14 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
-                ProjectModel project = db.Projects.Include("ProjectOwner").Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
+                ProjectModel project = db.Projects.Include("ProjectOwner").Include("Manager").Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
                 project.ProjectStartDate = DateTime.Now;
                 project.ProjectStatus = ProjectStatus.InProgress;
+
+                if (project.Manager != null)
+                {
+                    project.UsersBelongsToProject += project.Manager.UserId;
+                }
 
                 project.UsersBelongsToProjectArray = project.UsersBelongsToProject.Split(',').ToArray();
 
@@ -292,9 +300,11 @@ namespace ManageOnline.Controllers
                     var user = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
                     user.ProjectsInProgress++;
                     db.Entry(user).State = EntityState.Modified;
+                    db.SaveChanges();
                 }
-                project.ProjectOwner.ProjectsInProgress++;
-                db.Entry(project.ProjectOwner).State = EntityState.Modified;
+                var ProjectOwner = db.UserAccounts.Where(x => x.UserId.Equals(project.ProjectOwner.UserId)).FirstOrDefault();
+                ProjectOwner.ProjectsInProgress++;
+                db.Entry(ProjectOwner).State = EntityState.Modified;
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -617,6 +627,21 @@ namespace ManageOnline.Controllers
             
         }
 
+        public ActionResult ConnectProjectWithManager(int projectId)
+        {
+            int managerId = Convert.ToInt32(Session["UserId"]);
+
+            using(DbContextModel db = new DbContextModel())
+            {
+                var project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
+                var manager = db.UserAccounts.Where(x => x.UserId.Equals(managerId)).FirstOrDefault();
+                project.Manager = manager;
+                db.Entry(project).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("ProjectDetails", "Project", new { id = projectId });
+        }
         public ActionResult SuccessfullAddProject()
         {
             return View();
@@ -631,7 +656,5 @@ namespace ManageOnline.Controllers
         {
             return View();
         }
-
-
     }
 }

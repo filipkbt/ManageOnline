@@ -33,7 +33,6 @@ namespace ManageOnline.Models
         [DisplayName("Potwierdź hasło")]
         [Compare("Password", ErrorMessage = "Potwierdź swoje hasło.")]
         [DataType(DataType.Password)]
-        [NotMapped]
         public string ConfirmPassword { get; set; }
         [DisplayName("Rola")]
         [Required(ErrorMessage = "Podanie roli konta jest wymagane.")]

@@ -82,9 +82,9 @@ namespace ManageOnline.Controllers
             using (DbContextModel db = new DbContextModel())
             {
                 rate.Project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
-                rate.UserWhoGetRate =  db.UserAccounts.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
+                rate.UserWhoGetRate = db.UserAccounts.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
             }
-             return PartialView("_rateUser", rate);
+            return PartialView("_rateUser", rate);
         }
 
         [HttpPost]
@@ -108,7 +108,7 @@ namespace ManageOnline.Controllers
                     RatesSum += (double)rate.Quality;
                     RatesSum += (double)rate.Skills;
                     string roundedAverageRate = string.Format("{0:0.00}", RatesSum / 7);
-                   rate.AverageRate = Convert.ToDouble(roundedAverageRate);
+                    rate.AverageRate = Convert.ToDouble(roundedAverageRate);
                 }
 
                 else if (rate.UserWhoGetRate.Role.ToString() == "Menadzer")
@@ -124,7 +124,7 @@ namespace ManageOnline.Controllers
                 }
                 var userRates = db.Rates.Where(x => x.UserWhoGetRate.UserId.Equals(x.UserWhoGetRate.UserId)).ToList();
                 double oldRatesSum = 0;
-                foreach(var oldRate in userRates)
+                foreach (var oldRate in userRates)
                 {
                     oldRatesSum += oldRate.AverageRate;
                 }
@@ -135,7 +135,7 @@ namespace ManageOnline.Controllers
                 rate.UserWhoGetRate.AverageRate = Convert.ToDouble(roundedAverageRateOverall);
                 rate.RateDate = DateTime.Now;
                 db.Entry(rate.UserWhoGetRate).State = EntityState.Modified;
-                db.Notifications.Add(new NotificationModel {Project = rate.Project, NotificationType = NotificationTypes.NowaOcena, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = rate.UserWhoGetRate, Content = string.Format("Użytkownik {0} wystawił Ci ocenę za projekt {1}. Średnia ocen to: {2}", rate.UserWhoAddRate.Username, rate.Project.ProjectTitle, rate.AverageRate)});
+                db.Notifications.Add(new NotificationModel { Project = rate.Project, NotificationType = NotificationTypes.NowaOcena, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = rate.UserWhoGetRate, Content = string.Format("Użytkownik {0} wystawił Ci ocenę za projekt {1}. Średnia ocen to: {2}", rate.UserWhoAddRate.Username, rate.Project.ProjectTitle, rate.AverageRate) });
                 db.Rates.Add(rate);
                 db.SaveChanges();
             }
@@ -143,25 +143,25 @@ namespace ManageOnline.Controllers
         }
 
         public async Task<ActionResult> ShowRateDetails(int projectId, int userId)
-        {            
+        {
             using (DbContextModel db = new DbContextModel())
             {
                 var rate = db.Rates.Where(x => x.Project.ProjectId == projectId && x.UserWhoGetRate.UserId == userId).FirstOrDefault();
                 rate.Project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
                 rate.UserWhoGetRate = db.UserAccounts.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
                 return PartialView("_rateUserDetails", rate);
-            }            
+            }
         }
 
         public ActionResult UserRates(int userId)
         {
-            using(DbContextModel db = new DbContextModel())
+            using (DbContextModel db = new DbContextModel())
             {
                 var ratesConnectedWithUser = db.Rates
                                                 .Include("UserWhoGetRate")
                                                 .Include("UserWhoAddRate")
                                                 .Include("Project")
-                                                .OrderByDescending(x=> x.RateDate)
+                                                .OrderByDescending(x => x.RateDate)
                                                 .Where(x => x.UserWhoGetRate.UserId.Equals(userId)).ToList();
                 return PartialView("_userRates", ratesConnectedWithUser);
 
@@ -172,13 +172,16 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
-                var rateConnectedWithUser = db.Rates.Where(x => x.Project.ProjectId == projectId && x.UserWhoGetRate.UserId == userId).FirstOrDefault();
+                int userWhoAddRateIdInt = Convert.ToInt32(System.Web.HttpContext.Current.Session["UserId"]);
+                var rateConnectedWithUser = db.Rates.Include("UserWhoGetRate").Where(x => x.Project.ProjectId == projectId && x.UserWhoGetRate.UserId == userId && x.UserWhoAddRate.UserId == userWhoAddRateIdInt).FirstOrDefault();
+
+
                 if (rateConnectedWithUser != null)
+                {
                     return true;
+                }
                 return false;
             }
         }
-
-       
     }
 }

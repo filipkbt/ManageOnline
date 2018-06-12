@@ -394,6 +394,10 @@
     <Compile Include="Migrations\201806112257523_UpdateUserModel.Designer.cs">
       <DependentUpon>201806112257523_UpdateUserModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806121138077_confirmPassword.cs" />
+    <Compile Include="Migrations\201806121138077_confirmPassword.Designer.cs">
+      <DependentUpon>201806121138077_confirmPassword.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -788,6 +792,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806112257523_UpdateUserModel.resx">
       <DependentUpon>201806112257523_UpdateUserModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806121138077_confirmPassword.resx">
+      <DependentUpon>201806121138077_confirmPassword.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

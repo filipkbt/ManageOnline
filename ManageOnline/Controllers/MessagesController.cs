@@ -71,7 +71,7 @@ namespace ManageOnline.Controllers
                 db.SaveChanges();
             }
 
-            return RedirectToAction("ShowSendedMessages");
+            return RedirectToAction("ShowSendedMessages","Messages",null);
         }
 
         public ActionResult ShowReceivedMessages()
