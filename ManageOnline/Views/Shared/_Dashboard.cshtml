@@ -49,10 +49,13 @@
     }
     else if (!String.IsNullOrEmpty((string)HttpContext.Current.Session["Username"]))
     {
+
         <div class="navbar navbar-expand-lg navbar-light bg-primary justify-content-end">
             <div class="container justify-content-end">
-                @Html.Action("NotificationsInfo","Dashboard")
+                @Html.Action("NotificationsInfo", "Dashboard")
+             
                 <li class="btn-group nav mr-2">
+
                     <button type="button" class="btn navbar-btn text-bold text-white" style="background-color: forestgreen">Pracownicy</button>
                     <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
                         <span class="caret"></span>
@@ -61,14 +64,14 @@
                     <ul class="dropdown-menu" role="menu">
                         @Html.ActionLink("Przeglądaj wszystkich pracowników", "EmployeesList", "Employees")
                         @if ((string)HttpContext.Current.Session["Role"] == "Klient")
-            {
+        {
                 <li class="navbar-brand">Managerzy, z którymi współpracujesz@*@Html.ActionLink("Wyszukaj projekty", "SearchProjects", "Project")*@</li>
 }
                     </ul>
                 </li>
                 <li class="btn-group nav mr-2" style="float: right;">
-                    <button type="button" class="btn navbar-btn text-bold text-white" style="background-color: forestgreen">Projekty</button>
-                    <button type="button" class="btn navbar-btn dropdown-toggle" data-toggle="dropdown">
+                    <button type="button" class="btn navbar-btn text-bold text-white dropdown-toggle" data-toggle="dropdown" style="background-color: forestgreen">Projekty</button>
+                    <button type="button" class="btn navbar-btn dropdown-toggle">
                         <span class="caret"></span>
                         <span class="sr-only">Toggle Dropdown</span>
                     </button>
@@ -95,6 +98,18 @@
                         <li class="navbar-brand">@Html.ActionLink("Wyloguj się", "LogOut", "Account")</li>
                     </ul>
                 </li>
+            </div>
+        </div>
+        <div>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Dropdown button
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
             </div>
         </div>
         <div class="container body-content ">
