@@ -33,6 +33,8 @@ namespace ManageOnline.Models
 
         public DateTime DateSend { get; set; }
 
+        public string Title { get; set; }
+
         public string Content { get; set; }
 
         public ProjectModel Project { get; set; }

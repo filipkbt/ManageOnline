@@ -135,7 +135,7 @@ namespace ManageOnline.Controllers
                 rate.UserWhoGetRate.AverageRate = Convert.ToDouble(roundedAverageRateOverall);
                 rate.RateDate = DateTime.Now;
                 db.Entry(rate.UserWhoGetRate).State = EntityState.Modified;
-                db.Notifications.Add(new NotificationModel { Project = rate.Project, NotificationType = NotificationTypes.NowaOcena, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = rate.UserWhoGetRate, Content = string.Format("Użytkownik {0} wystawił Ci ocenę za projekt {1}. Średnia ocen to: {2}", rate.UserWhoAddRate.Username, rate.Project.ProjectTitle, rate.AverageRate) });
+                db.Notifications.Add(new NotificationModel { Project = rate.Project, NotificationType = NotificationTypes.NowaOcena, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = rate.UserWhoGetRate,Title="Nowa ocena", Content = string.Format("Użytkownik {0} wystawił Ci ocenę za projekt {1}. Średnia ocen to: {2}", rate.UserWhoAddRate.Username, rate.Project.ProjectTitle, rate.AverageRate) });
                 db.Rates.Add(rate);
                 db.SaveChanges();
             }

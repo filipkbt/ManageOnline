@@ -14,23 +14,26 @@
             if (notification.NotificationType.ToString() == "WybranieOfertyRealizacjiProjektu" || notification.NotificationType.ToString() == "NowaOcena" || notification.NotificationType.ToString() == "ZakonczenieProjektu")
             {
         <div class="alert alert-success" role="alert">
+            <h3 class="alert-heading">@notification.Title</h3>
             <h5 class="alert-heading">@notification.Content <b><a class="alert-link">@Html.ActionLink("Naciśnij, aby przejść do projektu.", "ProjectPanel", "ProjectPanel", new { projectId = @notification.Project.ProjectId }, null)</a></b></h5>
             <h7>@notification.DateSend</h7>
         </div>
             }
             else if (notification.NotificationType.ToString() == "ZaproszenieDoProjektu" || notification.NotificationType.ToString() == "NowaOfertaRealizacjiProjektu")
             {
-                <div class="alert alert-primary">
-                    <h5 class="alert-heading">@notification.Content <b><a class="alert-link">@Html.ActionLink("Naciśnij, aby przejść do projektu.", "ProjectDetails", "Project", new {id = @notification.Project.ProjectId }, null)</a></b></h5>
-                    <h7>@notification.DateSend</h7>
-                </div>
+        <div class="alert alert-primary">
+            <h3 class="alert-heading">@notification.Title</h3>
+            <h5 class="alert-heading">@notification.Content <b><a class="alert-link">@Html.ActionLink("Naciśnij, aby przejść do projektu.", "ProjectDetails", "Project", new { id = @notification.Project.ProjectId }, null)</a></b></h5>
+            <h7>@notification.DateSend</h7>
+        </div>
             }
             else if (notification.NotificationType.ToString() == "DodaniePlikuDoProjektu" || notification.NotificationType.ToString() == "NoweZadanie")
             {
-                <div class="alert alert-primary" role="alert">
-                    <h5 class="alert-heading">@notification.Content <b><a class="alert-link">@Html.ActionLink("Naciśnij, aby przejść do projektu.", "ProjectPanel", "ProjectPanel", new { projectId = @notification.Project.ProjectId }, null)</a></b></h5>
-                    <h7>@notification.DateSend</h7>
-                </div>
+        <div class="alert alert-primary" role="alert">
+            <h3 class="alert-heading">@notification.Title</h3>
+            <h5 class="alert-heading">@notification.Content <b><a class="alert-link">@Html.ActionLink("Naciśnij, aby przejść do projektu.", "ProjectPanel", "ProjectPanel", new { projectId = @notification.Project.ProjectId }, null)</a></b></h5>
+            <h7>@notification.DateSend</h7>
+        </div>
             }
         }
     </div>

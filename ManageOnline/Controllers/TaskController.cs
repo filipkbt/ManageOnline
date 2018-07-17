@@ -54,7 +54,7 @@ namespace ManageOnline.Controllers
                 db.Tasks.AddOrUpdate(task);
                 if(task.UserWhoAddTask != task.CurrentWorkerAtTask)
                 {
-                    db.Notifications.Add(new NotificationModel { Project = task.Project, NotificationType = NotificationTypes.NoweZadanie, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = task.CurrentWorkerAtTask, Content = string.Format("Użytkownik {0} przypisał Ci zadanie: {1}", task.UserWhoAddTask.Username, task.TaskName) });
+                    db.Notifications.Add(new NotificationModel { Project = task.Project, NotificationType = NotificationTypes.NoweZadanie, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = task.CurrentWorkerAtTask, Title="Nowe zadanie", Content = string.Format("Użytkownik {0} przypisał Ci zadanie: {1}", task.UserWhoAddTask.Username, task.TaskName) });
                 }
                 db.SaveChanges();
             }

@@ -215,7 +215,7 @@ namespace ManageOnline.Controllers
                 db.Projects.Attach(offerToProject.ProjectWhereOfferWasAdded);
                 db.OfferToProjectModels.Add(offerToProject);
                 var project = db.Projects.Include("ProjectOwner").Where(x => x.ProjectId.Equals(offerToProject.ProjectWhereOfferWasAdded.ProjectId)).FirstOrDefault();
-                db.Notifications.Add(new NotificationModel {Project = project, NotificationType = NotificationTypes.NowaOfertaRealizacjiProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = project.ProjectOwner, Content = string.Format("W twoim projekie {0} została dodana nowa oferta realizacji przez użytkownika {1}.", project.ProjectTitle, offerToProject.UserWhoAddOffer.Username) });
+                db.Notifications.Add(new NotificationModel {Project = project, NotificationType = NotificationTypes.NowaOfertaRealizacjiProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = project.ProjectOwner,Title = "Nowa oferta realizacji projektu", Content = string.Format("W twoim projekcie {0} została dodana nowa oferta realizacji przez użytkownika {1}.", project.ProjectTitle, offerToProject.UserWhoAddOffer.Username) });
                 db.SaveChanges();
                 return View("SuccessfullAddOffer");
             }
@@ -270,7 +270,7 @@ namespace ManageOnline.Controllers
                     project.UsersBelongsToProject += "," + offer.WorkerProposedToProject.UserId.ToString();
                 }
 
-                db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.WybranieOfertyRealizacjiProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = offer.WorkerProposedToProject, Content = string.Format("Twoja oferta realizacji projektu została wybrana w projekcie {0}.", project.ProjectTitle) });
+                db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.WybranieOfertyRealizacjiProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = offer.WorkerProposedToProject, Title= "Zaakceptowanie oferty realizacji projektu", Content = string.Format("Twoja oferta realizacji projektu została wybrana w projekcie {0}.", project.ProjectTitle) });
                 
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
@@ -561,14 +561,14 @@ namespace ManageOnline.Controllers
                     user.ProjectsInProgress--;
                     user.FinishedProjects++;
                     db.Entry(user).State = EntityState.Modified;
-                    db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.ZakonczenieProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = user, Content = string.Format("Projekt {0} został zakończony. Możesz teraz ocenić inne osoby, które brały udział w projekcie.", project.ProjectTitle) });
+                    db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.ZakonczenieProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = user, Title="Zakończenie projektu", Content = string.Format("Projekt {0} został zakończony. Możesz teraz ocenić inne osoby, które brały udział w projekcie.", project.ProjectTitle) });
                     db.SaveChanges();
                 }
                 project.ProjectOwner.ProjectsInProgress--;
                 project.ProjectOwner.FinishedProjects++;
                 db.Entry(project.ProjectOwner).State = EntityState.Modified;
                 db.Entry(project).State = EntityState.Modified;
-                db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.ZakonczenieProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = project.ProjectOwner, Content = string.Format("Projekt {0} został zakończony. Możesz teraz ocenić inne osoby, które brały udział w projekcie.", project.ProjectTitle) });
+                db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.ZakonczenieProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = project.ProjectOwner, Title="Zakończenie projektu", Content = string.Format("Projekt {0} został zakończony. Możesz teraz ocenić inne osoby, które brały udział w projekcie.", project.ProjectTitle) });
                 db.SaveChanges();
             }
             return View();
@@ -618,6 +618,7 @@ namespace ManageOnline.Controllers
                 notificationInvitationToProject.IsSeen = false;
                 notificationInvitationToProject.DateSend = DateTime.Now;
                 notificationInvitationToProject.NotificationType = NotificationTypes.ZaproszenieDoProjektu;
+                notificationInvitationToProject.Title = "Zaproszenie do projektu";
                 notificationInvitationToProject.Content = string.Format("Użytkownik {0} przesłał Ci zaproszenie do złożenia oferty w projekcie {1}.", userWhoSendInvitation.Username, notificationInvitationToProject.Project.ProjectTitle);
                 db.Notifications.Add(notificationInvitationToProject);
                 db.SaveChanges();

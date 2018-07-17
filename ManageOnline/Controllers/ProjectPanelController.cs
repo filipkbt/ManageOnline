@@ -125,12 +125,12 @@ namespace ManageOnline.Controllers
                         var user = db.UserAccounts.Where(x => x.UserId.Equals(userInProjectIdInt)).FirstOrDefault();
                         if(user.UserId != userId)
                         {
-                            db.Notifications.Add(new NotificationModel { Project = fileObject.Project, NotificationType = NotificationTypes.DodaniePlikuDoProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = user, Content = string.Format("Użytkownik {0} przesłał plik {1} do projektu {2}", fileObject.UserWhoAddFile.Username, fileObject.FileName, fileObject.Project.ProjectTitle) });
+                            db.Notifications.Add(new NotificationModel { Project = fileObject.Project, NotificationType = NotificationTypes.DodaniePlikuDoProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = user, Title="Nowy plik w projekcie", Content = string.Format("Użytkownik {0} przesłał plik {1} do projektu {2}", fileObject.UserWhoAddFile.Username, fileObject.FileName, fileObject.Project.ProjectTitle) });
                         }                        
                     }
                     if (fileObject.Project.ProjectOwner.UserId != userId)
                     {
-                        db.Notifications.Add(new NotificationModel { Project = fileObject.Project, NotificationType = NotificationTypes.DodaniePlikuDoProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = fileObject.Project.ProjectOwner, Content = string.Format("Użytkownik {0} przesłał plik {1} do projektu {2}", fileObject.UserWhoAddFile.Username, fileObject.FileName, fileObject.Project.ProjectTitle) });
+                        db.Notifications.Add(new NotificationModel { Project = fileObject.Project, NotificationType = NotificationTypes.DodaniePlikuDoProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = fileObject.Project.ProjectOwner,Title="Nowy plik w projekcie", Content = string.Format("Użytkownik {0} przesłał plik {1} do projektu {2}", fileObject.UserWhoAddFile.Username, fileObject.FileName, fileObject.Project.ProjectTitle) });
                     }                  
 
                     db.SaveChanges();

@@ -6,19 +6,23 @@
 }
 
 
+
 <div class="card text-white bg-info" style="width: auto; height: auto; margin: 20% 30%">
 
     @using (Html.BeginForm())
     {
+
         @Html.AntiForgeryToken()
 
         <div class="form-horizontal">
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
+            <div class="card-header text-center">
+                <h2><b>Panel logowania</b></h2> 
+            </div>
             <center>
                 <div class="form-group" >
-                    <div class="col-md-12" style="max-width: 60%;">
-                        <p class="control-label">Login</p>
+                    <div class="col-md-12" style="max-width: 60%; margin-top:15px;">
+                        <p class="control-label"><h5><b>Login</b></h5></p>
                         @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
                     </div>
@@ -26,7 +30,7 @@
 
                 <div class="form-group">
                     <div class="col-md-12" style="max-width: 60%;">
-                        <p class="control-label">Hasło</p>
+                        <p class="control-label"><h5><b>Hasło</b></h5></p>
                         @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                     </div>
@@ -35,12 +39,12 @@
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10 center">
                         <h5 class="text-danger">@ViewBag.Message</h5>
-                        <input type="submit" value="Zaloguj się" class="btn btn-default"/>
+                        <input type="submit" value="Zaloguj się" class="btn btn-success"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10 center">
-                        <input type="button" value="Zarejestruj się" class="btn btn-default" onclick="location.href='Register'" />
+                        <input type="button" value="Zarejestruj się" class="btn btn-primary" onclick="location.href='Register'" />
                     </div>
                 </div>
             </center>
