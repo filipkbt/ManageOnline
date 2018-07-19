@@ -300,13 +300,16 @@ namespace ManageOnline.Controllers
                     var user = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
                     user.ProjectsInProgress++;
                     db.Entry(user).State = EntityState.Modified;
+                    db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.RozpoczecieProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = user, Title = "Rozpoczęcie projektu", Content = string.Format("Projekt {0} został rozpoczęty.", project.ProjectTitle) });
                     db.SaveChanges();
                 }
                 var ProjectOwner = db.UserAccounts.Where(x => x.UserId.Equals(project.ProjectOwner.UserId)).FirstOrDefault();
+                db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.RozpoczecieProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = ProjectOwner, Title = "Rozpoczęcie projektu", Content = string.Format("Projekt {0} został rozpoczęty.", project.ProjectTitle) });
                 ProjectOwner.ProjectsInProgress++;
                 db.Entry(ProjectOwner).State = EntityState.Modified;
                 db.Entry(project).State = EntityState.Modified;
-                db.SaveChanges();
+
+                db.SaveChanges();                
 
                 return View("StartProject");
             }

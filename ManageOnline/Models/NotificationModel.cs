@@ -11,7 +11,7 @@ namespace ManageOnline.Models
     {
         NowaOcena, //
         ZaproszenieDoProjektu,//
-        ProjektZZakresuUmiejetnosci,
+        RozpoczecieProjektu,//
         WybranieOfertyRealizacjiProjektu, //
         NowaOfertaRealizacjiProjektu, //
         ZakonczenieProjektu, //
