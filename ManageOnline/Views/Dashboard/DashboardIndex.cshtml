@@ -19,7 +19,7 @@
             <h7>@notification.DateSend</h7>
         </div>
             }
-            else if (notification.NotificationType.ToString() == "ZaproszenieDoProjektu" || notification.NotificationType.ToString() == "NowaOfertaRealizacjiProjektu")
+            else if (notification.NotificationType.ToString() == "ZaproszenieDoProjektu" || notification.NotificationType.ToString() == "NowyProjektZMenadzerem" || notification.NotificationType.ToString() == "NowaOfertaRealizacjiProjektu")
             {
         <div class="alert alert-primary">
             <h3 class="alert-heading">@notification.Title</h3>
@@ -38,6 +38,3 @@
         }
     </div>
 </div>
-
-
-@*ProjektZZakresuUmiejetnosci,*@

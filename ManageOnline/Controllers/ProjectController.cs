@@ -52,6 +52,15 @@ namespace ManageOnline.Controllers
 
                 db.Projects.Add(project);
                 db.SaveChanges();
+                if (project.IsRequiredManager)
+                {
+                    var managers = db.UserAccounts.Where(x => x.Role == Roles.Manager).ToList();
+                    foreach (var manager in managers)
+                    {
+                        db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.NowyProjektZMenadzerem, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = manager, Title = "Nowy projekt wymagający menadżera", Content = string.Format("Pojawił się nowy projekt ({0}) wymagający nadzoru menadżerskiego. ", project.ProjectTitle) });
+                        db.SaveChanges();
+                    }
+                }                
 
                 var skills = db.Skills.ToList();
                 MultiSelectList listSkills = new MultiSelectList(skills, "SkillId", "SkillName");
