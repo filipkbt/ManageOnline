@@ -51,37 +51,7 @@
 
 
 
-<script type="text/javascript">
 
-
-    $(function () {
-        $("#sortable1, #sortable2, #sortable3").sortable({
-            connectWith: ".connectedSortable",
-            update: function () {
-                var columnFromKanban1 = $('#sortable1').sortable('toArray').toString();
-                var columnFromKanban2 = $('#sortable2').sortable('toArray').toString();
-                var columnFromKanban3 = $('#sortable3').sortable('toArray').toString();
-
-                alert("Order 1:" + columnFromKanban1 + "\n Order 2:" + columnFromKanban2+  "\, order3: " + columnFromKanban3); //Just showing update
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("UpdateTaskPosition","Task")',
-                    data: {
-                        column1: columnFromKanban1,
-                        column2: columnFromKanban2,
-                        column3: columnFromKanban3
-                    },
-                    success: function (data) {
-                        var toast = Metro.toast.create;
-                        toast("Status zadania został zaktualizowany", null, 3000, "bg-green fg-white");
-                    }
-                });
-
-            }
-        }).disableSelection();
-    });
-
-</script>
 <div class="card text-center">
 
     <div class="card-header">
@@ -93,18 +63,15 @@
                 <a onclick="location.href = '@Url.Action("KanbanBoard", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link active">Kanban board</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Pokój konferencyjny</a>
-            </li>
-            <li class="nav-item">
                 <a onclick="location.href = '@Url.Action("EmployeesFromProject", "Employees", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Pracownicy</a>
             </li>
             <li class="nav-item">
                 <a onclick="location.href = '@Url.Action("ProjectFiles", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Pliki</a>
             </li>
             @if (Model.ProjectStatus.ToString() == "Finished")
-    {
-        <button type="button" style="margin-left:10px;" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=Model.ProjectId}, null)'" class="btn btn-success float-right">Wystaw oceny za projekt</button>
-}
+            {
+                <button type="button" style="margin-left:10px;" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=Model.ProjectId}, null)'" class="btn btn-success float-right">Wystaw oceny za projekt</button>
+            }
         </ul>
     </div>
     @if (Model.ProjectStatus.ToString() == "InProgress")
@@ -115,11 +82,13 @@
             </div>
         </div>
     }
-
     <div class="col-12" id="kanbanBoard">
         <div class="row">
             <div class="col-4 kanbanColumn" style="cursor: pointer">
                 <h3>Do zrobienia</h3>
+                <div class="progress" style="height: 20px;">
+                    <div class="bar bg-warning" value="@ViewBag.CountNotStartedTasks" id="progressBarNotStartedTasks" role="progressbar" style="width: @ViewBag.progressBarNotStartedTasksWidth%;" aria-valuenow="@ViewBag.CountNotStartedTasks" aria-valuemin="0" aria-valuemax="@ViewBag.CountAllTasks"><label id="lblProgressBarNotStartedTasks">@ViewBag.CountNotStartedTasks</label>/@ViewBag.CountAllTasks</div>
+                </div>
                 <ul id="sortable1" style=" min-height:300px;" class="connectedSortable ui-sortable-handle">
                     @foreach (var task in Model.Tasks.Where(task => task.ColumnNumber == 1))
                     {
@@ -148,6 +117,9 @@
 
             <div class="col-4 kanbanColumn" style="cursor: pointer">
                 <h3>W trakcie</h3>
+                <div class="progress" style="height: 20px;">
+                    <div class="bar bg-info" id="progressBarInProgressTasks" value="@ViewBag.CountInProgressTasks" role="progressbar" style="width:@ViewBag.progressBarInProgressTasksWidth%;" aria-valuenow="@ViewBag.CountInProgressTasks" aria-valuemin="0" aria-valuemax="@ViewBag.CountAllTasks"><label id="lblProgressBarInProgressTasks">@ViewBag.CountInProgressTasks</label>/@ViewBag.CountAllTasks</div>
+                </div>
                 <ul id="sortable2" style="min-height:300px;" class="connectedSortable ui-sortable-handle ">
                     @foreach (var task in Model.Tasks.Where(task => task.ColumnNumber == 2))
                     {
@@ -174,6 +146,11 @@
             </div>
             <div class="col-4 kanbanColumn" style="cursor: pointer">
                 <h3>Zakończone</h3>
+                <div class="progress" style="height: 20px;">
+                    <div class="bar bg-success" id="progressBarFinishedTasks" value="@ViewBag.CountFinishedTasks" role="progressbar" style="width: @ViewBag.progressBarFinishedTasksWidth%" aria-valuenow="@ViewBag.CountFinishedTasks" aria-valuemin="0" aria-valuemax="@ViewBag.CountAllTasks">
+                        <label id="lblProgressBarFinishedTasks">@ViewBag.CountFinishedTasks</label>/@ViewBag.CountAllTasks
+                    </div>
+                </div>
                 <ul id="sortable3" style=" min-height:300px;" class="connectedSortable ui-sortable-handle ">
                     @foreach (var task in Model.Tasks.Where(task => task.ColumnNumber == 3))
                     {
@@ -202,6 +179,48 @@
 
 
 
+    <script type="text/javascript">
 
+    $(function () {
+        $("#sortable1, #sortable2, #sortable3").sortable({
+            connectWith: ".connectedSortable",
+            update: function () {
+                var columnFromKanban1 = $('#sortable1').sortable('toArray').toString();
+                var columnFromKanban2 = $('#sortable2').sortable('toArray').toString();
+                var columnFromKanban3 = $('#sortable3').sortable('toArray').toString();
+                var toast = Metro.toast.create;
+
+                var notStartedTasksWidth = $('#sortable1').sortable('toArray').length;
+                var inProgressTasksWidth = $('#sortable2').sortable('toArray').length;
+                var finishedTasksWidth = $('#sortable3').sortable('toArray').length;
+                var allTasks = notStartedTasksWidth + inProgressTasksWidth + finishedTasksWidth;
+                var ProjectId = '@Model.ProjectId'
+                alert("Order 1:" + columnFromKanban1 + "\n Order 2:" + columnFromKanban2 + "\, order3: " + columnFromKanban3);
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("UpdateTaskPosition","Task")',
+                    data: {
+                        column1: columnFromKanban1,
+                        column2: columnFromKanban2,
+                        column3: columnFromKanban3,
+                        projectId: ProjectId
+                    },
+                    success: function (data) {
+                        var toast = Metro.toast.create;
+                        document.getElementById('progressBarNotStartedTasks').style.width = ((notStartedTasksWidth / allTasks) * 100) + '%';
+                        document.getElementById('lblProgressBarNotStartedTasks').innerHTML = notStartedTasksWidth;
+                        document.getElementById('progressBarInProgressTasks').style.width = ((inProgressTasksWidth / allTasks) * 100) + '%';
+                        document.getElementById('lblProgressBarInProgressTasks').innerHTML = inProgressTasksWidth;
+                        document.getElementById('progressBarFinishedTasks').style.width = ((finishedTasksWidth / allTasks) * 100) + '%';
+                        document.getElementById('lblProgressBarFinishedTasks').innerHTML = finishedTasksWidth;
+                        toast("Status zadania został zaktualizowany", null, 3000, "bg-green fg-white");
+                    }
+                });
+
+            }
+        }).disableSelection();
+    });
+
+    </script>
 
 

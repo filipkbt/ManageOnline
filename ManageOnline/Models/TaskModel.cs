@@ -7,6 +7,14 @@ using System.Web;
 
 namespace ManageOnline.Models
 {
+
+    public enum TaskStatus : int
+    {
+        NotStarted,
+        InProgress,
+        Finished
+    }
+
     public class TaskModel
     {
         [Key]
@@ -27,6 +35,8 @@ namespace ManageOnline.Models
         public virtual UserBasicModel UserWhoAddTask { get; set; }
 
         public virtual UserBasicModel CurrentWorkerAtTask { get; set; }
+
+        public TaskStatus TaskStatus { get; set; }
 
         public int RowNumber { get; set; }
 

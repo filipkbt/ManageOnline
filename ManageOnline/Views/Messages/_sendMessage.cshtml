@@ -18,14 +18,14 @@
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="form-group">                               
                             <div class="col-md-12">
-                                Tytuł
+                                <h4>Tytuł</h4>
                                 @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                             </div>
                         </div>
                         <div class="form-group">                               
                             <div class="col-md-12">
-                                Treść
+                                <h4>Treść</h4>
                                 @Html.TextAreaFor(model => model.Content, new { htmlAttributes = new { @class = "form-control col", @cols = "100", @rows = "8" } })
                                 @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
                             </div>

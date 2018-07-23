@@ -61,13 +61,20 @@ namespace ManageOnline.Controllers
             return RedirectToAction("KanbanBoard", "ProjectPanel", new { projectId = ProjectId });
         }
 
-        public ActionResult UpdateTaskPosition(string column1, string column2, string column3)
+        public ActionResult UpdateTaskPosition(string column1, string column2, string column3, int projectId)
         {
             var column1Tasks = column1.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
             var column2Tasks = column2.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
             var column3Tasks = column3.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
             using (DbContextModel db = new DbContextModel())
             {
+                var tasks = db.Projects
+                              .Include("Tasks.CurrentWorkerAtTask")
+                              .Include("Tasks.UserWhoAddTask")
+                              .Include("UsersBelongsToProjectCollection")
+                              .Where(x => x.ProjectId.Equals(projectId))
+                              .FirstOrDefault();
+
                 int counter1 = 1;
                 foreach (var itemId in column1Tasks)
                 {
@@ -75,6 +82,7 @@ namespace ManageOnline.Controllers
                     task.RowNumber = counter1;
                     task.ColumnNumber = 1;
                     db.Entry(task).State = EntityState.Modified;
+                    task.TaskStatus = TaskStatus.NotStarted;                    
                     db.SaveChanges();
                     counter1++;
                 }
@@ -85,7 +93,8 @@ namespace ManageOnline.Controllers
                     TaskModel task = db.Tasks.Where(x => x.TaskId.Equals(itemId)).FirstOrDefault();
                     task.RowNumber = counter2;
                     task.ColumnNumber = 2;
-                    db.Entry(task).State = EntityState.Modified;
+                    task.TaskStatus = TaskStatus.InProgress;
+                    db.Entry(task).State = EntityState.Modified;                    
                     db.SaveChanges();
                     counter2++;
                 }
@@ -95,10 +104,12 @@ namespace ManageOnline.Controllers
                     TaskModel task = db.Tasks.Where(x => x.TaskId.Equals(itemId)).FirstOrDefault();
                     task.RowNumber = counter3;
                     task.ColumnNumber = 3;
-                    db.Entry(task).State = EntityState.Modified;
+                    task.TaskStatus = TaskStatus.Finished;
+                    db.Entry(task).State = EntityState.Modified;                    
                     db.SaveChanges();
                     counter3++;
                 }
+
             }
             return Json(true, JsonRequestBehavior.AllowGet);
         }
