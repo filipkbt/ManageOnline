@@ -83,6 +83,7 @@
                     <button type="button" class="btn navbar-btn text-bold text-white dropdown-toggle" data-toggle="dropdown" style="background-color: forestgreen">@HttpContext.Current.Session["Username"]</button>
 
                     <ul class="dropdown-menu" role="menu">
+                        <li class="navbar-brand">@Html.ActionLink("Zmień hasło", "ChangePassword", "Account")</li>
                         <li class="navbar-brand">@Html.ActionLink("Edytuj profil", "EditAccount", "Account")</li>
                         <li class="navbar-brand">@Html.ActionLink("Zobacz profil", "ProfileDetails", "Account", new { id = Convert.ToInt32(HttpContext.Current.Session["UserId"]) }, null)</li>
                         <li class="navbar-brand">@Html.ActionLink("Wyloguj się", "LogOut", "Account")</li>

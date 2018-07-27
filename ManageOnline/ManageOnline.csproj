@@ -615,6 +615,7 @@
     <Content Include="Views\ProjectPanel\ConferenceRoom.cshtml" />
     <Content Include="Views\Rate\_userRates.cshtml" />
     <Content Include="Views\Project\_sendInvitationToProject.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

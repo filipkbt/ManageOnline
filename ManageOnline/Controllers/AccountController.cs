@@ -88,6 +88,55 @@ namespace ManageOnline.Controllers
             return RedirectToAction("Login", "Account");
         }
 
+        public ActionResult ChangePassword()
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                int UserId = Convert.ToInt32(Session["UserId"]);
+
+                UserBasicModel userToEdit = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
+
+                return View(userToEdit);
+            }             
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(string confirmOldPassword, string newPassword, string confirmNewPassword)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                int UserId = Convert.ToInt32(Session["UserId"]);
+
+                UserBasicModel userToEdit = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
+                var oldPasswordHashed = Crypto.Hash(confirmOldPassword);
+
+                if((string.Compare(userToEdit.Password, oldPasswordHashed) == 0))
+                {
+                    if(newPassword == confirmNewPassword)
+                    {
+                        userToEdit.Password = Crypto.Hash(newPassword);
+                        userToEdit.ConfirmPassword = Crypto.Hash(confirmNewPassword);
+                        db.Entry(userToEdit).State = EntityState.Modified;
+                        db.SaveChanges();
+                        ViewBag.MessageInfoRight = "Hasło zostało zmienione.";
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.MessageInfoWrong = "Potwierdź poprawnie nowe hasło.";
+                        return View();
+                    }
+                }
+                else
+                {
+                    ViewBag.MessageInfoWrong = "Podałeś nieprawidłowe aktualne hasło.";
+                    return View();
+                }
+
+                return RedirectToAction("DashboardIndex", "Dashboard");
+            }
+        }
+
         public ActionResult EditAccount()
         {
             DbContextModel db = new DbContextModel();
