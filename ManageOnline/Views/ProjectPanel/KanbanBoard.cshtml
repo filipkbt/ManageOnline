@@ -95,19 +95,20 @@
                         <div class="uk-margin" id='@task.TaskId'>
                             <div class="uk-card uk-card-hover uk-card-default uk-card-small">
                                 <div class="uk-card-body">
-                                    <h3 class="uk-card-title uk-margin-remove">
-                                        @task.TaskName
-                                    </h3>
-                                    <p class="uk-text-meta uk-margin-remove">Lorem ipsum dolor sit amet</p>
-                                </div>
-                                <div class="uk-card-footer uk-background-muted">
+                                    <h3 class="uk-card-title uk-margin-remove">@task.TaskName</h3>
+                                    <p class="uk-text-meta uk-margin-remove"><b>Data dodania:</b> @task.TaskCreationDate</p>
                                     @if (task.CurrentWorkerAtTask != null)
                                     {
-                                        <ul class="user-group">
-                                            <img class="uk-border-circle uk-box-shadow-hover-medium" style="height: 40px; width: 40px" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)">
-                                            bebe
-                                        </ul>
+                                    <ul class="user-group">
+                                        <img class="uk-border-circle uk-box-shadow-hover-medium" style="height: 40px; width: 40px" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)">
+                                        @task.CurrentWorkerAtTask.Username
+                                    </ul>
                                     }
+                                </div>
+                                <div class="uk-card-footer uk-background-muted">
+                                    <div class="row">
+                                        @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })<div class="btn btn-sm btn-info col-4" style="margin-right:5px;">Edytuj</div><div class="btn btn-sm btn-danger col-3" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -126,18 +127,20 @@
                         <div class="uk-margin" id='@task.TaskId'>
                             <div class="uk-card uk-card-hover uk-card-default uk-card-small">
                                 <div class="uk-card-body">
-                                    <h3 class="uk-card-title uk-margin-remove">Job title <small class="uk-text-muted uk-float-right">#1001</small></h3>
-                                    <p class="uk-text-meta uk-margin-remove">Lorem ipsum dolor sit amet</p>
+                                    <h3 class="uk-card-title uk-margin-remove">@task.TaskName</h3>
+                                    <p class="uk-text-meta uk-margin-remove"><b>Data Dodania:</b> @task.TaskCreationDate<br /><b>Data rozpoczęcia:</b> @task.TaskStartDate</p>
                                     @if (task.CurrentWorkerAtTask != null)
                                     {
                                         <ul class="user-group">
                                             <img class="uk-border-circle uk-box-shadow-hover-medium" style="height: 40px; width: 40px" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)">
-                                            bebe
+                                            @task.CurrentWorkerAtTask.Username
                                         </ul>
                                     }
                                 </div>
                                 <div class="uk-card-footer uk-background-muted">
-                                    bebe
+                                    <div class="row">
+                                        @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })<div class="btn btn-sm btn-info col-4" style="margin-right:5px;">Edytuj</div><div class="btn btn-sm btn-danger col-3" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -157,17 +160,20 @@
                         <div class="uk-margin" id='@task.TaskId'>
                             <div class="uk-card uk-card-hover uk-card-default uk-card-small">
                                 <div class="uk-card-body">
-                                    <h3 class="uk-card-title uk-margin-remove">Job title <small class="uk-text-muted uk-float-right">#1001</small></h3>
-                                    <p class="uk-text-meta uk-margin-remove">Lorem ipsum dolor sit amet</p>
+                                    <h3 class="uk-card-title uk-margin-remove">@task.TaskName</h3>
+                                    <p class="uk-text-meta uk-margin-remove"><b>Data dodania:</b> @task.TaskCreationDate<br /><b>Data rozpoczęcia:</b> @task.TaskStartDate<br /><b>Data zakończenia:</b> @task.TaskCreationDate </p>
                                     @if (task.CurrentWorkerAtTask != null)
                                     {
-                                        <ul class="user-group">
-                                            <img class="uk-border-circle uk-box-shadow-hover-medium" style="height: 40px; width: 40px" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)">
-                                            bebe
-                                        </ul>}
+                                    <ul class="user-group">
+                                        <img class="uk-border-circle uk-box-shadow-hover-medium" style="height: 40px; width: 40px" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)">
+                                        @task.CurrentWorkerAtTask.Username
+                                    </ul>   
+                                    }
                                 </div>
                                 <div class="uk-card-footer uk-background-muted">
-                                    bebe
+                                    <div class="row">
+                                        @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })<div class="btn btn-sm btn-info col-4" style="margin-right:5px;">Edytuj</div><div class="btn btn-sm btn-danger col-3" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -194,7 +200,6 @@
                 var finishedTasksWidth = $('#sortable3').sortable('toArray').length;
                 var allTasks = notStartedTasksWidth + inProgressTasksWidth + finishedTasksWidth;
                 var ProjectId = '@Model.ProjectId'
-                alert("Order 1:" + columnFromKanban1 + "\n Order 2:" + columnFromKanban2 + "\, order3: " + columnFromKanban3);
                 $.ajax({
                     type: "POST",
                     url: '@Url.Action("UpdateTaskPosition","Task")',

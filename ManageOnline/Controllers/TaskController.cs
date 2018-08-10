@@ -19,7 +19,7 @@ namespace ManageOnline.Controllers
             TaskModel task = new TaskModel();
             task.CurrentWorkerAtTask = new UserBasicModel();
             task.ProjectId = projectId;
-            using(DbContextModel db = new DbContextModel())
+            using (DbContextModel db = new DbContextModel())
             {
                 ICollection<UserBasicModel> usersBelongsToProject = new Collection<UserBasicModel>();
 
@@ -51,10 +51,11 @@ namespace ManageOnline.Controllers
                 task.CurrentWorkerAtTask = db.UserAccounts.Where(x => x.UserId.Equals(task.CurrentWorkerAtTask.UserId)).FirstOrDefault();
                 task.RowNumber = 1;
                 task.ColumnNumber = 1;
+                task.TaskCreationDate = DateTime.Now;
                 db.Tasks.AddOrUpdate(task);
-                if(task.UserWhoAddTask != task.CurrentWorkerAtTask)
+                if (task.UserWhoAddTask != task.CurrentWorkerAtTask)
                 {
-                    db.Notifications.Add(new NotificationModel { Project = task.Project, NotificationType = NotificationTypes.NoweZadanie, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = task.CurrentWorkerAtTask, Title="Nowe zadanie", Content = string.Format("Użytkownik {0} przypisał Ci zadanie: {1}", task.UserWhoAddTask.Username, task.TaskName) });
+                    db.Notifications.Add(new NotificationModel { Project = task.Project, NotificationType = NotificationTypes.NoweZadanie, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = task.CurrentWorkerAtTask, Title = "Nowe zadanie", Content = string.Format("Użytkownik {0} przypisał Ci zadanie: {1}", task.UserWhoAddTask.Username, task.TaskName) });
                 }
                 db.SaveChanges();
             }
@@ -73,7 +74,7 @@ namespace ManageOnline.Controllers
                               .Include("Tasks.UserWhoAddTask")
                               .Include("UsersBelongsToProjectCollection")
                               .Where(x => x.ProjectId.Equals(projectId))
-                              .FirstOrDefault();
+                              .ToList();
 
                 int counter1 = 1;
                 foreach (var itemId in column1Tasks)
@@ -82,7 +83,7 @@ namespace ManageOnline.Controllers
                     task.RowNumber = counter1;
                     task.ColumnNumber = 1;
                     db.Entry(task).State = EntityState.Modified;
-                    task.TaskStatus = TaskStatus.NotStarted;                    
+                    task.TaskStatus = TaskStatus.NotStarted;
                     db.SaveChanges();
                     counter1++;
                 }
@@ -94,7 +95,11 @@ namespace ManageOnline.Controllers
                     task.RowNumber = counter2;
                     task.ColumnNumber = 2;
                     task.TaskStatus = TaskStatus.InProgress;
-                    db.Entry(task).State = EntityState.Modified;                    
+                    if (task.TaskStartDate == null)
+                    {
+                        task.TaskStartDate = DateTime.Now;
+                    }
+                    db.Entry(task).State = EntityState.Modified;
                     db.SaveChanges();
                     counter2++;
                 }
@@ -105,13 +110,46 @@ namespace ManageOnline.Controllers
                     task.RowNumber = counter3;
                     task.ColumnNumber = 3;
                     task.TaskStatus = TaskStatus.Finished;
-                    db.Entry(task).State = EntityState.Modified;                    
+                    if (task.TaskFinishDate == null)
+                    {
+                        task.TaskFinishDate = DateTime.Now;
+                    }
+                    db.Entry(task).State = EntityState.Modified;
                     db.SaveChanges();
                     counter3++;
                 }
 
             }
             return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult DeleteTask(int projectId, int taskId)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                var task = db.Tasks.Where(x => x.TaskId == taskId).FirstOrDefault();
+
+                db.Tasks.Remove(task);
+                db.SaveChanges();
+
+                return RedirectToAction("KanbanBoard", "ProjectPanel", new { projectId = projectId });
+
+            }
+        }
+
+        public ActionResult ShowTaskDetails(int taskId)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                var task = db.Tasks.Include("UserWhoAddTask")
+                                         .Include("CurrentWorkerAtTask")
+                                         .Include("Comments")
+                                         .Include("Comments.UserWhoAddComment")
+                                         .Include("Comments.ProjectWhereCommentBelong")
+                                         .Where(x => x.TaskId.Equals(taskId)).FirstOrDefault();
+
+                return PartialView("_showTaskDetails", task);
+            }
         }
     }
 }

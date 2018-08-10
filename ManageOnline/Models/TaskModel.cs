@@ -30,11 +30,15 @@ namespace ManageOnline.Models
 
         public DateTime TaskCreationDate { get; set; }
 
+        public DateTime? TaskStartDate { get; set; }
+
         public DateTime? TaskFinishDate { get; set; }
 
         public virtual UserBasicModel UserWhoAddTask { get; set; }
 
         public virtual UserBasicModel CurrentWorkerAtTask { get; set; }
+
+        public virtual ICollection<CommentModel> Comments { get; set; }
 
         public TaskStatus TaskStatus { get; set; }
 

@@ -44,8 +44,8 @@ namespace ManageOnline.Controllers
                 db.SaveChanges();
                 return PartialView("_messageDetails", message);
             }
-
         }
+
         public ActionResult SendMessage(int userId)
         {
             MessageModel message = new MessageModel();

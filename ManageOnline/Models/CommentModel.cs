@@ -11,14 +11,12 @@ namespace ManageOnline.Models
         public int CommentId { get; set; }
 
         public int UserId { get; set; }
-        public UserBasicModel CommentUser { get; set; }
+        public UserBasicModel UserWhoAddComment { get; set; }
 
         public string CommentDescription { get; set; }
 
-        public int TaskId { get; set; }
         public virtual TaskModel TaskWhereCommentBelong { get; set; }
 
-        public int ProjectId { get; set; }
         public virtual ProjectModel ProjectWhereCommentBelong { get; set; }
 
         public DateTime DateWhenCommentWasAdded { get; set; }
