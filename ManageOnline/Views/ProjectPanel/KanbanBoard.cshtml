@@ -107,7 +107,7 @@
                                 </div>
                                 <div class="uk-card-footer uk-background-muted">
                                     <div class="row">
-                                        @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })<div class="btn btn-sm btn-info col-4" style="margin-right:5px;">Edytuj</div><div class="btn btn-sm btn-danger col-3" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
+                                        @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })@Html.Action("EditTask", "Task", new { taskId = task.TaskId })<div class="btn btn-sm btn-danger col-3" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
                                     </div>
                                 </div>
                             </div>
@@ -139,7 +139,7 @@
                                 </div>
                                 <div class="uk-card-footer uk-background-muted">
                                     <div class="row">
-                                        @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })<div class="btn btn-sm btn-info col-4" style="margin-right:5px;">Edytuj</div><div class="btn btn-sm btn-danger col-3" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
+                                        @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })@Html.Action("EditTask", "Task", new { taskId = task.TaskId })<div class="btn btn-sm btn-danger col-3" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
                                     </div>
                                 </div>
                             </div>
@@ -172,7 +172,7 @@
                                 </div>
                                 <div class="uk-card-footer uk-background-muted">
                                     <div class="row">
-                                        @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })<div class="btn btn-sm btn-info col-4" style="margin-right:5px;">Edytuj</div><div class="btn btn-sm btn-danger col-3" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
+                                        @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })@Html.Action("EditTask", "Task", new { taskId = task.TaskId })<div class="btn btn-sm btn-danger col-3" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
                                     </div>
                                 </div>
                             </div>

@@ -51,8 +51,7 @@ namespace ManageOnline.Controllers
                 task.CurrentWorkerAtTask = db.UserAccounts.Where(x => x.UserId.Equals(task.CurrentWorkerAtTask.UserId)).FirstOrDefault();
                 task.RowNumber = 1;
                 task.ColumnNumber = 1;
-                task.TaskCreationDate = DateTime.Now;
-                db.Tasks.AddOrUpdate(task);
+                db.Tasks.Add(task);
                 if (task.UserWhoAddTask != task.CurrentWorkerAtTask)
                 {
                     db.Notifications.Add(new NotificationModel { Project = task.Project, NotificationType = NotificationTypes.NoweZadanie, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = task.CurrentWorkerAtTask, Title = "Nowe zadanie", Content = string.Format("Użytkownik {0} przypisał Ci zadanie: {1}", task.UserWhoAddTask.Username, task.TaskName) });
@@ -149,6 +148,61 @@ namespace ManageOnline.Controllers
                                          .Where(x => x.TaskId.Equals(taskId)).FirstOrDefault();
 
                 return PartialView("_showTaskDetails", task);
+            }
+        }
+
+        public ActionResult EditTask(int taskId)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                var task = db.Tasks.Include("UserWhoAddTask")
+                                         .Include("CurrentWorkerAtTask")
+                                         .Include("Project")
+                                         .Include("Comments")                                         
+                                         .Include("Comments.UserWhoAddComment")
+                                         .Include("Comments.ProjectWhereCommentBelong")
+                                         .Where(x => x.TaskId.Equals(taskId)).FirstOrDefault();
+
+
+                ICollection<UserBasicModel> usersBelongsToProject = new Collection<UserBasicModel>();
+
+                var project = db.Projects.Where(x => x.ProjectId.Equals(task.Project.ProjectId)).FirstOrDefault();
+                project.UsersBelongsToProjectArray = project.UsersBelongsToProject.Split(',').ToArray();
+
+                foreach (var userId in project.UsersBelongsToProjectArray)
+                {
+                    int userIdInt = Convert.ToInt32(userId);
+                    var user = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
+                    usersBelongsToProject.Add(user);
+                }
+
+                ViewBag.Users = usersBelongsToProject;
+
+                return PartialView("_editTask", task);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult EditTask(TaskModel task)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                var taskToEdit = db.Tasks.Include("UserWhoAddTask")
+                                         .Include("CurrentWorkerAtTask")
+                                         .Include("Project")
+                                         .Include("Comments")
+                                         .Include("Comments.UserWhoAddComment")
+                                         .Include("Comments.ProjectWhereCommentBelong")
+                                         .Where(x => x.TaskId.Equals(task.TaskId)).FirstOrDefault();
+
+                taskToEdit.TaskName = task.TaskName;
+                taskToEdit.TaskDescription = task.TaskDescription;
+                taskToEdit.CurrentWorkerAtTask = db.UserAccounts.Where(x=> x.UserId == task.CurrentWorkerAtTask.UserId).FirstOrDefault();
+
+                db.Entry(taskToEdit).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return RedirectToAction("KanbanBoard", "ProjectPanel", new { projectId = taskToEdit.Project.ProjectId});
             }
         }
     }

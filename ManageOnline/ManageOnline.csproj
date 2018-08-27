@@ -629,6 +629,7 @@
     <Content Include="Views\Project\_sendInvitationToProject.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Task\_showTaskDetails.cshtml" />
+    <Content Include="Views\Task\_editTask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
