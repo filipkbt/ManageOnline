@@ -1,0 +1,77 @@
+﻿@model IEnumerable<ManageOnline.Models.CommentModel>
+
+<div class="row bootstrap snippets">
+    <div class="col col-md-offset-2 ">
+        <div class="comment-wrapper">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3>Komentarze</h3> 
+                </div>
+                <div class="panel-body">
+                        @Html.Action("AddCommentToTheTask","Comments", new { taskId = ViewBag.TaskId, projectId = ViewBag.ProjectId})
+                    <hr>
+                    <ul class="media-list">
+                        @if (Model != null)
+    {
+        //foreach (var comment in Model)
+        //{
+                    <li class="media row">
+                        <a href="#" class="col-2">
+                            <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
+                        </a>
+                        <div class="media-body text-left col-10" style=" margin-bottom:3px;">
+                            <span class="text-muted ">
+                                <small class="text-muted">30 min ago</small>
+                            </span>
+                            <strong class="text-success">imieee</strong>
+                            <p style="margin-top:5px;">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Lorem ipsum dolor sit amet, <a href="#">#consecteturadipiscing </a>#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing #consecteturadipiscing#consecteturadipiscingv#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing #consecteturadipiscing #consecteturadipiscing #consecteturadipiscing.
+                            </p>
+                        </div>
+                    </li>
+                    <li class="media row">
+                        <a href="#" class="col-2">
+                            <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
+                        </a>
+                        <div class="media-body text-left col-10" style=" margin-bottom:3px;">
+                            <span class="text-muted ">
+                                <small class="text-muted">30 min ago</small>
+                            </span>
+                            <strong class="text-success">imieee</strong>
+                            <p style="margin-top:5px;">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Lorem ipsum dolor sit amet, <a href="#">#consecteturadipiscing </a>#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing #consecteturadipiscing#consecteturadipiscingv#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing #consecteturadipiscing #consecteturadipiscing #consecteturadipiscing.
+                            </p>
+                        </div>
+                    </li>
+                    <li class="media row">
+                        <a href="#" class="col-2">
+                            <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
+                        </a>
+                        <div class="media-body text-left col-10" style=" margin-bottom:3px;">
+                            <span class="text-muted ">
+                                <small class="text-muted">30 min ago</small>
+                            </span>
+                            <strong class="text-success">imieee</strong>
+                            <p style="margin-top:5px;">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                Lorem ipsum dolor sit amet, <a href="#">#consecteturadipiscing </a>#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing #consecteturadipiscing#consecteturadipiscingv#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing #consecteturadipiscing #consecteturadipiscing #consecteturadipiscing.
+                            </p>
+                        </div>
+                    </li>
+//}
+
+}
+else
+{
+                    <h2>Brak komentarzy</h2>
+}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

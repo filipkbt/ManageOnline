@@ -49,77 +49,14 @@
                     </div>
                 </center>
                 <hr />
-                <div class="row">
-                    <div class="comments col justify-content-lg-start"  id="comments">
-                        <h3 class="mb-2"><b>Comments</b></h3>
-                        <!-- comment -->
-                        <div class="comment mb-2 row ">
-                            <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
-                                <a href=""><img class="mx-auto rounded-circle img-fluid" src="http://demos.themes.guide/bodeo/assets/images/users/m103.jpg" alt="avatar"></a>
-                            </div>
-                            <div class="comment-content col-md-11 col-sm-10 border border-info rounded">
-                                <h6 class="small comment-meta"><a href="#">admin</a> Today, 2:38</h6>
-                                <div class="comment-body">
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
-                                        <br>
-                                        <a href="" class="text-right small"><i class="ion-reply"></i> Reply</a>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- reply is indented -->
-                            <div class="comment-reply col-md-11 offset-md-1 col-sm-10 offset-sm-2" style="margin-top:10px;">
-                                <div class="row">
-                                    <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
-                                        <a href=""><img class="mx-auto rounded-circle img-fluid" src="http://demos.themes.guide/bodeo/assets/images/users/m101.jpg" alt="avatar"></a>
-                                    </div>
-                                    <div class="comment-content col-md-11 col-sm-10 col-12">
-                                        <h6 class="small comment-meta"><a href="#">phildownney</a> Today, 12:31</h6>
-                                        <div class="comment-body">
-                                            <p>
-                                                Really?? Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitat.
-                                                <br>
-                                                <a href="" class="text-right small"><i class="ion-reply"></i> Reply</a>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /reply is indented -->
-                        </div>
-                        <!-- /comment -->
-                        <!-- comment -->
-                        <div class="comment mb-2 row">
-                            <div class="comment-avatar col-md-1 col-sm-2 text-center pr-1">
-                                <a href=""><img class="mx-auto rounded-circle img-fluid" src="http://demos.themes.guide/bodeo/assets/images/users/w102.jpg" alt="avatar"></a>
-                            </div>
-                            <div class="comment-content col-md-11 col-sm-10">
-                                <h6 class="small comment-meta"><a href="#">maslarino</a> Yesterday, 5:03 PM</h6>
-                                <div class="comment-body">
-                                    <p>
-                                        Sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
-                                        <br>
-                                        <a href="" class="text-right small"><i class="ion-reply"></i> Reply</a>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /comment -->
-                        <div class="row pt-2">
-                            <div class="col-12">
-                                <a class="btn btn-sm btn-primary" style="margin-bottom:10px;">Comment</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="form-group">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
-                    </div>
-                </div>
+            @Html.Action("ShowComments", "Comments", new { taskId = Model.TaskId, projectId = Model.Project.ProjectId })
             </div>
+        </div>
+        <div class="modal-footer">
+            <div class="form-group">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
             </div>
+        </div>
     </div>
 </div>
 <button type="button" div class="btn btn-sm btn-info col-4" style="margin-right:5px;" data-toggle="modal" data-target="#showTaskDetails_@Model.TaskId">

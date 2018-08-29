@@ -151,6 +151,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -418,6 +419,10 @@
     <Compile Include="Migrations\201808092346339_ChangeCommentModel.Designer.cs">
       <DependentUpon>201808092346339_ChangeCommentModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808291908201_AddCommentWhereCommentBelongToCommentModel.cs" />
+    <Compile Include="Migrations\201808291908201_AddCommentWhereCommentBelongToCommentModel.Designer.cs">
+      <DependentUpon>201808291908201_AddCommentWhereCommentBelongToCommentModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -630,6 +635,9 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Task\_showTaskDetails.cshtml" />
     <Content Include="Views\Task\_editTask.cshtml" />
+    <Content Include="Views\Comments\_showComments.cshtml" />
+    <Content Include="Views\Comments\_addCommentToTheComment.cshtml" />
+    <Content Include="Views\Comments\_addCommentToTheTask.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -833,6 +841,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808092346339_ChangeCommentModel.resx">
       <DependentUpon>201808092346339_ChangeCommentModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808291908201_AddCommentWhereCommentBelongToCommentModel.resx">
+      <DependentUpon>201808291908201_AddCommentWhereCommentBelongToCommentModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

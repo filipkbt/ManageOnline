@@ -20,5 +20,8 @@ namespace ManageOnline.Models
         public virtual ProjectModel ProjectWhereCommentBelong { get; set; }
 
         public DateTime DateWhenCommentWasAdded { get; set; }
+
+        public virtual CommentModel CommentConnectedWithSelectedComment { get; set; }
+
     }
 }

@@ -143,6 +143,7 @@ namespace ManageOnline.Controllers
                 var task = db.Tasks.Include("UserWhoAddTask")
                                          .Include("CurrentWorkerAtTask")
                                          .Include("Comments")
+                                         .Include("Project")
                                          .Include("Comments.UserWhoAddComment")
                                          .Include("Comments.ProjectWhereCommentBelong")
                                          .Where(x => x.TaskId.Equals(taskId)).FirstOrDefault();
@@ -162,7 +163,6 @@ namespace ManageOnline.Controllers
                                          .Include("Comments.UserWhoAddComment")
                                          .Include("Comments.ProjectWhereCommentBelong")
                                          .Where(x => x.TaskId.Equals(taskId)).FirstOrDefault();
-
 
                 ICollection<UserBasicModel> usersBelongsToProject = new Collection<UserBasicModel>();
 
