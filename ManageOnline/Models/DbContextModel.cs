@@ -19,6 +19,8 @@ namespace ManageOnline.Models
 
         public DbSet<TaskModel> Tasks { get; set; }
 
+        public DbSet<ScrumSprintModel> ScrumSprints { get; set; }
+
         public DbSet<OfferToProjectModel> OfferToProjectModels { get; set; }
 
         public DbSet<CategoriesModel> Categories { get; set; }

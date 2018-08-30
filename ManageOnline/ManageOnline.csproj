@@ -427,6 +427,10 @@
     <Compile Include="Migrations\201808301042284_removeUserIdFromCommentModel.Designer.cs">
       <DependentUpon>201808301042284_removeUserIdFromCommentModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808302138107_AddScrumSprintModel.cs" />
+    <Compile Include="Migrations\201808302138107_AddScrumSprintModel.Designer.cs">
+      <DependentUpon>201808302138107_AddScrumSprintModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -438,6 +442,7 @@
     <Compile Include="Models\OfferToProjectModel.cs" />
     <Compile Include="Models\ProjectModel.cs" />
     <Compile Include="Models\RateModel.cs" />
+    <Compile Include="Models\ScrumSprintModel.cs" />
     <Compile Include="Models\SkillsModel.cs" />
     <Compile Include="Models\TaskModel.cs" />
     <Compile Include="Models\UserBasicModel.cs" />
@@ -642,6 +647,7 @@
     <Content Include="Views\Comments\_showComments.cshtml" />
     <Content Include="Views\Comments\_addCommentToTheComment.cshtml" />
     <Content Include="Views\Comments\_addCommentToTheTask.cshtml" />
+    <Content Include="Views\ProjectPanel\ScrumBoard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -851,6 +857,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808301042284_removeUserIdFromCommentModel.resx">
       <DependentUpon>201808301042284_removeUserIdFromCommentModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808302138107_AddScrumSprintModel.resx">
+      <DependentUpon>201808302138107_AddScrumSprintModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

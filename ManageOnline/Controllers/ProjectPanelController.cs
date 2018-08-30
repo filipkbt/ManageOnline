@@ -44,7 +44,7 @@ namespace ManageOnline.Controllers
                         project.SkillsRequiredToProjectCollection.Add(skill);
                     }
                 }
-
+                ViewBag.ProjectManagementMethodology = project.ProjectManagementMethodology;
                 return View(project);
             }
         }
@@ -77,6 +77,34 @@ namespace ManageOnline.Controllers
             }
         }
 
+        public ActionResult ScrumBoard(int projectId)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                var project = db.Projects
+                    .Include("ProjectOwner")
+                    .Include("SkillsRequiredToProjectCollection")
+                    .Include("CategoriesModel")
+                    .Include("Tasks.CurrentWorkerAtTask")
+                    .Include("Tasks.UserWhoAddTask")
+                    .Include("UsersBelongsToProjectCollection")
+                    .Where(x => x.ProjectId.Equals(projectId))
+                    .FirstOrDefault();
+
+                ViewBag.CountAllTasks = project.Tasks.Count();
+                ViewBag.CountNotStartedTasks = project.Tasks.Where(x => x.TaskStatus == TaskStatus.NotStarted).Count();
+                ViewBag.CountInProgressTasks = project.Tasks.Where(x => x.TaskStatus == TaskStatus.InProgress).Count();
+                ViewBag.CountFinishedTasks = project.Tasks.Where(x => x.TaskStatus == TaskStatus.Finished).Count();
+                var progressBarNotStartedTasksWidth = (((double)ViewBag.CountNotStartedTasks / (double)ViewBag.CountAllTasks) * 100).ToString();
+                ViewBag.progressBarNotStartedTasksWidth = progressBarNotStartedTasksWidth.Replace(",", ".");
+                var progressBarInProgressTasksWidth = (((double)ViewBag.CountInProgressTasks / (double)ViewBag.CountAllTasks) * 100).ToString();
+                ViewBag.progressBarInProgressTasksWidth = progressBarInProgressTasksWidth.Replace(",", ".");
+                var progressBarFinishedTasksWidth = (((double)ViewBag.CountFinishedTasks / (double)ViewBag.CountAllTasks) * 100).ToString();
+                ViewBag.progressBarFinishedTasksWidth = progressBarFinishedTasksWidth.Replace(",", ".");
+                return View(project);
+            }
+        }
+
         public ActionResult ProjectFiles(int projectId)
         {
             using(DbContextModel db = new DbContextModel())
@@ -84,6 +112,7 @@ namespace ManageOnline.Controllers
                 var project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
                 ViewBag.ProjectStatus = project.ProjectStatus;
                 ViewBag.ProjectId = projectId;
+                ViewBag.ProjectManagementMethodology = project.ProjectManagementMethodology;
                 var files = db.Files.Include("Project")
                                     .Include("UserWhoAddFile")
                                     .OrderBy(x => x.DateUploadFile)

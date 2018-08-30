@@ -24,7 +24,7 @@
                             <p class="card-text"><b>Profesja: <br /></b>@Model.DisplayedRole</p>
                             <p class="card-text"><b>Projekty w toku: </b><br />@Model.ProjectsInProgress</p>
                             <p class="card-text"><b>Zakończone projekty: </b><br />@Model.FinishedProjects</p>
-                            <p class="card-text"><b>Średnia ocen: </b><br />@Model.AverageRate</p>
+                            <p class="card-text" style="margin-bottom:5px;"><b>Średnia ocen: </b><br />@Model.AverageRate</p>
                             @if (HttpContext.Current.Session["UserId"].ToString() != Model.UserId.ToString())
     {
                         @Html.Action("SendMessage", "Messages", new { userId = Model.UserId })

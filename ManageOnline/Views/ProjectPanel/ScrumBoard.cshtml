@@ -1,0 +1,33 @@
+﻿@model IEnumerable<ManageOnline.Models.CommentModel>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CommentDescription)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateWhenCommentWasAdded)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CommentDescription)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateWhenCommentWasAdded)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.CommentId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.CommentId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.CommentId })
+        </td>
+    </tr>
+}
+
+</table>

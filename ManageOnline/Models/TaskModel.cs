@@ -42,8 +42,10 @@ namespace ManageOnline.Models
 
         public TaskStatus TaskStatus { get; set; }
 
+        public virtual ScrumSprintModel ScrumSprintWhereTaskBelong { get; set; }
+
         public int RowNumber { get; set; }
 
-        public int ColumnNumber { get; set; }
+        public int? ColumnNumber { get; set; }
     }
 }

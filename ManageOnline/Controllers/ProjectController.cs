@@ -303,6 +303,8 @@ namespace ManageOnline.Controllers
 
                 project.UsersBelongsToProjectArray = project.UsersBelongsToProject.Split(',').ToArray();
 
+
+
                 foreach (var userId in project.UsersBelongsToProjectArray)
                 {
                     int userIdInt = Convert.ToInt32(userId);
@@ -313,6 +315,12 @@ namespace ManageOnline.Controllers
                     db.SaveChanges();
                 }
                 var ProjectOwner = db.UserAccounts.Where(x => x.UserId.Equals(project.ProjectOwner.UserId)).FirstOrDefault();
+
+                if (project.ProjectManagementMethodology == 0)
+                {
+                    project.ProjectManagementMethodology = ProjectManagementMethodology.Kanban;
+                }
+
                 db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.RozpoczecieProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = ProjectOwner, Title = "Rozpoczęcie projektu", Content = string.Format("Projekt {0} został rozpoczęty.", project.ProjectTitle) });
                 ProjectOwner.ProjectsInProgress++;
                 db.Entry(ProjectOwner).State = EntityState.Modified;
@@ -636,11 +644,11 @@ namespace ManageOnline.Controllers
                 db.SaveChanges();
                 TempData["SuccessfulSendInvitation"] = "Zaproszenie do projektu zostało przesłane.";
                 return RedirectToAction("ProfileDetails","Account", new { id = notificationInvitationToProject.NotificationReceiver.UserId });
-            }
-            
+            }            
         }
 
-        public ActionResult ConnectProjectWithManager(int projectId)
+        [HttpPost]
+        public ActionResult ConnectProjectWithManager(int projectId, ManageOnline.Models.ProjectManagementMethodology projectManagementMethodology)
         {
             int managerId = Convert.ToInt32(Session["UserId"]);
 
@@ -648,11 +656,11 @@ namespace ManageOnline.Controllers
             {
                 var project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
                 var manager = db.UserAccounts.Where(x => x.UserId.Equals(managerId)).FirstOrDefault();
+                project.ProjectManagementMethodology = projectManagementMethodology;
                 project.Manager = manager;
                 db.Entry(project).State = EntityState.Modified;
                 db.SaveChanges();
             }
-
             return RedirectToAction("ProjectDetails", "Project", new { id = projectId });
         }
         public ActionResult SuccessfullAddProject()

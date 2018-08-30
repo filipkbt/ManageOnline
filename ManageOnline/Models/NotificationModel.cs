@@ -17,7 +17,9 @@ namespace ManageOnline.Models
         ZakonczenieProjektu, //
         NoweZadanie, //
         DodaniePlikuDoProjektu, //
-        NowyProjektZMenadzerem
+        NowyProjektZMenadzerem,
+        NowyKomentarzDoZadania, 
+        NowyKomentarzDoKomentarza
     }
 
     public class NotificationModel

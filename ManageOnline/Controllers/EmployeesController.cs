@@ -128,7 +128,7 @@ namespace ManageOnline.Controllers
             {
                 var project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
                 project.UsersBelongsToProjectArray = project.UsersBelongsToProject.Split(',').ToArray();
-
+                ViewBag.ProjectManagementMethodology = project.ProjectManagementMethodology;
                 foreach (var userId in project.UsersBelongsToProjectArray)
                 {
                     int userIdInt = Convert.ToInt32(userId);

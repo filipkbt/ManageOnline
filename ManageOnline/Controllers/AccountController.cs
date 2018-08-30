@@ -132,8 +132,6 @@ namespace ManageOnline.Controllers
                     ViewBag.MessageInfoWrong = "Podałeś nieprawidłowe aktualne hasło.";
                     return View();
                 }
-
-                return RedirectToAction("DashboardIndex", "Dashboard");
             }
         }
 

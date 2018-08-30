@@ -18,6 +18,12 @@ namespace ManageOnline.Models
         Finished
     }
 
+    public enum ProjectManagementMethodology
+    {
+        Kanban = 1,
+        Scrum = 2
+    }
+
     public class ProjectModel
     {
         [Key]
@@ -57,6 +63,10 @@ namespace ManageOnline.Models
         public virtual ICollection<RateModel> RatesCollection { get; set; }
 
         public ProjectStatus ProjectStatus { get; set; }
+
+        public ProjectManagementMethodology ProjectManagementMethodology { get; set; }
+
+        public virtual ICollection<ScrumSprintModel> ScrumSprint { get; set; }
 
         public string ProjectBudget { get; set; }
 

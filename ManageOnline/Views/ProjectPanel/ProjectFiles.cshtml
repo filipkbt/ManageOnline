@@ -7,63 +7,70 @@
 
 <div class="card">
 
-<div class="card-header">
-    <ul class="nav nav-pills card-header-pills">
-        <li class="nav-item">
-            <a onclick="location.href = '@Url.Action("ProjectPanel", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link">Informacje</a>
-        </li>
-        <li class="nav-item">
-            <a onclick="location.href = '@Url.Action("KanbanBoard", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link ">Kanban board</a>
-        </li>
-        <li class="nav-item">
-            <a onclick="location.href = '@Url.Action("EmployeesFromProject", "Employees", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link ">Pracownicy</a>
-        </li>
-        <li class="nav-item">
-            <a onclick="location.href = '@Url.Action("ProjectFiles", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link active">Pliki</a>
-        </li>
-        @if (ViewBag.ProjectStatus.ToString() == "Finished")
-        {
-            <button type="button" style="margin-left:10px;" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=ViewBag.ProjectId}, null)'" class="btn btn-success float-right">Wystaw oceny za projekt</button>
-        }
-    </ul>
-</div>
-<div class=" card-body">
-    @Html.Action("UploadFile", "ProjectPanel", new { projectId = ViewBag.ProjectId })
-    <table class="table table-hover">
-        <thead class="thead-dark">
-            <tr>
-                <th>
-                    Dodane przez:
-                </th>
-                <th>
-                    Nazwa
-                </th>
-                <th>
-                    Data dodania
-                </th>
-                <th></th>
-            </tr>
-        </thead>       
+    <div class="card-header">
+        <ul class="nav nav-pills card-header-pills">
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("ProjectPanel", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link">Informacje</a>
+            </li>
+            <li class="nav-item">
+                @if (ViewBag.ProjectManagementMethodology == "Kanban")
+                {
+                    <a onclick="location.href = '@Url.Action("KanbanBoard", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link ">Kanban board</a>
+                }
+                else
+                {
+                    <a onclick="location.href = '@Url.Action("ScrumBoard", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link ">Scrum board</a>
+                }
+            </li>
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("EmployeesFromProject", "Employees", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link ">Pracownicy</a>
+            </li>
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("ProjectFiles", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link active">Pliki</a>
+            </li>
+            @if (ViewBag.ProjectStatus.ToString() == "Finished")
+            {
+                <button type="button" style="margin-left:10px;" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=ViewBag.ProjectId}, null)'" class="btn btn-success float-right">Wystaw oceny za projekt</button>
+            }
+        </ul>
+    </div>
+    <div class=" card-body">
+        @Html.Action("UploadFile", "ProjectPanel", new { projectId = ViewBag.ProjectId })
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        Dodane przez:
+                    </th>
+                    <th>
+                        Nazwa
+                    </th>
+                    <th>
+                        Data dodania
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.UserWhoAddFile.Username)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FileName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateUploadFile)
-                </td>
-                <td>
-                    <button class="btn btn-info" onclick="location.href = '@Url.Action("DownloadFile", "ProjectPanel", new { fileId = item.FileId}, null)'"> Pobierz</button>
-                </td>
-            </tr>
-        }
-    </table>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UserWhoAddFile.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FileName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateUploadFile)
+                    </td>
+                    <td>
+                        <button class="btn btn-info" onclick="location.href = '@Url.Action("DownloadFile", "ProjectPanel", new { fileId = item.FileId}, null)'"> Pobierz</button>
+                    </td>
+                </tr>
+            }
+        </table>
 
-</div>
+    </div>
 
 

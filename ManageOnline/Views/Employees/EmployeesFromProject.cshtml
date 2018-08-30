@@ -13,7 +13,14 @@
                 <a onclick="location.href = '@Url.Action("ProjectPanel", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link">Informacje</a>
             </li>
             <li class="nav-item">
-                <a onclick="location.href = '@Url.Action("KanbanBoard", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Kanban board</a>
+                @if (ViewBag.ProjectManagementMethodology == "Kanban")
+                {
+                    <a onclick="location.href = '@Url.Action("KanbanBoard", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link ">Kanban board</a>
+                }
+                else
+                {
+                    <a onclick="location.href = '@Url.Action("ScrumBoard", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link ">Scrum board</a>
+                }
             </li>
             <li class="nav-item">
                 <a onclick="location.href = '@Url.Action("EmployeesFromProject", "Employees", new { projectId=Model.ProjectId}, null)'" class="nav-link active">Pracownicy</a>
@@ -22,9 +29,9 @@
                 <a onclick="location.href = '@Url.Action("ProjectFiles", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Pliki</a>
             </li>
             @if (Model.ProjectStatus.ToString() == "Finished")
-    {
-        <button type="button" style="margin-left:10px;" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=Model.ProjectId}, null)'" class="btn btn-success float-right" style="margin-left:10px">Wystaw oceny za projekt</button>
-}
+            {
+                <button type="button" style="margin-left:10px;" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId=Model.ProjectId}, null)'" class="btn btn-success float-right" style="margin-left:10px">Wystaw oceny za projekt</button>
+            }
         </ul>
     </div>
 
