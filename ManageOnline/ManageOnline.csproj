@@ -423,6 +423,10 @@
     <Compile Include="Migrations\201808291908201_AddCommentWhereCommentBelongToCommentModel.Designer.cs">
       <DependentUpon>201808291908201_AddCommentWhereCommentBelongToCommentModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201808301042284_removeUserIdFromCommentModel.cs" />
+    <Compile Include="Migrations\201808301042284_removeUserIdFromCommentModel.Designer.cs">
+      <DependentUpon>201808301042284_removeUserIdFromCommentModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -844,6 +848,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808291908201_AddCommentWhereCommentBelongToCommentModel.resx">
       <DependentUpon>201808291908201_AddCommentWhereCommentBelongToCommentModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201808301042284_removeUserIdFromCommentModel.resx">
+      <DependentUpon>201808301042284_removeUserIdFromCommentModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

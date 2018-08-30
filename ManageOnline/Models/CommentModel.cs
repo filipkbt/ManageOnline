@@ -10,7 +10,6 @@ namespace ManageOnline.Models
     {   [Key]
         public int CommentId { get; set; }
 
-        public int UserId { get; set; }
         public UserBasicModel UserWhoAddComment { get; set; }
 
         public string CommentDescription { get; set; }

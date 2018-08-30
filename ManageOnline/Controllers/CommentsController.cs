@@ -37,18 +37,14 @@ namespace ManageOnline.Controllers
             using (DbContextModel db = new DbContextModel())
             {
                 CommentModel comment = new CommentModel();
-                comment.CommentConnectedWithSelectedComment = db.Comments.Where(x => x.CommentId == commentId).SingleOrDefault();
+                comment.CommentConnectedWithSelectedComment = db.Comments.Include("TaskWhereCommentBelong").Where(x => x.CommentId == commentId).FirstOrDefault();
+                comment.TaskWhereCommentBelong = db.Tasks.Where(x=> x.TaskId == comment.CommentConnectedWithSelectedComment.TaskWhereCommentBelong.TaskId).FirstOrDefault();
                 comment.ProjectWhereCommentBelong = db.Projects.Where(x => x.ProjectId == projectId).FirstOrDefault();
                 return PartialView("_addCommentToTheComment", comment);
             }
             
         }
 
-        //[HttpPost]
-        //public ActionResult AddCommentToTheComment(CommentModel comment)
-        //{
-        //    //return RedirectToAction("KanbanBoard","ProjectPanel",new );
-        //}
 
             [HttpPost]
         public ActionResult AddCommentToTheTask(CommentModel comment)
@@ -76,16 +72,15 @@ namespace ManageOnline.Controllers
                 int userIdInt = Convert.ToInt32(Session["UserId"]);
                 comment.DateWhenCommentWasAdded = DateTime.Now;
                 comment.ProjectWhereCommentBelong = db.Projects.Where(x => x.ProjectId == comment.ProjectWhereCommentBelong.ProjectId).FirstOrDefault();
-                comment.TaskWhereCommentBelong = db.Tasks.Where(x => x.TaskId == comment.TaskWhereCommentBelong.TaskId).FirstOrDefault();
-                comment.CommentConnectedWithSelectedComment = db.Comments.Where(x => x.CommentId == comment.CommentConnectedWithSelectedComment.CommentId).FirstOrDefault();
+                comment.CommentConnectedWithSelectedComment = db.Comments.Include("TaskWhereCommentBelong").Where(x => x.CommentId == comment.CommentConnectedWithSelectedComment.CommentId).FirstOrDefault();
+                comment.TaskWhereCommentBelong = db.Tasks.Where(x => x.TaskId == comment.CommentConnectedWithSelectedComment.TaskWhereCommentBelong.TaskId).FirstOrDefault();
+               
                 comment.UserWhoAddComment = db.UserAccounts.Where(x => x.UserId == userIdInt).FirstOrDefault();
                 db.Comments.Add(comment);
                 db.SaveChanges();
                 return RedirectToAction("KanbanBoard", "ProjectPanel", new { projectId = comment.TaskWhereCommentBelong.Project.ProjectId });
             }
         }
-
-
 
     }
 }

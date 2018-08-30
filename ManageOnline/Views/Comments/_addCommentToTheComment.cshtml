@@ -1,11 +1,12 @@
 ﻿@model ManageOnline.Models.CommentModel
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("AddCommentToTheComment","Comments",FormMethod.Post)) 
 {
     @Html.AntiForgeryToken()    
 <div class="form-horizontal">
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => Model.CommentConnectedWithSelectedComment.CommentId)
+    @Html.HiddenFor(model => Model.TaskWhereCommentBelong.TaskId)
     @Html.HiddenFor(model => Model.ProjectWhereCommentBelong.ProjectId)
     <div class="form-group ">
         <div class="col-11">

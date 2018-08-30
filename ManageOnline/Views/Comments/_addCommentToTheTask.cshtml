@@ -1,6 +1,6 @@
 ﻿@model ManageOnline.Models.CommentModel
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("AddCommentToTheTask","Comments", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 <center>

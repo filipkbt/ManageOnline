@@ -43,21 +43,23 @@ namespace ManageOnline.Controllers
         {
             int userIdInt = Convert.ToInt32(Session["UserId"]);
             int ProjectId = task.ProjectId;
-            using (DbContextModel db = new DbContextModel())
+            if(task.TaskName !=null)
             {
-                task.TaskCreationDate = DateTime.Now;
-                task.Project = db.Projects.Where(x => x.ProjectId.Equals(ProjectId)).FirstOrDefault();
-                task.UserWhoAddTask = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
-                task.CurrentWorkerAtTask = db.UserAccounts.Where(x => x.UserId.Equals(task.CurrentWorkerAtTask.UserId)).FirstOrDefault();
-                task.RowNumber = 1;
-                task.ColumnNumber = 1;
-                db.Tasks.Add(task);
-                if (task.UserWhoAddTask != task.CurrentWorkerAtTask)
+                using (DbContextModel db = new DbContextModel())
                 {
+                    task.TaskCreationDate = DateTime.Now;
+                    task.Project = db.Projects.Where(x => x.ProjectId.Equals(ProjectId)).FirstOrDefault();
+                    task.UserWhoAddTask = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
+                    task.CurrentWorkerAtTask = db.UserAccounts.Where(x => x.UserId.Equals(task.CurrentWorkerAtTask.UserId)).FirstOrDefault();
+                    task.RowNumber = 1;
+                    task.ColumnNumber = 1;
+                    db.Tasks.Add(task);
                     db.Notifications.Add(new NotificationModel { Project = task.Project, NotificationType = NotificationTypes.NoweZadanie, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = task.CurrentWorkerAtTask, Title = "Nowe zadanie", Content = string.Format("Użytkownik {0} przypisał Ci zadanie: {1}", task.UserWhoAddTask.Username, task.TaskName) });
+
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
             }
+
             return RedirectToAction("KanbanBoard", "ProjectPanel", new { projectId = ProjectId });
         }
 
