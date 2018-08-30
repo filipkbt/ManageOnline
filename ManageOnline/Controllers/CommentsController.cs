@@ -14,7 +14,21 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
-                var commentsConnectedWithTask = db.Comments.Include("TaskWhereCommentBelong").Where(x => x.TaskWhereCommentBelong.TaskId == taskId).ToList();
+                var commentsConnectedWithTask = db.Comments.Include("TaskWhereCommentBelong")
+                                                           .Include("CommentConnectedWithSelectedComment")
+                                                           .Include("UserWhoAddComment")
+                                                           .Where(x => x.TaskWhereCommentBelong.TaskId == taskId && x.CommentConnectedWithSelectedComment == null)
+                                                           .OrderBy(x => x.DateWhenCommentWasAdded)
+                                                           .ToList();
+
+                var commentsConnectedWithSelectedComment = db.Comments.Include("TaskWhereCommentBelong")
+                                                           .Include("CommentConnectedWithSelectedComment")
+                                                           .Include("UserWhoAddComment")
+                                                           .OrderBy(x => x.DateWhenCommentWasAdded)
+                                                           .Where(x => x.TaskWhereCommentBelong.TaskId == taskId && x.CommentConnectedWithSelectedComment != null)
+                                                           .ToList();
+
+                ViewBag.commentsConnectedWithSelectedComment = commentsConnectedWithSelectedComment;
                 ViewBag.TaskId = taskId;
                 ViewBag.ProjectId = projectId;
                 return PartialView("_showComments", commentsConnectedWithTask);        
@@ -25,7 +39,9 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
+                int userIdInt = Convert.ToInt32(Session["UserId"]);
                 CommentModel comment = new CommentModel();
+                comment.UserWhoAddComment = db.UserAccounts.Where(x => x.UserId == userIdInt).FirstOrDefault();
                 comment.TaskWhereCommentBelong = db.Tasks.Where(x => x.TaskId == taskId).FirstOrDefault();
                 comment.ProjectWhereCommentBelong = db.Projects.Where(x => x.ProjectId == projectId).FirstOrDefault();
                 return PartialView("_addCommentToTheTask", comment);
@@ -36,7 +52,9 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
+                int userIdInt = Convert.ToInt32(Session["UserId"]);
                 CommentModel comment = new CommentModel();
+                comment.UserWhoAddComment = db.UserAccounts.Where(x => x.UserId == userIdInt).FirstOrDefault();
                 comment.CommentConnectedWithSelectedComment = db.Comments.Include("TaskWhereCommentBelong").Where(x => x.CommentId == commentId).FirstOrDefault();
                 comment.TaskWhereCommentBelong = db.Tasks.Where(x=> x.TaskId == comment.CommentConnectedWithSelectedComment.TaskWhereCommentBelong.TaskId).FirstOrDefault();
                 comment.ProjectWhereCommentBelong = db.Projects.Where(x => x.ProjectId == projectId).FirstOrDefault();

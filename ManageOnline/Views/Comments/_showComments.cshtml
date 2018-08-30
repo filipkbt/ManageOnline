@@ -15,47 +15,74 @@
                         {
                             foreach (var comment in Model)
                             {
-                                <li class="media row">
-                                    <a href="#" class="col-2">
-                                        <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
-                                    </a>
-                                    <div class="media-body text-left col-10" style=" margin-bottom:3px;">
-                                        <span class="text-muted ">
-                                            <small class="text-muted">30 min ago</small>
-                                        </span>
-                                        <strong class="text-success">imieee</strong>
-                                        <p style="margin-top:5px;">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Lorem ipsum dolor sit amet, <a href="#">#consecteturadipiscing </a>#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing #consecteturadipiscing#consecteturadipiscingv#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing #consecteturadipiscing #consecteturadipiscing #consecteturadipiscing.
-                                        </p>
-                                    </div>
-                                    <button class="btn btn-info" id="collapse_toggle_@comment.CommentId" style="float:right">Odpowiedz</button>
-                                    <div class="pos-relative">
-                                        <div class="bg-red fg-white"
-                                             data-role="collapse"
-                                             data-collapsed="true"
-                                             data-toggle-element="#collapse_toggle_@comment.CommentId">
-                                            <p class="p-10 text-center">
-                                                @Html.Action("AddCommentToTheComment", "Comments", new { commentId = comment.CommentId, projectId = ViewBag.ProjectId })
-                                            </p>
+                                if (comment.CommentConnectedWithSelectedComment == null)
+                                {
+                                    <li class="media row">
+                                        <a href="#" class="col-2">
+                                            <img src="data:image;base64,@System.Convert.ToBase64String(comment.UserWhoAddComment.UserPhoto)" alt="Brak zdjęcia" >
+                                        </a>
+                                        <div class="col-10">
+                                            <div class="media-body text-left " style=" margin-bottom:3px;">
+                                                <span class="text-muted ">
+                                                    <small class="text-muted">@comment.DateWhenCommentWasAdded</small>
+                                                </span>
+                                                <strong class="text-success">@comment.UserWhoAddComment.Username</strong>
+                                                <p style="margin-top:5px;">
+                                                    @comment.CommentDescription
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="media row">
-                                    <a href="#" class="col-2">
-                                        <img src="https://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
-                                    </a>
-                                    <div class="media-body text-left col-10" style=" margin-bottom:3px;">
-                                        <span class="text-muted ">
-                                            <small class="text-muted">30 min ago</small>
-                                        </span>
-                                        <strong class="text-success">imieee</strong>
-                                        <p style="margin-top:5px;">
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Lorem ipsum dolor sit amet, <a href="#">#consecteturadipiscing </a>#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing #consecteturadipiscing#consecteturadipiscingv#consecteturadipiscing#consecteturadipiscing#consecteturadipiscing #consecteturadipiscing #consecteturadipiscing #consecteturadipiscing.
-                                        </p>
-                                    </div>
-                                </li>
+                                        <div class="col">
+                                            <div class="btn btn-info btn-sm col-2" id="collapse_toggle_@comment.CommentId" style="margin-bottom:5px;">Odpowiedz</div>
+                                            <div class="col ">
+                                                <div class="fg-white"
+                                                     data-role="collapse"
+                                                     data-collapsed="true"
+                                                     data-toggle-element="#collapse_toggle_@comment.CommentId">
+                                                    <div class="text-center" style="margin-top:5px;">
+                                                        @Html.Action("AddCommentToTheComment", "Comments", new { commentId = comment.CommentId, projectId = ViewBag.ProjectId })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+
+                                    foreach (var commentConnectedWithComment in ViewBag.commentsConnectedWithSelectedComment)
+                                    {
+                                        if (commentConnectedWithComment.CommentConnectedWithSelectedComment.CommentId == comment.CommentId)
+                                        {
+                                            <li class="media row" style="margin-left:20px;">
+                                                <a href="#" class="col-2">
+                                                    <img src="data:image;base64,@System.Convert.ToBase64String(commentConnectedWithComment.UserWhoAddComment.UserPhoto)" alt="Brak zdjęcia" >
+                                                </a>
+                                                <div class="col-9">
+                                                    <div class="media-body text-left " style=" margin-bottom:3px;">
+                                                        <span class="text-muted ">
+                                                            <small class="text-muted">@commentConnectedWithComment.DateWhenCommentWasAdded</small>
+                                                        </span>
+                                                        <strong class="text-success">@commentConnectedWithComment.UserWhoAddComment.Username</strong>
+                                                        <p style="margin-top:5px;">
+                                                            @commentConnectedWithComment.CommentDescription
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="btn btn-info btn-sm col-2 " id="collapse_toggle_@commentConnectedWithComment.CommentId" style="margin-bottom:5px;">Odpowiedz</div>
+                                                    <div class="col">
+                                                        <div class="fg-white"
+                                                             data-role="collapse"
+                                                             data-collapsed="true"
+                                                             data-toggle-element="#collapse_toggle_@commentConnectedWithComment.CommentId">
+                                                            <div class="text-center" style="margin-top:5px;">
+                                                                @Html.Action("AddCommentToTheComment", "Comments", new { commentId = comment.CommentId, projectId = ViewBag.ProjectId })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        }
+                                    }
+                                }
                             }
                         }
                     </ul>
