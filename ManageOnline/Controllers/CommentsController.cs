@@ -82,6 +82,11 @@ namespace ManageOnline.Controllers
                 }               
                 db.Comments.Add(comment);
                 db.SaveChanges();
+
+                if(comment.ProjectWhereCommentBelong.ProjectManagementMethodology == ManageOnline.Models.ProjectManagementMethodology.Scrum)
+                {
+                    return RedirectToAction("ScrumBoard", "ProjectPanel", new { projectId = comment.TaskWhereCommentBelong.Project.ProjectId });
+                }
                 return RedirectToAction("KanbanBoard", "ProjectPanel", new { projectId = comment.TaskWhereCommentBelong.Project.ProjectId });
             }
         }
@@ -101,6 +106,11 @@ namespace ManageOnline.Controllers
                 db.Notifications.Add(new NotificationModel { Project = comment.ProjectWhereCommentBelong, NotificationType = NotificationTypes.NowyKomentarzDoKomentarza, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = comment.CommentConnectedWithSelectedComment.UserWhoAddComment, Title = "Nowy komentarz do twojej wypowiedzi", Content = string.Format("Użytkownik ({0}) skomentował twoją wypowiedź związaną z zadaniem {1} w projekcie {2}. ",comment.UserWhoAddComment.Username,comment.TaskWhereCommentBelong.TaskName, comment.ProjectWhereCommentBelong.ProjectTitle) });
                 db.Comments.Add(comment);
                 db.SaveChanges();
+
+                if (comment.ProjectWhereCommentBelong.ProjectManagementMethodology == ManageOnline.Models.ProjectManagementMethodology.Scrum)
+                {
+                    return RedirectToAction("ScrumBoard", "ProjectPanel", new { projectId = comment.TaskWhereCommentBelong.Project.ProjectId });
+                }
                 return RedirectToAction("KanbanBoard", "ProjectPanel", new { projectId = comment.TaskWhereCommentBelong.Project.ProjectId });
             }
         }

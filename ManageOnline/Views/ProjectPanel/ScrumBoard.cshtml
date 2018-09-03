@@ -1,33 +1,112 @@
-﻿@model IEnumerable<ManageOnline.Models.CommentModel>
+﻿@using ManageOnline.Models
+@model ManageOnline.Models.ProjectModel
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.CommentDescription)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DateWhenCommentWasAdded)
-        </th>
-        <th></th>
-    </tr>
+@{
+    /**/
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.CommentDescription)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateWhenCommentWasAdded)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.CommentId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.CommentId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.CommentId })
-        </td>
-    </tr>
+    ViewBag.Title = "KanbanBoard";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
 }
 
-</table>
+<div class="card text-center">
+    <div class="card-header">
+        <ul class="nav nav-pills card-header-pills">
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("ProjectPanel", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link">Informacje</a>
+            </li>
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("ScrumBoard", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link active">Scrum board</a>
+            </li>
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("EmployeesFromProject", "Employees", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Pracownicy</a>
+            </li>
+            <li class="nav-item">
+                <a onclick="location.href = '@Url.Action("ProjectFiles", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Pliki</a>
+            </li>
+            @if (Model.ProjectStatus == ManageOnline.Models.ProjectStatus.Finished)
+            {
+                <button type="button" style="margin-left:10px;" onclick="location.href = '@Url.Action("RateUsersFromProject", "Rate", new { projectId = Model.ProjectId }, null)'" class="btn btn-success float-right">Wystaw oceny za projekt</button>
+
+            }
+        </ul>
+    </div>
+
+    @if (Model.ProjectStatus.ToString() == "InProgress" && (string)HttpContext.Current.Session["Role"] == "Manager")
+    {
+        <div class="card-header">
+            <div>
+                @using (Html.BeginForm("AddScrumSprint", "ProjectPanel", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+                {
+                    <center>
+                        @Html.Hidden("projectId", Model.ProjectId)
+                        @Html.TextBox("scrumSprintLengthInDays", "Podaj długość sprintu w dniach", new { @class = "form-control col-3" })
+                        <button type="submit" style="margin-top:10px;" onclick="location.href = '@Url.Action("AddScrumSprint", "ProjectPanel")'" class="btn btn-success">Dodaj Sprint</button>
+                    </center>
+                }
+            </div>
+        </div>
+    }
+    <div class="card-body col-12">
+        @if (Model.ScrumSprints.Count != 0)
+        {
+            foreach (var sprint in Model.ScrumSprints)
+            {
+                <div class="btn btn-block btn-info" style="margin-top:15px;" id="collapse_toggle_@sprint.ScrumSprintNumber"><h2>Sprint @sprint.ScrumSprintNumber</h2></div>
+                <div class="bg-info">@Html.Action("AddTaskToSprint", "Task", new { projectId = Model.ProjectId, sprintId = sprint.ScrumSprintId })</div>
+                <div class="pos-relative">
+                    <div class="bg-info fg-white"
+                         data-role="collapse"
+                         data-toggle-element="#collapse_toggle_@sprint.ScrumSprintNumber">
+                        @foreach (var task in Model.Tasks.Where(x => x.ScrumSprintWhereTaskBelong.ScrumSprintNumber == sprint.ScrumSprintNumber))
+                        {
+                            if (task.TaskStatus == ManageOnline.Models.TaskStatus.NotStarted)
+                            {
+                                <div class="btn-block btn-warning">
+                                    <div class="row">
+                                        <h2 class="text-left col-7 text-white" style="margin-top:3px;margin-bottom:4px;margin-left:5px;margin-right:5px;">@task.TaskName </h2>
+                                        <img class="uk-border-circle uk-box-shadow-hover-medium col-1" style="height: 40px; width: 20px; margin-left:10px;margin-right:5px;" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)" />
+                                        <h2 style="margin-top:2px;margin-bottom:4px;" class="text-white">@task.CurrentWorkerAtTask.Username</h2>
+                                        <div class="btn-group btn-group-sm float-right col-3 " style="margin-top:6px;margin-bottom:6px;" role="group">
+                                            @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })
+                                            @Html.Action("EditTask", "Task", new { taskId = task.TaskId })
+                                            <div class="btn btn-sm btn-danger float-right custom-row col-2" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else if (task.TaskStatus == ManageOnline.Models.TaskStatus.InProgress)
+                            {
+                                <div class="btn-block btn-primary">
+                                    <div class="row">
+                                        <h2 class="text-left col-7 text-white" style="margin-top:3px;margin-bottom:3px;margin-left:5px;margin-right:5px;">@task.TaskName </h2>
+                                        <img class="uk-border-circle uk-box-shadow-hover-medium col-1" style="height: 40px; width: 20px; margin-left:10px;margin-right:5px;" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)" />
+                                        <h2 style="margin-top:2px;margin-bottom:4px;" class="text-white">@task.CurrentWorkerAtTask.Username</h2>
+                                        <div class="btn-group btn-group-sm float-right col-3 " style="margin-top:6px;margin-bottom:6px;" role="group">
+                                            @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })
+                                            @Html.Action("EditTask", "Task", new { taskId = task.TaskId })
+                                            <div class="btn btn-sm btn-danger float-right custom-row col-2" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else if (task.TaskStatus == ManageOnline.Models.TaskStatus.Finished)
+                            {
+                                <div class="btn-block btn-success">
+                                    <div class="row">
+                                        <h2 class="text-left col-7 text-white" style="margin-top:3px;margin-bottom:3px;margin-left:5px;margin-right:5px;">@task.TaskName </h2>
+                                        <img class="uk-border-circle uk-box-shadow-hover-medium col-1" style="height: 40px; width: 20px; margin-left:10px;margin-right:5px;" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)" />
+                                        <h2 style="margin-top:2px;margin-bottom:4px;" class="text-white">@task.CurrentWorkerAtTask.Username</h2>
+                                        <div class="btn-group btn-group-sm float-right col-3 " style="margin-top:6px;margin-bottom:6px;" role="group">
+                                            @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })
+                                            @Html.Action("EditTask", "Task", new { taskId = task.TaskId })
+                                            <div class="btn btn-sm btn-danger float-right custom-row col-2" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        }
+    </div>

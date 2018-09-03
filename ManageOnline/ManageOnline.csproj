@@ -431,6 +431,14 @@
     <Compile Include="Migrations\201808302138107_AddScrumSprintModel.Designer.cs">
       <DependentUpon>201808302138107_AddScrumSprintModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809022009516_AddScrumSprint.cs" />
+    <Compile Include="Migrations\201809022009516_AddScrumSprint.Designer.cs">
+      <DependentUpon>201809022009516_AddScrumSprint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809022158451_littleFixScrumModel.cs" />
+    <Compile Include="Migrations\201809022158451_littleFixScrumModel.Designer.cs">
+      <DependentUpon>201809022158451_littleFixScrumModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -860,6 +868,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201808302138107_AddScrumSprintModel.resx">
       <DependentUpon>201808302138107_AddScrumSprintModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809022009516_AddScrumSprint.resx">
+      <DependentUpon>201809022009516_AddScrumSprint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809022158451_littleFixScrumModel.resx">
+      <DependentUpon>201809022158451_littleFixScrumModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

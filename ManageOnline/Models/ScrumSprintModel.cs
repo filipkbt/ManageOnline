@@ -12,9 +12,11 @@ namespace ManageOnline.Models
         public int ScrumSprintId { get; set; }
 
         [Required]
-        public ProjectModel ProjectId { get; set; }
+        public ProjectModel Project { get; set; }
 
         public virtual IEnumerable<TaskModel> TasksBelongsToSprint { get; set; }
+
+        public int ScrumSprintNumber { get; set; }
 
         public DateTime StartScrumSprintDate { get; set; }
 

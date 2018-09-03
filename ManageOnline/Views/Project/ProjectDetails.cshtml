@@ -98,7 +98,7 @@
         }
         @if ((HttpContext.Current.Session["UserId"].ToString() == Model.ProjectOwner.UserId.ToString()) && (Model.UsersBelongsToProject != null))
         {
-            <button type="button" class="btn btn-success btn-block" style="margin-top:5px;" onclick="location.href = '@Url.Action( "StartProject", "Project",  new { projectId = Model.ProjectId}, null)'">Rozpocznij projekt</button>
+            <button type="button" class="btn btn-success btn-block" style="margin-top:5px;" onclick="location.href = '@Url.Action( "StartProject", "Project",  new { projectId = Model.ProjectId}, null)'"><h2>Rozpocznij projekt</h2></button>
         }
     </div>'
 </div>

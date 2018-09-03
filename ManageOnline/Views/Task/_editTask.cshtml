@@ -12,7 +12,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body text-dark">
                     <center>
                         @Html.HiddenFor(x => x.TaskId)
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -37,6 +37,15 @@
                                 @Html.ValidationMessageFor(model => model.CurrentWorkerAtTask.UserId, "", new { @class = "text-danger" })
                             </div>
                         </div>
+                        @if (Model.ScrumSprintWhereTaskBelong != null)
+                        {
+                            <div class="form-group">
+                                <div class="col">
+                                    <h4>Status zadania:</h4>
+                                    @Html.EnumDropDownListFor(model => model.TaskStatus)
+                                </div>
+                            </div>
+                        }
                     </center>
                     <div class="modal-footer">
                         <div class="form-group">

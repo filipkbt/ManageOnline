@@ -88,21 +88,44 @@ namespace ManageOnline.Controllers
                     .Include("Tasks.CurrentWorkerAtTask")
                     .Include("Tasks.UserWhoAddTask")
                     .Include("UsersBelongsToProjectCollection")
+                    .Include("ScrumSprints")
                     .Where(x => x.ProjectId.Equals(projectId))
                     .FirstOrDefault();
 
-                ViewBag.CountAllTasks = project.Tasks.Count();
-                ViewBag.CountNotStartedTasks = project.Tasks.Where(x => x.TaskStatus == TaskStatus.NotStarted).Count();
-                ViewBag.CountInProgressTasks = project.Tasks.Where(x => x.TaskStatus == TaskStatus.InProgress).Count();
-                ViewBag.CountFinishedTasks = project.Tasks.Where(x => x.TaskStatus == TaskStatus.Finished).Count();
-                var progressBarNotStartedTasksWidth = (((double)ViewBag.CountNotStartedTasks / (double)ViewBag.CountAllTasks) * 100).ToString();
-                ViewBag.progressBarNotStartedTasksWidth = progressBarNotStartedTasksWidth.Replace(",", ".");
-                var progressBarInProgressTasksWidth = (((double)ViewBag.CountInProgressTasks / (double)ViewBag.CountAllTasks) * 100).ToString();
-                ViewBag.progressBarInProgressTasksWidth = progressBarInProgressTasksWidth.Replace(",", ".");
-                var progressBarFinishedTasksWidth = (((double)ViewBag.CountFinishedTasks / (double)ViewBag.CountAllTasks) * 100).ToString();
-                ViewBag.progressBarFinishedTasksWidth = progressBarFinishedTasksWidth.Replace(",", ".");
+                project.ScrumSprints = db.ScrumSprints.Where(x => x.Project.ProjectId.Equals(projectId)).OrderBy(x=>x.ScrumSprintNumber).ToList();
+                ViewBag.ProjectId = projectId;
+                ViewBag.ProjectStatus = project.ProjectStatus;
+
                 return View(project);
             }
+        }
+
+        [HttpPost]
+        public ActionResult AddScrumSprint(int projectId, int scrumSprintLengthInDays)
+        {
+            using(DbContextModel db = new DbContextModel())
+            {
+                ScrumSprintModel scrumSprint = new ScrumSprintModel();
+                scrumSprint.Project = db.Projects.Where(x => x.ProjectId == projectId).FirstOrDefault();
+                scrumSprint.StartScrumSprintDate = DateTime.Now;
+                scrumSprint.FinishScrumSprintDate = DateTime.Now.AddDays(scrumSprintLengthInDays);
+                
+                var lastSprint = db.ScrumSprints.Where(x => x.Project.ProjectId == projectId).OrderBy(x => x.ScrumSprintNumber).FirstOrDefault();
+                int sprintNumber;
+                if(lastSprint != null)
+                {
+                    sprintNumber = lastSprint.ScrumSprintNumber++;
+                }
+                else
+                {
+                    sprintNumber = 1;
+                }
+
+                scrumSprint.ScrumSprintNumber = sprintNumber;
+                db.ScrumSprints.Add(scrumSprint);
+                db.SaveChanges();
+            }
+            return RedirectToAction("ScrumBoard", new { projectId = projectId });
         }
 
         public ActionResult ProjectFiles(int projectId)

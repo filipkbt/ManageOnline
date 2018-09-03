@@ -10,7 +10,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-dark">
                 <center>
                     @Html.HiddenFor(x => x.TaskId)
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -23,13 +23,14 @@
                         <div class="col">
                             <h6><b>Data dodania:</b> @Model.TaskCreationDate</h6>
                             @if (Model.TaskStartDate != null)
-                {
-                    <h6><b> Data rozpoczęcia:</b> @Model.TaskStartDate</h6>
-    }
+                            {
+                                <h6><b>Data rozpoczęcia:</b> @Model.TaskStartDate</h6>
+                            }
+
                             @if (Model.TaskFinishDate != null)
-                {
-                    <h6><b>Data zakończenia:</b> @Model.TaskFinishDate</h6>
-    }
+                            {
+                                <h6><b>Data zakończenia:</b> @Model.TaskFinishDate</h6>
+                            }
                         </div>
                     </div>
                     <div class="form-group">
@@ -44,17 +45,17 @@
                     </div>
                     <div class="form-group">
                         <div class="col">
-                            <h4><b>Opis: @Model.TaskDescription</b></h4>
+                            <h4><b>Opis:</b> @Model.TaskDescription</h4>
                         </div>
                     </div>
                 </center>
                 <hr />
-            @Html.Action("ShowComments", "Comments", new { taskId = Model.TaskId, projectId = Model.Project.ProjectId })
+                @Html.Action("ShowComments", "Comments", new { taskId = Model.TaskId, projectId = Model.Project.ProjectId })
             </div>
-        </div>
-        <div class="modal-footer">
-            <div class="form-group">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+            <div class="modal-footer">
+                <div class="form-group">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                </div>
             </div>
         </div>
     </div>

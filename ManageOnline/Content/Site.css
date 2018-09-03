@@ -23,10 +23,19 @@
 .comment-wrapper .media-list .media img {
     width: 64px;
     height: 64px;
-    border: 2px solid #e5e7e8;
 }
 
 .comment-wrapper .media-list .media {
     border-bottom: 1px dashed #efefef;
     margin-bottom: 25px;
+}
+
+.row {
+    margin-left:0px;
+    margin-right:0px;
+}
+
+.custom-row {
+    margin-left: -10px;
+    margin-right: -5px;
 }

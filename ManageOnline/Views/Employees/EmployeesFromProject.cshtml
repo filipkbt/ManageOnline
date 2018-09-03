@@ -6,20 +6,19 @@
 }
 
 <div class="card text-center">
-
     <div class="card-header">
         <ul class="nav nav-pills card-header-pills">
             <li class="nav-item">
                 <a onclick="location.href = '@Url.Action("ProjectPanel", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link">Informacje</a>
             </li>
             <li class="nav-item">
-                @if (ViewBag.ProjectManagementMethodology == "Kanban")
+                @if (ViewBag.ProjectManagementMethodology == ManageOnline.Models.ProjectManagementMethodology.Kanban)
                 {
-                    <a onclick="location.href = '@Url.Action("KanbanBoard", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link ">Kanban board</a>
+                    <a onclick="location.href = '@Url.Action("KanbanBoard", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Kanban board</a>
                 }
                 else
                 {
-                    <a onclick="location.href = '@Url.Action("ScrumBoard", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link ">Scrum board</a>
+                    <a onclick="location.href = '@Url.Action("ScrumBoard", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Scrum board</a>
                 }
             </li>
             <li class="nav-item">

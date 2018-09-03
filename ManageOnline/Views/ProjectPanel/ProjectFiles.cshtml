@@ -13,7 +13,7 @@
                 <a onclick="location.href = '@Url.Action("ProjectPanel", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link">Informacje</a>
             </li>
             <li class="nav-item">
-                @if (ViewBag.ProjectManagementMethodology == "Kanban")
+                @if (ViewBag.ProjectManagementMethodology == ManageOnline.Models.ProjectManagementMethodology.Kanban)
                 {
                     <a onclick="location.href = '@Url.Action("KanbanBoard", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link ">Kanban board</a>
                 }

@@ -53,13 +53,13 @@
                 <a onclick="location.href = '@Url.Action("ProjectPanel", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link active">Informacje</a>
             </li>
             <li class="nav-item">
-                @if (ViewBag.ProjectManagementMethodology == "Kanban")
+                @if (ViewBag.ProjectManagementMethodology == ManageOnline.Models.ProjectManagementMethodology.Kanban)
                 {
-                    <a onclick="location.href = '@Url.Action("KanbanBoard", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link ">Kanban board</a>
+                    <a onclick="location.href = '@Url.Action("KanbanBoard", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Kanban board</a>
                 }
                 else
                 {
-                    <a onclick="location.href = '@Url.Action("ScrumBoard", "ProjectPanel", new { projectId=ViewBag.ProjectId}, null)'" class="nav-link ">Scrum board</a>
+                    <a onclick="location.href = '@Url.Action("ScrumBoard", "ProjectPanel", new { projectId=Model.ProjectId}, null)'" class="nav-link ">Scrum board</a>
                 }
             </li>
             <li class="nav-item">
@@ -103,7 +103,7 @@
                     <img style="width:200px;height:200px; background: #FFFFFF;margin: auto; margin-top:10px" src="data:image;base64,@System.Convert.ToBase64String(Model.ProjectOwner.UserPhoto)" alt="Brak zdjęcia profilowego" class="img-thumbnail">
                     <div class="card-body">
                         <h4 class="card-title"><b>@Model.ProjectOwner.Username</b></h4>
-                        <p class="card-text"><b>Email: </b><br />>@Model.ProjectOwner.Email</p>
+                        <p class="card-text"><b>Email: </b><br />@Model.ProjectOwner.Email</p>
                         <p class="card-text"><b>Telefon kontaktowy: <br /></b>@Model.ProjectOwner.MobileNumber</p>
 
                         @if ((HttpContext.Current.Session["UserId"].ToString() != Model.ProjectOwner.UserId.ToString()))

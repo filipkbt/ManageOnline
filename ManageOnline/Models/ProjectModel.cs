@@ -66,7 +66,7 @@ namespace ManageOnline.Models
 
         public ProjectManagementMethodology ProjectManagementMethodology { get; set; }
 
-        public virtual ICollection<ScrumSprintModel> ScrumSprint { get; set; }
+        public virtual ICollection<ScrumSprintModel> ScrumSprints { get; set; }
 
         public string ProjectBudget { get; set; }
 
