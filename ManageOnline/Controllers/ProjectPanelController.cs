@@ -109,12 +109,12 @@ namespace ManageOnline.Controllers
                 scrumSprint.Project = db.Projects.Where(x => x.ProjectId == projectId).FirstOrDefault();
                 scrumSprint.StartScrumSprintDate = DateTime.Now;
                 scrumSprint.FinishScrumSprintDate = DateTime.Now.AddDays(scrumSprintLengthInDays);
-                
-                var lastSprint = db.ScrumSprints.Where(x => x.Project.ProjectId == projectId).OrderBy(x => x.ScrumSprintNumber).FirstOrDefault();
-                int sprintNumber;
+                scrumSprint.ScrumSprintLengthInDays = scrumSprintLengthInDays;
+                var lastSprint = db.ScrumSprints.Where(x => x.Project.ProjectId == projectId).OrderByDescending(x => x.ScrumSprintNumber).FirstOrDefault();
+                int sprintNumber = lastSprint.ScrumSprintNumber;
                 if(lastSprint != null)
                 {
-                    sprintNumber = lastSprint.ScrumSprintNumber++;
+                    sprintNumber++;
                 }
                 else
                 {
@@ -126,6 +126,27 @@ namespace ManageOnline.Controllers
                 db.SaveChanges();
             }
             return RedirectToAction("ScrumBoard", new { projectId = projectId });
+        }
+        
+        public ActionResult DeleteScrumSprint(int projectId, int scrumSprintId)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                var scrumSprint = db.ScrumSprints.Where(x => x.ScrumSprintId == scrumSprintId).FirstOrDefault();
+
+                var tasksBelongedToScrumSprint = db.Tasks.Include("ScrumSprintWhereTaskBelong").Where(x => x.ScrumSprintWhereTaskBelong.ScrumSprintId == scrumSprintId).ToList();
+
+                foreach (var task in tasksBelongedToScrumSprint)
+                {
+                    db.Tasks.Remove(task);
+                    db.SaveChanges();
+                }
+
+                db.ScrumSprints.Remove(scrumSprint);
+                db.SaveChanges();
+
+                return RedirectToAction("ScrumBoard", "ProjectPanel", new { projectId = projectId });
+            }
         }
 
         public ActionResult ProjectFiles(int projectId)

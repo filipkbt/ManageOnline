@@ -439,6 +439,14 @@
     <Compile Include="Migrations\201809022158451_littleFixScrumModel.Designer.cs">
       <DependentUpon>201809022158451_littleFixScrumModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809032345381_AddIsFinishedToScrumSprintModel.cs" />
+    <Compile Include="Migrations\201809032345381_AddIsFinishedToScrumSprintModel.Designer.cs">
+      <DependentUpon>201809032345381_AddIsFinishedToScrumSprintModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809040022098_AddDaysToScrumSprintModel.cs" />
+    <Compile Include="Migrations\201809040022098_AddDaysToScrumSprintModel.Designer.cs">
+      <DependentUpon>201809040022098_AddDaysToScrumSprintModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -874,6 +882,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809022158451_littleFixScrumModel.resx">
       <DependentUpon>201809022158451_littleFixScrumModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809032345381_AddIsFinishedToScrumSprintModel.resx">
+      <DependentUpon>201809032345381_AddIsFinishedToScrumSprintModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809040022098_AddDaysToScrumSprintModel.resx">
+      <DependentUpon>201809040022098_AddDaysToScrumSprintModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

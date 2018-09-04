@@ -38,7 +38,7 @@ namespace ManageOnline.Controllers
             return PartialView("_addTask", task);
         }
 
-        public ActionResult AddTaskToSprint(int projectId, int sprintId)
+        public ActionResult AddTaskToSprint(int projectId, int scrumSprintId)
         {
             TaskModel task = new TaskModel();
             task.CurrentWorkerAtTask = new UserBasicModel();
@@ -57,13 +57,13 @@ namespace ManageOnline.Controllers
                     usersBelongsToProject.Add(user);
                 }
 
-                task.ScrumSprintWhereTaskBelong = db.ScrumSprints.Where(x => x.ScrumSprintId == sprintId).FirstOrDefault();
-
+                task.ScrumSprintWhereTaskBelong = db.ScrumSprints.Where(x => x.ScrumSprintId == scrumSprintId).FirstOrDefault();
                 ViewBag.SprintNumber = task.ScrumSprintWhereTaskBelong.ScrumSprintNumber;
-
                 ViewBag.Users = usersBelongsToProject;
+
+                return PartialView("_addTask", task);
             }
-            return PartialView("_addTask", task);
+
         }
 
         [HttpPost]
@@ -80,13 +80,12 @@ namespace ManageOnline.Controllers
                     task.UserWhoAddTask = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
                     task.CurrentWorkerAtTask = db.UserAccounts.Where(x => x.UserId.Equals(task.CurrentWorkerAtTask.UserId)).FirstOrDefault();
                     var currentSprint = db.ScrumSprints.Where(x => x.ScrumSprintId == task.ScrumSprintWhereTaskBelong.ScrumSprintId).FirstOrDefault();
-                    if(task.ScrumSprintWhereTaskBelong != null)
+                    if (task.ScrumSprintWhereTaskBelong != null)
                     {
                         task.ScrumSprintWhereTaskBelong = currentSprint;
                     }
                     task.RowNumber = 1;
                     task.ColumnNumber = 1;
-
 
                     db.Tasks.Add(task);
                     db.Notifications.Add(new NotificationModel { Project = task.Project, NotificationType = NotificationTypes.NoweZadanie, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = task.CurrentWorkerAtTask, Title = "Nowe zadanie", Content = string.Format("Użytkownik {0} przypisał Ci zadanie: {1}", task.UserWhoAddTask.Username, task.TaskName) });
@@ -95,12 +94,11 @@ namespace ManageOnline.Controllers
                 }
             }
 
-            if(task.ScrumSprintWhereTaskBelong != null)
+            if (task.ScrumSprintWhereTaskBelong != null)
             {
                 return RedirectToAction("ScrumBoard", "ProjectPanel", new { projectId = ProjectId });
             }
-
-                return RedirectToAction("KanbanBoard", "ProjectPanel", new { projectId = ProjectId });
+            return RedirectToAction("KanbanBoard", "ProjectPanel", new { projectId = ProjectId });
         }
 
         public ActionResult UpdateTaskPosition(string column1, string column2, string column3, int projectId)
@@ -159,7 +157,6 @@ namespace ManageOnline.Controllers
                     db.SaveChanges();
                     counter3++;
                 }
-
             }
             return Json(true, JsonRequestBehavior.AllowGet);
         }
@@ -178,9 +175,7 @@ namespace ManageOnline.Controllers
                 {
                     return RedirectToAction("ScrumBoard", "ProjectPanel", new { projectId = project.ProjectId });
                 }
-
                 return RedirectToAction("KanbanBoard", "ProjectPanel", new { projectId = project.ProjectId });
-
             }
         }
 
@@ -248,6 +243,11 @@ namespace ManageOnline.Controllers
                 taskToEdit.TaskDescription = task.TaskDescription;
                 taskToEdit.CurrentWorkerAtTask = db.UserAccounts.Where(x => x.UserId == task.CurrentWorkerAtTask.UserId).FirstOrDefault();
                 taskToEdit.TaskStatus = task.TaskStatus;
+                if (task.TaskStatus == ManageOnline.Models.TaskStatus.InProgress)
+                    taskToEdit.TaskStartDate = DateTime.Now;
+                else if (task.TaskStatus == ManageOnline.Models.TaskStatus.Finished)
+                    taskToEdit.TaskFinishDate = DateTime.Now;
+
                 db.Entry(taskToEdit).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -255,7 +255,6 @@ namespace ManageOnline.Controllers
                 {
                     return RedirectToAction("ScrumBoard", "ProjectPanel", new { projectId = taskToEdit.Project.ProjectId });
                 }
-
                 return RedirectToAction("KanbanBoard", "ProjectPanel", new { projectId = taskToEdit.Project.ProjectId });
             }
         }

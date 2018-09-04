@@ -51,56 +51,66 @@
         {
             foreach (var sprint in Model.ScrumSprints)
             {
-                <div class="btn btn-block btn-info" style="margin-top:15px;" id="collapse_toggle_@sprint.ScrumSprintNumber"><h2>Sprint @sprint.ScrumSprintNumber</h2></div>
-                <div class="bg-info">@Html.Action("AddTaskToSprint", "Task", new { projectId = Model.ProjectId, sprintId = sprint.ScrumSprintId })</div>
+                <div class="btn btn-block bg-dark text-white row text-left" style="margin-top:15px; margin-left:0px;margin-right:0px;" id="collapse_toggle_@sprint.ScrumSprintNumber">
+                    <h2 class="col-3">Sprint @sprint.ScrumSprintNumber </h2>
+                    <h5 style="margin-top:auto;margin-bottom:auto;" class="col-6">Data rozpoczęcia: @sprint.StartScrumSprintDate Długość: @sprint.ScrumSprintLengthInDays dni</h5>
+                    <div class="text-right col-2" style="margin-top:auto;margin-bottom:auto;">@Html.Action("AddTaskToSprint", "Task", new { projectId = Model.ProjectId, scrumSprintId = sprint.ScrumSprintId })</div>
+                    @if (Model.ProjectStatus.ToString() == "InProgress" && (string)HttpContext.Current.Session["Role"] == "Manager")
+                    {
+                        <button type="submit" class="col-1 btn btn-danger" style="margin-top:auto;margin-bottom:5px;;" onclick="location.href = '@Url.Action("DeleteScrumSprint", "ProjectPanel", new { projectId = Model.ProjectId, scrumSprintId = sprint.ScrumSprintId })'">Usuń sprint</button>
+                    }
+                </div>
                 <div class="pos-relative">
-                    <div class="bg-info fg-white"
+                    <div class="bg-dark fg-white"
                          data-role="collapse"
                          data-toggle-element="#collapse_toggle_@sprint.ScrumSprintNumber">
                         @foreach (var task in Model.Tasks.Where(x => x.ScrumSprintWhereTaskBelong.ScrumSprintNumber == sprint.ScrumSprintNumber))
                         {
                             if (task.TaskStatus == ManageOnline.Models.TaskStatus.NotStarted)
                             {
-                                <div class="btn-block btn-warning">
+                                <div class="btn-block btn-warning" style="width:97%; margin-left:auto;margin-right:auto;margin-bottom:10px;">
                                     <div class="row">
-                                        <h2 class="text-left col-7 text-white" style="margin-top:3px;margin-bottom:4px;margin-left:5px;margin-right:5px;">@task.TaskName </h2>
-                                        <img class="uk-border-circle uk-box-shadow-hover-medium col-1" style="height: 40px; width: 20px; margin-left:10px;margin-right:5px;" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)" />
-                                        <h2 style="margin-top:2px;margin-bottom:4px;" class="text-white">@task.CurrentWorkerAtTask.Username</h2>
+                                        <h3 class="text-left col-7 text-white" style="margin-top:3px;margin-left:5px;margin-right:5px;">@task.TaskName </h3>
+                                        <img class="uk-border-circle uk-box-shadow-hover-medium col-1" style="height: 40px; width: 20px; margin-left:10px;margin-right:10px;margin-top:2px;margin-bottom:2px;" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)" />
+                                        <h3 style="margin-top:4px;margin-bottom:4px;" class="text-white">@task.CurrentWorkerAtTask.Username</h3>
                                         <div class="btn-group btn-group-sm float-right col-3 " style="margin-top:6px;margin-bottom:6px;" role="group">
                                             @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })
                                             @Html.Action("EditTask", "Task", new { taskId = task.TaskId })
                                             <div class="btn btn-sm btn-danger float-right custom-row col-2" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
                                         </div>
+                                        <div class="bg-dark" style="width:100%;height:10px;"></div>
                                     </div>
                                 </div>
                             }
                             else if (task.TaskStatus == ManageOnline.Models.TaskStatus.InProgress)
                             {
-                                <div class="btn-block btn-primary">
+                                <div class="btn-block btn-primary" style="width:97%; margin-left:auto;margin-right:auto;margin-bottom:10px;">
                                     <div class="row">
-                                        <h2 class="text-left col-7 text-white" style="margin-top:3px;margin-bottom:3px;margin-left:5px;margin-right:5px;">@task.TaskName </h2>
-                                        <img class="uk-border-circle uk-box-shadow-hover-medium col-1" style="height: 40px; width: 20px; margin-left:10px;margin-right:5px;" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)" />
-                                        <h2 style="margin-top:2px;margin-bottom:4px;" class="text-white">@task.CurrentWorkerAtTask.Username</h2>
+                                        <h3 class="text-left col-7 text-white" style="margin-top:3px;margin-left:5px;margin-right:5px;">@task.TaskName </h3>
+                                        <img class="uk-border-circle uk-box-shadow-hover-medium col-1" style="height: 40px; width: 20px; margin-left:10px;margin-right:10px;margin-top:2px;margin-bottom:2px;" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)" />
+                                        <h3 style="margin-top:4px;margin-bottom:4px;" class="text-white">@task.CurrentWorkerAtTask.Username</h3>
                                         <div class="btn-group btn-group-sm float-right col-3 " style="margin-top:6px;margin-bottom:6px;" role="group">
                                             @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })
                                             @Html.Action("EditTask", "Task", new { taskId = task.TaskId })
                                             <div class="btn btn-sm btn-danger float-right custom-row col-2" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
                                         </div>
+                                        <div class="bg-dark" style="width:100%;height:10px;"></div>
                                     </div>
                                 </div>
                             }
                             else if (task.TaskStatus == ManageOnline.Models.TaskStatus.Finished)
                             {
-                                <div class="btn-block btn-success">
+                                <div class="btn-block btn-success" style="width:97%; margin-left:auto;margin-right:auto;margin-bottom:10px; ">
                                     <div class="row">
-                                        <h2 class="text-left col-7 text-white" style="margin-top:3px;margin-bottom:3px;margin-left:5px;margin-right:5px;">@task.TaskName </h2>
-                                        <img class="uk-border-circle uk-box-shadow-hover-medium col-1" style="height: 40px; width: 20px; margin-left:10px;margin-right:5px;" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)" />
-                                        <h2 style="margin-top:2px;margin-bottom:4px;" class="text-white">@task.CurrentWorkerAtTask.Username</h2>
+                                        <h3 class="text-left col-7 text-white" style="margin-top:3px;margin-left:5px;margin-right:5px;">@task.TaskName </h3>
+                                        <img class="uk-border-circle uk-box-shadow-hover-medium col-1" style="height: 40px; width: 20px; margin-left:10px;margin-right:10px;margin-top:2px;margin-bottom:2px;" src="data:image;base64,@System.Convert.ToBase64String(task.CurrentWorkerAtTask.UserPhoto)" />
+                                        <h3 style="margin-top:4px;margin-bottom:4px;" class="text-white">@task.CurrentWorkerAtTask.Username</h3>
                                         <div class="btn-group btn-group-sm float-right col-3 " style="margin-top:6px;margin-bottom:6px;" role="group">
                                             @Html.Action("ShowTaskDetails", "Task", new { taskId = task.TaskId })
                                             @Html.Action("EditTask", "Task", new { taskId = task.TaskId })
                                             <div class="btn btn-sm btn-danger float-right custom-row col-2" onclick="location.href = '@Url.Action("DeleteTask", "Task", new { projectId=Model.ProjectId, taskId= task.TaskId}, null)'">Usuń</div>
                                         </div>
+                                        <div class="bg-dark" style="width:100%;height:10px;"></div>
                                     </div>
                                 </div>
                             }

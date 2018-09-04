@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -10,8 +11,11 @@ namespace ManageOnline.Models
 
     public enum TaskStatus : int
     {
+        [Description("Nie rozpoczęte")]
         NotStarted,
+        [Description("W toku")]
         InProgress,
+        [Description("Zakończone")]
         Finished
     }
 

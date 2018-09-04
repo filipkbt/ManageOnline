@@ -21,5 +21,9 @@ namespace ManageOnline.Models
         public DateTime StartScrumSprintDate { get; set; }
 
         public DateTime FinishScrumSprintDate { get; set; }
+
+        public int ScrumSprintLengthInDays { get; set; }
+
+        public bool IsFinished { get; set; }
     }
 }
