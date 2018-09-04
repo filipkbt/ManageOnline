@@ -11,11 +11,11 @@ namespace ManageOnline.Models
 
     public enum TaskStatus : int
     {
-        [Description("Nie rozpoczęte")]
+        [Display(Name = "Nie rozpoczęte")]
         NotStarted,
-        [Description("W toku")]
+        [Display(Name ="W toku")]
         InProgress,
-        [Description("Zakończone")]
+        [Display(Name = "Zakończone")]
         Finished
     }
 

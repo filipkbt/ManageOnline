@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -143,6 +144,23 @@ namespace ManageOnline.Controllers
                 }
 
                 db.ScrumSprints.Remove(scrumSprint);
+                db.SaveChanges();
+
+                return RedirectToAction("ScrumBoard", "ProjectPanel", new { projectId = projectId });
+            }
+        }
+
+        public ActionResult MarkScrumSprintAsFinished(int projectId, int scrumSprintId)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                var scrumSprint = db.ScrumSprints.Where(x => x.ScrumSprintId == scrumSprintId).FirstOrDefault();
+
+                scrumSprint.FinishScrumSprintDate = DateTime.Now;
+                scrumSprint.IsFinished = true;
+
+                db.Entry(scrumSprint).State = EntityState.Modified;
+
                 db.SaveChanges();
 
                 return RedirectToAction("ScrumBoard", "ProjectPanel", new { projectId = projectId });

@@ -220,6 +220,7 @@ namespace ManageOnline.Controllers
                     usersBelongsToProject.Add(user);
                 }
 
+
                 ViewBag.Users = usersBelongsToProject;
 
                 return PartialView("_editTask", task);
