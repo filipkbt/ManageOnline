@@ -39,5 +39,10 @@ namespace ManageOnline.Controllers
                 return PartialView("_notificationsInfo");
             }
         }
+
+        public ActionResult AdminDashboard()
+        {
+            return View();
+        }
     }
 }

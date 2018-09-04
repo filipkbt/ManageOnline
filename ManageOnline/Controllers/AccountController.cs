@@ -28,14 +28,13 @@ namespace ManageOnline.Controllers
                     if (user != null)
                     {
                         ViewBag.Message = "Użytkownik o podanym loginie już istnieje.";
-
                     }
                     else
                     {
+                        userAccount.Username = userAccount.Username.ToLower();
                         userAccount.Password = Crypto.Hash(userAccount.Password);
                         userAccount.ConfirmPassword = Crypto.Hash(userAccount.ConfirmPassword);
                         byte[] data = System.Text.Encoding.ASCII.GetBytes("0");
-                        user.UserPhoto = data;
                         db.UserAccounts.Add(userAccount);
                         db.SaveChanges();
                         ModelState.Clear();
@@ -61,10 +60,14 @@ namespace ManageOnline.Controllers
                 {
                     if ((string.Compare(Crypto.Hash(user.Password), currentUser.Password) == 0))
                     {
-                        System.Web.HttpContext.Current.Session["UserId"] = currentUser.UserId.ToString();
-                        System.Web.HttpContext.Current.Session["Username"] = currentUser.Username.ToString();
+                        System.Web.HttpContext.Current.Session["UserId"] = currentUser.UserId.ToString().ToLower();
+                        System.Web.HttpContext.Current.Session["Username"] = currentUser.Username.ToString().ToLower();
                         System.Web.HttpContext.Current.Session["Role"] = currentUser.Role.ToString();
                         Session.Timeout = 30;
+                        if(currentUser.Role == Roles.Admin)
+                        {
+                            return RedirectToAction("AdminDashboard", "Dashboard");
+                        }
                         return RedirectToAction("DashboardIndex", "Dashboard");
                     }
                     else

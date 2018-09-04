@@ -12,9 +12,9 @@ namespace ManageOnline.Models
     {
         Pracownik,
         Manager,
-        Klient
+        Klient,
+        Admin
     }
-
 
     public class UserBasicModel
     {

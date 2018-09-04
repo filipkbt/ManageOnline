@@ -664,6 +664,7 @@
     <Content Include="Views\Comments\_addCommentToTheComment.cshtml" />
     <Content Include="Views\Comments\_addCommentToTheTask.cshtml" />
     <Content Include="Views\ProjectPanel\ScrumBoard.cshtml" />
+    <Content Include="Views\Dashboard\AdminDashboard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
