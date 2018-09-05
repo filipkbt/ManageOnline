@@ -282,5 +282,43 @@ namespace ManageOnline.Controllers
             }
             return View("AdminDashboard");
         }
+
+        public ActionResult Statistics()
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                DateTime now = DateTime.Now;
+                DateTime startDate = Convert.ToDateTime("1/08/2019 00:00:00");
+                double daysSincePortalIsWorking = (startDate - now).TotalDays;
+
+                ViewBag.PortalStartDate = Convert.ToDateTime("1/08/2019 00:00:00").ToString("dd-MM-yyyy");
+
+                ViewBag.ClientsCount = db.UserAccounts.Where(x => x.Role == Roles.Klient).Count();
+                ViewBag.EmployeesCount = db.UserAccounts.Where(x => x.Role == Roles.Pracownik).Count();
+                ViewBag.ManagersCount = db.UserAccounts.Where(x => x.Role == Roles.Manager).Count();
+                ViewBag.UsersCount = db.UserAccounts.Where(x => x.Role != Roles.Admin).Count();
+
+                ViewBag.ProjectsWaitingForOfferCounts = db.Projects.Where(x => x.ProjectStatus == ProjectStatus.WaitingForOffers).Count();
+                ViewBag.ProjectsInProgressCount = db.Projects.Where(x => x.ProjectStatus == ProjectStatus.InProgress).Count();
+                ViewBag.ProjectsFinished = db.Projects.Where(x => x.ProjectStatus == ProjectStatus.Finished).Count();
+                ViewBag.ProjectsCount = db.Projects.Count();
+
+                ViewBag.TasksNotStarted = db.Tasks.Where(x => x.TaskStatus == TaskStatus.NotStarted).Count();
+                ViewBag.TasksInProgress = db.Tasks.Where(x => x.TaskStatus == TaskStatus.InProgress).Count();
+                ViewBag.TasksFinished = db.Tasks.Where(x => x.TaskStatus == TaskStatus.Finished).Count();
+                ViewBag.TasksCount = db.Tasks.Count();
+
+                ViewBag.MessagesCount = db.Messages.Count();
+                ViewBag.MessagesPerDay = string.Format("{0:0.00}", (double)db.Messages.Count() / daysSincePortalIsWorking);
+
+                ViewBag.NotificationsCreatedCount = db.Notifications.Count();
+                ViewBag.NotificationsCreatedPerDay = string.Format("{0:0.00}", (double)db.Notifications.Count() / daysSincePortalIsWorking);
+
+                ViewBag.RatesCount = db.Rates.Count();
+                ViewBag.RatesAverage = string.Format("{0:0.00}", db.Rates.Average(x => x.AverageRate));
+
+            }
+            return View();
+        }
     }
 }

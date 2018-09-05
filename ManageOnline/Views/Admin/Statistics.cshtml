@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "Statistics";
+    Layout = "~/Views/Shared/_AdminDashboard.cshtml";
+}
+
+<div class="card">
+    <div class="card-header bg-dark text-white text-center"><h1><b>Statystyki</b></h1></div>
+    <div class="alert alert-success text-center"><h1><b>Aplikacja istnieje od: @ViewBag.PortalStartDate </b></h1></div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header bg-info text-white text-center">
+                        <h2><b>Użytkownicy</b></h2>
+                    </div>
+                    <div class="card-body text-center">
+                        <h3><b>Liczba klientów <br />@ViewBag.ClientsCount</b></h3>
+                        <h3><b>Liczna pracowników <br />@ViewBag.EmployeesCount</b></h3>
+                        <h3><b>Liczba menadżerów <br />@ViewBag.ManagersCount</b></h3>
+                        <h3><b><u>Ogółem użytkowników <br />@ViewBag.UsersCount</u></b></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header bg-info text-white text-center">
+                        <h2><b>Projekty</b></h2>
+                    </div>
+                    <div class="card-body text-center">
+                        <h3><b>Projekty nierozpoczęte <br />@ViewBag.ProjectsWaitingForOfferCounts </b></h3>
+                        <h3><b>Projekty w toku <br />@ViewBag.ProjectsInProgressCount</b></h3>
+                        <h3><b>Projekty zakończone <br />@ViewBag.ProjectsFinished </b></h3>
+                        <h3><b><u>Ogółem projektów <br />@ViewBag.ProjectsCount</u></b></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header bg-info text-white text-center">
+                        <h2><b>Zadania</b></h2>
+                    </div>
+                    <div class="card-body text-center">
+                        <h3><b>Zadania nierozpoczęte<br /> @ViewBag.TasksNotStarted</b></h3>
+                        <h3><b>Zadania w toku<br /> @ViewBag.TasksInProgress </b></h3>
+                        <h3><b>Zadania zakończone<br /> @ViewBag.TasksFinished </b></h3>
+                        <h3><b><u>Ogółem zadań<br /> @ViewBag.TasksCount</u></b></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header bg-info text-white text-center">
+                        <h2><b>Wiadomości</b></h2>
+                    </div>
+                    <div class="card-body text-center">
+                        <h3><b>Liczba wiadomości przesyłanych na dzień<br /> @ViewBag.MessagesPerDay</u></b></h3>
+                        <h3><b><u>Ogółem wiadomości<br /> @ViewBag.MessagesCount</u></b></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header bg-info text-white text-center">
+                        <h2><b>Notyfikacje</b></h2>
+                    </div>
+                    <div class="card-body text-center">
+                        <h3><b>Liczba notyfikacji tworzonych na dzień<br /> @ViewBag.NotificationsCreatedPerDay</u></b></h3>
+                        <h3><b><u>Ogółem notyfikacji<br /> @ViewBag.NotificationsCreatedCount</u></b></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-header bg-info text-white text-center">
+                        <h2><b>Oceny</b></h2>
+                    </div>
+                    <div class="card-body text-center">
+                        <h3><b>Średnia ocen<br /> @ViewBag.RatesAverage</u></b></h3>
+                        <h3><b><u>Ogółem ocen<br /> @ViewBag.RatesCount </u></b></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

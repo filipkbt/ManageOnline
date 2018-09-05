@@ -25,7 +25,7 @@
             <div class="bg-info" data-role="tile" data-size="wide" style="margin-left:10px;margin-right:10px">
                 @Html.Action("AddNewManagerAccount", "Admin", null)
             </div>
-            <div class="bg-success" data-role="tile" data-size="wide" style="margin-left:10px;margin-right:10px">
+            <div class="bg-success" data-role="tile" data-size="wide" style="margin-left:10px;margin-right:10px" onclick="location.href = '@Url.Action("Statistics")'">
                 <span class="icon mif-chart-bars2"></span>
                 <div class="text-white text-center branding-bar">Statystyki</div>
             </div>
