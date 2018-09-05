@@ -74,8 +74,9 @@ namespace ManageOnline.Controllers
             return RedirectToAction("ShowSendedMessages","Messages",null);
         }
 
-        public ActionResult SendMessageToAllUsers(int userId)
+        public ActionResult SendMessagesToAllUsers()
         {
+            var userId = Convert.ToInt32(System.Web.HttpContext.Current.Session["UserId"]);
             MessageModel message = new MessageModel();
             using (DbContextModel db = new DbContextModel())
             {
@@ -90,16 +91,20 @@ namespace ManageOnline.Controllers
             using (DbContextModel db = new DbContextModel())
             {
                 var senderIdInt = Convert.ToInt32(System.Web.HttpContext.Current.Session["UserId"]);
-                var receiverUserId = message.Receiver.UserId;
-                message.Receiver = db.UserAccounts.Where(x => x.UserId.Equals(receiverUserId)).FirstOrDefault();
-                message.Sender = db.UserAccounts.Where(x => x.UserId.Equals(senderIdInt)).FirstOrDefault();
-                message.DateSend = DateTime.Now;
-                message.IsSeen = false;
-                db.Messages.Add(message);
-                db.SaveChanges();
+                var users = db.UserAccounts.Where(x => x.Role != Roles.Admin).ToList();
+                var admin = db.UserAccounts.Where(x => x.Role == Roles.Admin).FirstOrDefault();
+                foreach(var user in users)
+                {
+                    message.Receiver = db.UserAccounts.Where(x => x.UserId.Equals(user.UserId)).FirstOrDefault();
+                    message.Sender = admin;
+                    message.DateSend = DateTime.Now;
+                    message.IsSeen = false;
+                    db.Messages.Add(message);
+                    db.SaveChanges();
+                }
             }
 
-            return RedirectToAction("ShowSendedMessages", "Messages", null);
+            return View("~/Views/Admin/AdminDashboard.cshtml");
         }
 
         public ActionResult ShowReceivedMessages()

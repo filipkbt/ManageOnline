@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace ManageOnline.Controllers
@@ -248,12 +250,37 @@ namespace ManageOnline.Controllers
             }
         }
 
-        public ActionResult AddManagerAccount()
+        public ActionResult AddNewManagerAccount()
+        {
+            return PartialView("_addManagerAccount");
+        }
+
+        [HttpPost]
+        public ActionResult AddManagerAccount(UserBasicModel manager)
         {
             using (DbContextModel db = new DbContextModel())
             {
-                return View();
+                var user = db.UserAccounts.SingleOrDefault(u => u.Username == manager.Username);
+                if (user != null)
+                {
+                    ViewBag.Message = "Użytkownik o podanym loginie już istnieje.";
+                }
+                else
+                {
+                    var password = Convert.ToBase64String(System.Security.Cryptography.SHA256.Create()
+                      .ComputeHash(Encoding.UTF8.GetBytes(manager.Password)));
+                    var confirmPassword = Convert.ToBase64String(System.Security.Cryptography.SHA256.Create()
+                                                 .ComputeHash(Encoding.UTF8.GetBytes(manager.ConfirmPassword)));
+                    manager.Username = manager.Username.ToLower();
+                    manager.Password = password;
+                    manager.ConfirmPassword = confirmPassword;
+                    manager.Role = Roles.Manager;
+                    byte[] data = System.Text.Encoding.ASCII.GetBytes("0");
+                    db.UserAccounts.Add(manager);
+                    db.SaveChanges();
+                }
             }
+            return View("AdminDashboard");
         }
     }
 }

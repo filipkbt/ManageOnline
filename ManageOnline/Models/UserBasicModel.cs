@@ -20,29 +20,40 @@ namespace ManageOnline.Models
     {
         [Key]
         public int UserId { get; set; }
+
+        [DataType(DataType.EmailAddress)]
         [DisplayName("Adres email")]
         [Required(ErrorMessage = "Email jest wymagany.")]
         public string Email { get; set; }
+
         [DisplayName("Login")]
         [Required(ErrorMessage = "Nazwa użytkownika jest wymagana.")]
         public string Username { get; set; }
+
         [DisplayName("Hasło")]
         [Required(ErrorMessage = "Hasło jest wymagane.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+
         [DisplayName("Potwierdź hasło")]
         [Compare("Password", ErrorMessage = "Potwierdź swoje hasło.")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
+
         [DisplayName("Rola")]
         [Required(ErrorMessage = "Podanie roli konta jest wymagane.")]
         public Roles Role { get; set; }
+
         [DisplayName("Profesja")]
         public string DisplayedRole { get; set; }
+
+        [DataType(DataType.PhoneNumber)]
         [DisplayName("Numer kontaktowy")]
         public string MobileNumber { get; set; }
+
         [DisplayName("Opis")]
         public string Description { get; set; }
+
         [DisplayName("Zdjęcie profilowe")]
         public byte[] UserPhoto { get; set; }
 
