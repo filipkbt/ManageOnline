@@ -291,7 +291,7 @@ namespace ManageOnline.Controllers
                 DateTime startDate = Convert.ToDateTime("1/08/2019 00:00:00");
                 double daysSincePortalIsWorking = (startDate - now).TotalDays;
 
-                ViewBag.PortalStartDate = Convert.ToDateTime("1/08/2019 00:00:00").ToString("dd-MM-yyyy");
+                ViewBag.PortalStartDate = Convert.ToDateTime("1/08/2019 00:00:00").ToString("yyyy-mm-dd");
 
                 ViewBag.ClientsCount = db.UserAccounts.Where(x => x.Role == Roles.Klient).Count();
                 ViewBag.EmployeesCount = db.UserAccounts.Where(x => x.Role == Roles.Pracownik).Count();
