@@ -14,12 +14,21 @@ namespace ManageOnline.Controllers
     {
         public ActionResult Register()
         {
+            var rolesList = new List<Roles>();
+            rolesList.Add(Roles.Pracownik);
+            rolesList.Add(Roles.Klient);
+            ViewBag.Roles = new SelectList(rolesList);
+
             return View();
         }
 
         [HttpPost]
         public ActionResult Register(UserBasicModel userAccount)
         {
+            var rolesList = new List<Roles>();
+            rolesList.Add(Roles.Pracownik);
+            rolesList.Add(Roles.Klient);
+            ViewBag.Roles = new SelectList(rolesList);
             if (ModelState.IsValid)
             {
                 using (DbContextModel db = new DbContextModel())

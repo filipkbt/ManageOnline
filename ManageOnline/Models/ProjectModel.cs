@@ -10,11 +10,11 @@ namespace ManageOnline.Models
 {
     public enum ProjectStatus
     {
-        [Description("Waiting for offers")]
+        [Description("Oczekuje na oferty")]
         WaitingForOffers,
-        [Description("In Progress")]
+        [Description("W toku")]
         InProgress,
-        [Description("Finished")]
+        [Description("Zakończone")]
         Finished
     }
 
