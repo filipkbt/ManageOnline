@@ -5,7 +5,14 @@
     /**/
 
     ViewBag.Title = "KanbanBoard";
-    Layout = "~/Views/Shared/_Dashboard.cshtml";
+    if (HttpContext.Current.Session["Role"].ToString() == "Admin")
+    {
+        Layout = "~/Views/Shared/_AdminDashboard.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Dashboard.cshtml";
+    }
 }
 
 <div class="card text-center">

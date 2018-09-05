@@ -2,11 +2,19 @@
 
 @{
     ViewBag.Title = "ShowProjectsInProgress";
-    Layout = "~/Views/Shared/_Dashboard.cshtml";
+    if (HttpContext.Current.Session["Role"].ToString() == "Admin")
+    {
+        Layout = "~/Views/Shared/_AdminDashboard.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_Dashboard.cshtml";
+    }
 }
 <div class="card">
-    <div class="card-header">
-        <div class="btn-group btn-group-justified">
+    <div class="card-header ">
+        <div class="card-header bg-dark text-white text-center"><h1><b>Projekty</b></h1></div>
+        <div class="btn-group btn-group-justified" style="margin-top:15px;">
             <a onclick="location.href = '@Url.Action( "ShowProjectsWaitingForOffers", "Project")'" class="btn btn-primary btn-sm mr-3 text-white text-bold" style="width:100%">Pokaż projekty oczekujące na wybranie oferty</a>
             <a onclick="location.href = '@Url.Action("ShowProjectsInProgress", "Project")'" class="btn btn-success btn-sm mr-3 text-white text-bold" style="width:100%">Pokaż projekty w trakcie</a>
             <a onclick="location.href = '@Url.Action("ShowProjectsFinished", "Project")'" class="btn btn-primary btn-sm mr-3 text-white text-bold" style="width:100%">Pokaż zakończone projekty</a>

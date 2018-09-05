@@ -672,6 +672,8 @@
     <Content Include="Views\Messages\_sendMessageToAllUsers.cshtml" />
     <Content Include="Views\Messages\ShowSendedMessagesAdmin.cshtml" />
     <Content Include="Views\Messages\ShowReceivedMessagesAdmin.cshtml" />
+    <Content Include="Views\Admin\ShowManagers.cshtml" />
+    <Content Include="Views\Admin\ShowClientsAndEmployees.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
