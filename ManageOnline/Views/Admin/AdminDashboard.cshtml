@@ -6,10 +6,10 @@
 }
 
 <div class="card">
-    <div class=" card-header bg-dark text-white text-center"><h1><b>Panel administratora</b></h1></div>
+    <div class="card-header bg-dark text-white text-center"><h1><b>Panel administratora</b></h1></div>
     <div class="card-body">
         <div class="row tiles-grid">
-            @Html.HiddenFor(x=> x.UserId)
+            @Html.HiddenFor(x => x.UserId)
             <div class="bg-info" data-role="tile" data-size="medium" style="margin-left:10px;margin-right:10px">
                 <span class="icon mif-users"></span>
                 <div class="text-white text-center branding-bar">Użytkownicy</div>
@@ -30,26 +30,25 @@
                 <span class="icon mif-chart-bars2"></span>
                 <div class="text-white text-center branding-bar">Statystyki</div>
             </div>
-            <div class="bg-info" data-role="tile" data-size="medium" style="margin-left:10px;margin-right:10px">
+            <div class="bg-info" data-role="tile" data-size="medium" style="margin-left:10px;margin-right:10px"  onclick="location.href = '@Url.Action("ShowReceivedMessagesAdmin", "Messages")'">
                 <img class="icon" src="~/Content/Images/icons8-secured-letter-100.png">
                 <div class="text-white text-center branding-bar">Wiadomości</div>
             </div>
             <div class="bg-info" data-role="tile" data-size="wide" style="margin-left:10px;margin-right:10px">
-                <img class="icon" src="~/Content/Images/icons8-new-message-100.png">
-                <div class="text-white text-center branding-bar">Wiadomość do wszystkich</div>
-            </div>
-            <div class="bg-warning" data-role="tile" data-size="wide" style="margin-left:10px;margin-right:10px"  onclick="location.href = '@Url.Action("EditAccountAdmin", "Account")'">
-                <img class="icon" src="~/Content/Images/icons8-edycja-użytkownika-mężczyzna-100.png">
-                <div class="text-white text-center branding-bar">Edytuj konto administratora</div>
-            </div>
-            <div class="bg-warning" data-role="tile" data-size="wide" style="margin-left:10px;margin-right:10px" onclick="location.href = '@Url.Action("ChangePasswordAdmin", "Account")'">
-                <img class="icon" src="~/Content/Images/icons8-key-100.png">
-                <div class="text-white text-center branding-bar">Zmień hasło</div>
-            </div>
-            <div class="bg-danger" data-role="tile" data-size="medium" style="margin-left:10px;margin-right:10px" onclick="location.href = '@Url.Action("Logout", "Account")'">
-                <img class="icon" src="~/Content/Images/icons8-door-opened-80.png">
-                <div class="text-white text-center branding-bar">Wyloguj się</div>
-            </div>
-        </div>
+    @Html.Action("SendMessageToAllUsers", "Messages", new { userId = Model.UserId })
+</div>
+    <div class="bg-warning" data-role="tile" data-size="wide" style="margin-left:10px;margin-right:10px" onclick="location.href = '@Url.Action("EditAccountAdmin", "Account")'">
+        <img class="icon" src="~/Content/Images/icons8-edycja-użytkownika-mężczyzna-100.png">
+        <div class="text-white text-center branding-bar">Edytuj konto administratora</div>
     </div>
+    <div class="bg-warning" data-role="tile" data-size="wide" style="margin-left:10px;margin-right:10px" onclick="location.href = '@Url.Action("ChangePasswordAdmin", "Account")'">
+        <img class="icon" src="~/Content/Images/icons8-key-100.png">
+        <div class="text-white text-center branding-bar">Zmień hasło</div>
+    </div>
+    <div class="bg-danger" data-role="tile" data-size="medium" style="margin-left:10px;margin-right:10px" onclick="location.href = '@Url.Action("Logout", "Account")'">
+        <img class="icon" src="~/Content/Images/icons8-door-opened-80.png">
+        <div class="text-white text-center branding-bar">Wyloguj się</div>
+    </div>
+</div>
+        </div>
 </div>

@@ -669,6 +669,9 @@
     <Content Include="Views\Shared\_AdminDashboard.cshtml" />
     <Content Include="Views\Account\ChangePasswordAdmin.cshtml" />
     <Content Include="Views\Account\EditAccountAdmin.cshtml" />
+    <Content Include="Views\Messages\_sendMessageToAllUsers.cshtml" />
+    <Content Include="Views\Messages\ShowSendedMessagesAdmin.cshtml" />
+    <Content Include="Views\Messages\ShowReceivedMessagesAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

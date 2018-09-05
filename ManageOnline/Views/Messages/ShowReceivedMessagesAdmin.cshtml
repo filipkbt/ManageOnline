@@ -1,0 +1,82 @@
+﻿@model IEnumerable<ManageOnline.Models.MessageModel>
+
+@{
+    ViewBag.Title = "ShowReceivedMessagesAdmin";
+    Layout = "~/Views/Shared/_AdminDashboard.cshtml";
+}
+<div class="card">
+    <div class="card-header card-header bg-dark text-white text-center">
+        <h1>Wiadomości</h1>
+    </div>
+    <div class="card-header">
+        <div class="btn-group btn-group-justified" style="margin-top: 10px">
+            <a onclick="location.href = '@Url.Action( "ShowReceivedMessagesAdmin", "Messages")'" class="btn btn-success btn-sm mr-3 text-white text-bold" style="width:100%">Pokaż otrzymane wiadomości</a>
+            <a onclick="location.href = '@Url.Action("ShowSendedMessagesAdmin", "Messages")'" class="btn  btn-primary btn-sm mr-3 text-white text-bold" style="width:100%">Pokaż wysłane wiadomości</a>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover" style="margin-top:30px">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">
+                        Nadawca
+                    </th>
+                    <th scope="col">
+                        Data wysłania
+                    </th>
+                    <th scope="col">
+                        Temat
+                    </th>
+                    <th scope="col">Szczegóły</th>
+                    <th scope="col">Odpowiedz
+                    <th>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    if (!item.IsSeen)
+                    {
+                        <tr class="table-info" style="cursor:pointer">
+                            <td>
+                                @item.Sender.Username
+                            </td>
+                            <td>
+                                @item.DateSend
+                            </td>
+                            <td>
+                                @item.Title
+                            </td>
+                            <td>
+                                @Html.Action("ShowMessageDetails", "Messages", new { messageId = item.MessageId })
+                            </td>
+                            <td>
+                                @Html.Action("SendMessage", "Messages", new { userId = item.Sender.UserId })
+                            </td>
+
+                        </tr>
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>
+                                @item.Sender.Username
+                            </td>
+                            <td>
+                                @item.DateSend
+                            </td>
+                            <td>
+                                @item.Title
+                            </td>
+                            <td>
+                                @Html.Action("ShowMessageDetails", "Messages", new { messageId = item.MessageId })
+                            </td>
+                            <td>
+                                @Html.Action("SendMessage", "Messages", new { userId = item.Sender.UserId })
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

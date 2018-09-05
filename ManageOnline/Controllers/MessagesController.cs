@@ -74,7 +74,49 @@ namespace ManageOnline.Controllers
             return RedirectToAction("ShowSendedMessages","Messages",null);
         }
 
+        public ActionResult SendMessageToAllUsers(int userId)
+        {
+            MessageModel message = new MessageModel();
+            using (DbContextModel db = new DbContextModel())
+            {
+                message.Receiver = db.UserAccounts.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
+            }
+            return PartialView("_sendMessageToAllUsers", message);
+        }
+
+        [HttpPost]
+        public ActionResult SendMessageToAllUsers(MessageModel message)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                var senderIdInt = Convert.ToInt32(System.Web.HttpContext.Current.Session["UserId"]);
+                var receiverUserId = message.Receiver.UserId;
+                message.Receiver = db.UserAccounts.Where(x => x.UserId.Equals(receiverUserId)).FirstOrDefault();
+                message.Sender = db.UserAccounts.Where(x => x.UserId.Equals(senderIdInt)).FirstOrDefault();
+                message.DateSend = DateTime.Now;
+                message.IsSeen = false;
+                db.Messages.Add(message);
+                db.SaveChanges();
+            }
+
+            return RedirectToAction("ShowSendedMessages", "Messages", null);
+        }
+
         public ActionResult ShowReceivedMessages()
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                int userIdInt = Convert.ToInt32(System.Web.HttpContext.Current.Session["UserId"]);
+                ICollection<MessageModel> messages = db.Messages
+                                                    .Include("Receiver")
+                                                    .Include("Sender")
+                                                    .OrderByDescending(x => x.DateSend)
+                                                    .Where(x => x.Receiver.UserId.Equals(userIdInt)).ToList();
+                return View(messages);
+            }
+        }
+
+        public ActionResult ShowReceivedMessagesAdmin()
         {
             using (DbContextModel db = new DbContextModel())
             {
@@ -103,6 +145,18 @@ namespace ManageOnline.Controllers
             }
         }
 
-
+        public ActionResult ShowSendedMessagesAdmin()
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                int senderIdInt = Convert.ToInt32(System.Web.HttpContext.Current.Session["UserId"]);
+                ICollection<MessageModel> messages = db.Messages
+                                                    .Include("Receiver")
+                                                    .Include("Sender")
+                                                    .OrderByDescending(x => x.DateSend)
+                                                    .Where(x => x.Sender.UserId.Equals(senderIdInt)).ToList();
+                return View(messages);
+            }
+        }
     }
 }
