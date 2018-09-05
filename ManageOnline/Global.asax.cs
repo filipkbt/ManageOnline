@@ -33,6 +33,9 @@ namespace ManageOnline
                     adminAccount = new UserBasicModel() { Username = "administrator", Email = "filip.admin@wp.pl", MobileNumber = "511 114 421", Role = Roles.Admin };
                     adminAccount.Password = password;
                     adminAccount.ConfirmPassword = confirmPassword;
+                    byte[] image = System.IO.File.ReadAllBytes(Server.MapPath("~/Content/Images/icons8-administrator-mężczyzna-480.png"));
+                    adminAccount.UserPhoto = image;
+
                     db.UserAccounts.Add(adminAccount);
                     db.SaveChanges();
                 }

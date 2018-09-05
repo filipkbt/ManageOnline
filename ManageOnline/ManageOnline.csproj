@@ -151,6 +151,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CommentsController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\EmployeesController.cs" />
@@ -664,7 +665,10 @@
     <Content Include="Views\Comments\_addCommentToTheComment.cshtml" />
     <Content Include="Views\Comments\_addCommentToTheTask.cshtml" />
     <Content Include="Views\ProjectPanel\ScrumBoard.cshtml" />
-    <Content Include="Views\Dashboard\AdminDashboard.cshtml" />
+    <Content Include="Views\Admin\AdminDashboard.cshtml" />
+    <Content Include="Views\Shared\_AdminDashboard.cshtml" />
+    <Content Include="Views\Account\ChangePasswordAdmin.cshtml" />
+    <Content Include="Views\Account\EditAccountAdmin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

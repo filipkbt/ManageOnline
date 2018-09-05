@@ -66,7 +66,7 @@ namespace ManageOnline.Controllers
                         Session.Timeout = 30;
                         if(currentUser.Role == Roles.Admin)
                         {
-                            return RedirectToAction("AdminDashboard", "Dashboard");
+                            return RedirectToAction("AdminDashboard", "Admin");
                         }
                         return RedirectToAction("DashboardIndex", "Dashboard");
                     }
@@ -116,6 +116,53 @@ namespace ManageOnline.Controllers
                 if((string.Compare(userToEdit.Password, oldPasswordHashed) == 0))
                 {
                     if(newPassword == confirmNewPassword)
+                    {
+                        userToEdit.Password = Crypto.Hash(newPassword);
+                        userToEdit.ConfirmPassword = Crypto.Hash(confirmNewPassword);
+                        db.Entry(userToEdit).State = EntityState.Modified;
+                        db.SaveChanges();
+                        ViewBag.MessageInfoRight = "Hasło zostało zmienione.";
+                        return View();
+                    }
+                    else
+                    {
+                        ViewBag.MessageInfoWrong = "Potwierdź poprawnie nowe hasło.";
+                        return View();
+                    }
+                }
+                else
+                {
+                    ViewBag.MessageInfoWrong = "Podałeś nieprawidłowe aktualne hasło.";
+                    return View();
+                }
+            }
+        }
+
+        public ActionResult ChangePasswordAdmin()
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                int userId = Convert.ToInt32(Session["UserId"]);
+
+                UserBasicModel userToEdit = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(userId));
+
+                return View(userToEdit);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ChangePasswordAdmin(string confirmOldPassword, string newPassword, string confirmNewPassword)
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                int UserId = Convert.ToInt32(Session["UserId"]);
+
+                UserBasicModel userToEdit = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
+                var oldPasswordHashed = Crypto.Hash(confirmOldPassword);
+
+                if ((string.Compare(userToEdit.Password, oldPasswordHashed) == 0))
+                {
+                    if (newPassword == confirmNewPassword)
                     {
                         userToEdit.Password = Crypto.Hash(newPassword);
                         userToEdit.ConfirmPassword = Crypto.Hash(confirmNewPassword);
@@ -208,6 +255,61 @@ namespace ManageOnline.Controllers
                 var skills = db.Skills.ToList();
                 MultiSelectList list = new MultiSelectList(skills, "SkillId", "SkillName");
                 ViewBag.Skills = list;
+                return View(user);
+            }
+        }
+
+        public ActionResult EditAccountAdmin()
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                int userId = Convert.ToInt32(Session["UserId"]);
+                UserBasicModel userToEdit = db.UserAccounts.Where(u => u.UserId.Equals(userId)).FirstOrDefault();
+
+                return View(userToEdit);
+            }
+        }
+
+
+
+        [HttpPost]
+        public ActionResult EditAccountAdmin(UserBasicModel userAfterEdit, HttpPostedFileBase file)
+        {
+            int UserId = Convert.ToInt32(Session["UserId"]);
+
+            using (DbContextModel db = new DbContextModel())
+            {
+                UserBasicModel user = db.UserAccounts.Where(u => u.UserId.Equals(UserId)).FirstOrDefault();
+
+                user.MobileNumber = userAfterEdit.MobileNumber;
+
+                user.DisplayedRole = userAfterEdit.DisplayedRole;
+
+                user.Description = userAfterEdit.Description;
+                if (file != null)
+                {
+                    byte[] data = FileHandler.GetBytesFromFile(file);
+                    user.UserPhoto = data;
+                }
+
+                db.Entry(user).State = EntityState.Modified;
+                try
+                {
+                    db.SaveChanges();
+                }
+
+                catch
+                {
+                    ViewBag.MessageAfterEditProfileDetails = "Edycja danych nie powiodła się";
+                }
+
+                ViewBag.MessageAfterEditProfileDetails = "Edycja danych przebiegła pomyślnie";
+
+                if (user.SkillsArray != null)
+                {
+                    user.SkillsArray = user.Skills.Split(',').ToArray();
+                }
+
                 return View(user);
             }
         }

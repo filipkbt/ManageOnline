@@ -47,8 +47,8 @@
         </div>
         RenderBody();
     }
-    else if (!String.IsNullOrEmpty((string)HttpContext.Current.Session["Username"]))    {
-
+    else if (!String.IsNullOrEmpty((string)HttpContext.Current.Session["Username"]) && (string)HttpContext.Current.Session["Role"] != "Admin")
+    {
         <div class="navbar navbar-expand-lg navbar-light bg-primary justify-content-end">
             <div class="container justify-content-end">
                             <div class="navbar-header">

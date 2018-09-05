@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="metro4:init" content="true">
+    <meta name="metro4:locale" content="pl-PL">
+    <meta name="metro4:week_start" content="1">
+    <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4/css/metro-all.min.css">
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css">
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.css">
+    <title>@ViewBag.Title - Efficiency Tool</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/metroui")
+    @Scripts.Render("~/bundles/chosen")
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <style>
+        span.input-group-addon i {
+            color: #009edf;
+            font-size: 17px;
+        }
+
+        .form-control {
+            height: auto !important;
+            padding: 8px 12px !important;
+        }
+
+        .input-group {
+            -webkit-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21) !important;
+            -moz-box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21) !important;
+            box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.21) !important;
+        }
+    </style>
+
+    @if (String.IsNullOrEmpty((string)HttpContext.Current.Session["Username"]))
+    {
+        <div class="container body-content">
+            <button type="button" class="btn btn-warning" onclick="location.href = '@Url.Action("Login", "Account")'">Zaloguj się !</button>
+        </div>
+    }
+    else
+    {
+        <div class="container body-content">
+            @RenderBody();
+        </div>
+            }
+
+            
+    </body>
+</html>

@@ -1,0 +1,55 @@
+﻿@model ManageOnline.Models.UserBasicModel
+
+@{
+    ViewBag.Title = "AdminDashboard";
+    Layout = "~/Views/Shared/_AdminDashboard.cshtml";
+}
+
+<div class="card">
+    <div class=" card-header bg-dark text-white text-center"><h1><b>Panel administratora</b></h1></div>
+    <div class="card-body">
+        <div class="row tiles-grid">
+            @Html.HiddenFor(x=> x.UserId)
+            <div class="bg-info" data-role="tile" data-size="medium" style="margin-left:10px;margin-right:10px">
+                <span class="icon mif-users"></span>
+                <div class="text-white text-center branding-bar">Użytkownicy</div>
+            </div>
+            <div class="bg-info" data-role="tile" data-size="medium" style="margin-left:10px;margin-right:10px">
+                <span class="icon mif-organization"></span>
+                <div class="text-white text-center branding-bar">Projekty</div>
+            </div>
+            <div class="bg-info" data-role="tile" data-size="wide" style="margin-left:10px;margin-right:10px">
+                <img class="icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAl1SURBVHhe7Z0HrBRFGMcRewFRI4oaYkMxolijRoMRFVuiSGKLaLDEgiZqFDVERRMbllgglqhYEyv2XkADwUYwEEvsUYMFAbEgVvD3zfzf8Wbv7r3zbsuDnV/yz+433+x8M9++t7e3O7vXLRKJRCKRSCQSiSxzLFmyZIXFixf3lBnJA5K+NhpK4segh9AM9CNaSHkb07F7a5NI2pDcDdD5aBr6W0nvEOrdps0jaUFSd0QPoj+V54bRNn3VVKQVSGYfdBf616e3Odj+VjUZaRbyaJ8PP/mU1gb/R+hudDYagrZDthNPUhUH9t9oEhqHjkJrKkykM8hfdxJ2I1rs0xlC8cfoHLSlNqmCaivh/8RvUQ2+hegW1EebRGpBrlYkSRN82kIot7Oog1hdQdU7hLrH+S3rQ53f0HBtEklCcu5QripQtgidxmp3VWsI6tt3kSvRJ+g311h9LtVmkTZIWnDcNyj7gsUOqtIStLM27R2JXnSNJ6D8dFWNkI/+JOR3nxqPdkYmp6u0fTCa5yN5sO2Df6CqlBsS8YLy0sYCyvrJnQm0vzWao3gO7LdZrKgq5YQk7O/TsRTKjpY7U4gzCAVnc5hHyl1OSMAzyoUD+2W5coF4dyq0A/tNucoHg98Y/aNcOLB3lDsXCNmXmMF1Mext5C4XjP0UnwIPiSjkr5O4T6oLDuzRcpULBv6gcuDAPlOuXCFu8CUS+1W5ygUDDy5vYG8rV64QdyN1wYFt19AauiKw3MCA7ZpV5XI667/KVQjE/1ZdcdhOkqscMOA+GrsD+wO5CoH4U9UVB/aucpUDxtzXD91DAqbIVQjEf1hdcWAfIlc5YMxxh3QlGHAPjd2B/Y5chUD8Z9UVR+l2iMGgK5fFWZ+r4kKosUMGyVUeGPR7Gr8Dez25cofYM9UNB3amFze7JAw6uCGFfbhcuULo1Yj9h++F64fdCijfVV8GfoJPgQe7kNkhxD1QXXBgvytXuWDgvVHl4iLr89CqcucGMZ9XFxzYl8hVPhj8G8qDA3uYXLlAvAEoeU+k7oyW5RoGvgmarzw4sM+TOxeId5ZCO7CNwXKXCwY+XnlwYM9Bm8mdC8Sz/5DKB7qB/ZTc5YKBz1YOHNiF3D4l7h7qggN7nlzlgUH31Pgd2HbXbmW5c4f4v/ieeFRcHkhA8tLJIhaFnfsT/wffE4+KywVJ+E7jb2NnuXKFfmyg+A7sQi/jFAYDT844uUCuXCHuIeqCA3uqXOWCgZ+sHDiwZ6MecucGMZ9WFxzY18hVLhj7Wgw+eAYE+1c0RlUyhTgHoJcUugJlu6tK+WDwZysPAZQPUJVMoP2NUNUjcpQVeqOscMiBPRNyMfrRp6TCCFXJBOIFh0uDMnt0YWtVKTckwh7GqYA9Xq5MoP3knLBRLP7XMyjLNSTDnt+oPNzJ+ucsMpkbRbv2X5mc+R4fb0tCUt5XfhzY+8qVKrR7mEI4LK5ckfaQmOuUIwf2RLlShXaDMyvssXJF2kNu+vsUeUiUXd/qL3cq0Ob2qHL/w9ZhK7kjSUjOFOXKgf2aXKlAe8HTWtiT5YrUggQNUa4qUHaG3C1BO4eqyQoWT+5IPUjSE8qXA9vuux8hd1PQhr3lIXl38lm5Ix1BojZDyUsqb8ndFJZ8NeXA/h2Vb+5Vs5CsQcqdA/sruZqC7WepqTaGyhVpBBKWnIyd6g7B3k6uSCOQs7hDuhIkbGPlzoE9W66mqLFDdpMr0ggkbBPlzoHd0n8ITUz3LVXYS65II7ADBihxjlZ3CNsnv3CWczJcs5CwPZU7B/YsuZqC7Z9TUw7s8j2Q0wokbJhy58Bu6dlxtn9cTTmwD5Mr0hnky14+NtmnzoN9u9xNwfbJZ1FeZlGuZ9GbhWSN9WlbCmUtvQOF7QerqQqU2eX+uFPqQXJ6oUcsWe0hcd+jll4Iw/Y2qSE5Mc/anojWVbWIQV7sLaIn1kpYG/iMyegozIbmAFPPDn2D0WPoL9dQDfB9i05ktdz31ElCT3Qe+tqnpjGob/8xV7C6qZoKoHwd/PYq2Y/dBg1C/S/Quaz2UlPlgAFvzsBvQD+7TNTGXqQ/V+s1wf8vsumoV7cJ+z4UvL8xCX6bjPepzCrw2etjb0PL7+UVxmkvm7GXTz6H6r46HN9cZIcPO9ysioaj4Etds9DOLHQ6spn3q7C0X1bobOdNRceh1TWUZRvG1IvB2GHJpvXUBf/P6Fq0vjYNoHxbdDNVF/gtGoNt/kAPoD3VVADl9mrym1DwfEgS/PZAqv1XL5vPH9Jxe37wOtTZQL9GtsMa+gEWNlmDunYC8K5voTb47fNgFKq5g5NQzz7P7HOnsz8cO0zaScIu2rRrQ0dtYJejzg4Fb6PhrDb11BTb2SEnOf3UQbnR1JRQNu+O7IcAXkIdHVqNR1HX/Y+hc8NQ8CRSe/DZbdMJKJW/Ltq5Rk0HUJ7KTBLa2QKNRR2N6U90GauFPY5XBR3qge73XawGn32/uJBlqu8yob1+qOpXFChK9b2/tGcnF8eg4N0s7cE3AxX/NlM6YR+KNTtKuX3hOhVl9nYG2n5V4RzYNmd3FblTh/btd0re8dFCKJ+P9lbV/CH4luhL9acCZXZoughlfqpIjNEK68DOZPppewhjp+T2HxO8p9GgzM7q8r+STGybrf6h78ZSKJvGItXpnx1BrNddYEF8mz6U2X9Ie4i1LgoeazAosx+M2UnVsoeYNp0/eGGLQdm9LHJJhkGsDYlZdSZE2cGqkgvEOxcl35fyDWrolLtlCFTrtz5uZJHrpWxijvTRQyifoCq5QczjUfIE4x65s4Mg9qBmcFUW226P5v7QP3En+R6EUG5TRnM/DSXuVb4HHmz7EpntoYsAYxTPgW1fAHP/nUDi2o9MBi/ybw++A1U1N4hpp8efqQsO7BfkTh/at/sWyRfGXC93rhDXfpeqLvjvUtVcIe6x6oID2z7jNpQ7XWh8Hx9mKZQV8mWIuMH3jyT47dJ97octYtr7G5Oz7EfKnS40HFyqwJ4pV64Qd31U93DVBnUKefaD0Pf4HnjoxytypQsNBx+i2OPkyhVCB787Ug/6d4c2yRVCj/A98NAPu+Kd/hkoDQcX2bBnsLBJCbmKuFVXB+pg905qtpGl6F+tw2m6Jz40uLJvN9IM7KR0359Cm/ZhVXVlNdIYpK7mHcuWoNFxaj/yPyBv9tskKymN6ULjA2l8v6jGRL52Y9l1bl5FIpFIJBKJRCKRSBXduv0H9yrWQInJmWgAAAAASUVORK5CYII=">
+                <div class="text-white text-center branding-bar">Menadżerowie</div>
+            </div>
+            <div class="bg-success" data-role="tile" data-size="wide" style="margin-left:10px;margin-right:10px">
+                <span class="icon mif-users"></span>
+                <div class="text-white text-center branding-bar">Dodaj menadżera</div>
+            </div>
+            <div class="bg-success" data-role="tile" data-size="wide" style="margin-left:10px;margin-right:10px">
+                <span class="icon mif-chart-bars2"></span>
+                <div class="text-white text-center branding-bar">Statystyki</div>
+            </div>
+            <div class="bg-info" data-role="tile" data-size="medium" style="margin-left:10px;margin-right:10px">
+                <img class="icon" src="~/Content/Images/icons8-secured-letter-100.png">
+                <div class="text-white text-center branding-bar">Wiadomości</div>
+            </div>
+            <div class="bg-info" data-role="tile" data-size="wide" style="margin-left:10px;margin-right:10px">
+                <img class="icon" src="~/Content/Images/icons8-new-message-100.png">
+                <div class="text-white text-center branding-bar">Wiadomość do wszystkich</div>
+            </div>
+            <div class="bg-warning" data-role="tile" data-size="wide" style="margin-left:10px;margin-right:10px"  onclick="location.href = '@Url.Action("EditAccountAdmin", "Account")'">
+                <img class="icon" src="~/Content/Images/icons8-edycja-użytkownika-mężczyzna-100.png">
+                <div class="text-white text-center branding-bar">Edytuj konto administratora</div>
+            </div>
+            <div class="bg-warning" data-role="tile" data-size="wide" style="margin-left:10px;margin-right:10px" onclick="location.href = '@Url.Action("ChangePasswordAdmin", "Account")'">
+                <img class="icon" src="~/Content/Images/icons8-key-100.png">
+                <div class="text-white text-center branding-bar">Zmień hasło</div>
+            </div>
+            <div class="bg-danger" data-role="tile" data-size="medium" style="margin-left:10px;margin-right:10px" onclick="location.href = '@Url.Action("Logout", "Account")'">
+                <img class="icon" src="~/Content/Images/icons8-door-opened-80.png">
+                <div class="text-white text-center branding-bar">Wyloguj się</div>
+            </div>
+        </div>
+    </div>
+</div>
