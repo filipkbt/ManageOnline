@@ -12,12 +12,19 @@
     }
 }
 <div class="card">
-        <div class="card-header text-white text-center bg-dark"><h1><b>Projekty</b></h1></div>
-        <div class="btn-group btn-group-justified col" style="margin-top:15px;">
-            <a onclick="location.href = '@Url.Action( "ShowProjectsWaitingForOffers", "Project")'" class="btn btn-success btn-sm mr-3 text-white text-bold" style="width:100%">Pokaż projekty oczekujące na wybranie oferty</a>
-            <a onclick="location.href = '@Url.Action("ShowProjectsInProgress", "Project")'" class="btn btn-primary btn-sm mr-3 text-white text-bold" style="width:100%">Pokaż projekty w trakcie</a>
-            <a onclick="location.href = '@Url.Action("ShowProjectsFinished", "Project")'" class="btn btn-primary btn-sm mr-3 text-white text-bold" style="width:100%">Pokaż zakończone projekty</a>
-        </div>
+    @if (HttpContext.Current.Session["Role"].ToString() == "Admin")
+    {
+        <div class="card-header bg-dark text-white text-center"><h1><b>Projekty</b></h1></div>
+    }
+    else
+    {
+        <div class="card-header"><h1><b>Projekty</b></h1></div>
+    }
+    <div class="btn-group btn-group-justified col" style="margin-top:15px;">
+        <a onclick="location.href = '@Url.Action( "ShowProjectsWaitingForOffers", "Project")'" class="btn btn-success btn-sm mr-3 text-white text-bold" style="width:100%">Pokaż projekty oczekujące na wybranie oferty</a>
+        <a onclick="location.href = '@Url.Action("ShowProjectsInProgress", "Project")'" class="btn btn-primary btn-sm mr-3 text-white text-bold" style="width:100%">Pokaż projekty w trakcie</a>
+        <a onclick="location.href = '@Url.Action("ShowProjectsFinished", "Project")'" class="btn btn-primary btn-sm mr-3 text-white text-bold" style="width:100%">Pokaż zakończone projekty</a>
+    </div>
     <div class="card-body">
         <table class="table table-hover">
             <thead class="thead-dark">
@@ -48,42 +55,42 @@
             <tbody>
 
                 @foreach (var item in Model)
-            {
-                if (item.ProjectStatus == ManageOnline.Models.ProjectStatus.WaitingForOffers)
                 {
-                    <tr onclick="location.href = '@Url.Action("ProjectDetails", "Project",  new { id=item.ProjectId}, null)'" style="cursor:pointer">
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProjectOwner.Username)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProjectTitle)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProjectBudget)
-                        </td>
+                    if (item.ProjectStatus == ManageOnline.Models.ProjectStatus.WaitingForOffers)
+                    {
+                        <tr onclick="location.href = '@Url.Action("ProjectDetails", "Project",  new { id=item.ProjectId}, null)'" style="cursor:pointer">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProjectOwner.Username)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProjectTitle)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProjectBudget)
+                            </td>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProjectCreationDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ProjectStatus)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.CategoriesModel.CategoryName)
-                        </td>
-                        <td>
-                            @if (item.SkillsRequiredToProjectCollection != null)
-                        {
-                            foreach (var skill in item.SkillsRequiredToProjectCollection)
-                            {
-                                @skill.SkillName@:;
-                        }
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProjectCreationDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ProjectStatus)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CategoriesModel.CategoryName)
+                            </td>
+                            <td>
+                                @if (item.SkillsRequiredToProjectCollection != null)
+                                {
+                                    foreach (var skill in item.SkillsRequiredToProjectCollection)
+                                    {
+                                        @skill.SkillName@:;
+                                    }
+                                }
+                            </td>
+                        </tr>
                     }
-                        </td>
-                    </tr>
-            }
-        }
+                }
             </tbody>
         </table>
     </div>
-    </div>
+</div>
