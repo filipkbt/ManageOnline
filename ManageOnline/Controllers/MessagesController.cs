@@ -80,7 +80,7 @@ namespace ManageOnline.Controllers
             MessageModel message = new MessageModel();
             using (DbContextModel db = new DbContextModel())
             {
-                message.Receiver = db.UserAccounts.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
+                message.Sender = db.UserAccounts.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
             }
             return PartialView("_sendMessageToAllUsers", message);
         }
@@ -99,6 +99,7 @@ namespace ManageOnline.Controllers
                     message.Sender = admin;
                     message.DateSend = DateTime.Now;
                     message.IsSeen = false;
+                    message.Content = "";
                     db.Messages.Add(message);
                     db.SaveChanges();
                 }
