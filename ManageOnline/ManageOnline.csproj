@@ -448,6 +448,18 @@
     <Compile Include="Migrations\201809040022098_AddDaysToScrumSprintModel.Designer.cs">
       <DependentUpon>201809040022098_AddDaysToScrumSprintModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809132152317_AdminFixBug.cs" />
+    <Compile Include="Migrations\201809132152317_AdminFixBug.Designer.cs">
+      <DependentUpon>201809132152317_AdminFixBug.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809132248013_removeProjectCategoriesProjectIdFromProjectModels.cs" />
+    <Compile Include="Migrations\201809132248013_removeProjectCategoriesProjectIdFromProjectModels.Designer.cs">
+      <DependentUpon>201809132248013_removeProjectCategoriesProjectIdFromProjectModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809132251329_renameColumnCategoriesAtProjectModels.cs" />
+    <Compile Include="Migrations\201809132251329_renameColumnCategoriesAtProjectModels.Designer.cs">
+      <DependentUpon>201809132251329_renameColumnCategoriesAtProjectModels.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -676,6 +688,7 @@
     <Content Include="Views\Admin\ShowClientsAndEmployees.cshtml" />
     <Content Include="Views\Admin\_addManagerAccount.cshtml" />
     <Content Include="Views\Admin\Statistics.cshtml" />
+    <Content Include="Views\Project\_searchProjectsWithFilters.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -900,6 +913,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809040022098_AddDaysToScrumSprintModel.resx">
       <DependentUpon>201809040022098_AddDaysToScrumSprintModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809132152317_AdminFixBug.resx">
+      <DependentUpon>201809132152317_AdminFixBug.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809132248013_removeProjectCategoriesProjectIdFromProjectModels.resx">
+      <DependentUpon>201809132248013_removeProjectCategoriesProjectIdFromProjectModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809132251329_renameColumnCategoriesAtProjectModels.resx">
+      <DependentUpon>201809132251329_renameColumnCategoriesAtProjectModels.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

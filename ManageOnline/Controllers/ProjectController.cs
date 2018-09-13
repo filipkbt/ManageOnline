@@ -81,90 +81,104 @@ namespace ManageOnline.Controllers
                 var dataContext = db.Projects
                     .Include("ProjectOwner")
                     .Include("SkillsRequiredToProjectCollection")
-                    .Include("CategoriesModel")
+                    .Include("ProjectCategory")
                     .OrderByDescending(x => x.ProjectCreationDate)
                     .ToList();
 
-                var skills = db.Skills.ToList();
-                MultiSelectList skillsList = new MultiSelectList(skills, "SkillId", "SkillName");
-
-                if ((TempData["Skills"] as MultiSelectList) != null)
-                {
-                    var selectedSkillsSelectList = TempData["Skills"] as MultiSelectList;
-                    var selectedSkills = selectedSkillsSelectList.Items;
-                }
-
-                TempData["Skills"] = skillsList;
-
-                var categoriesList = db.Categories.ToList();
-                foreach (var project in dataContext)
-                {
-                    var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
-                    project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
-
-
-                    if (project.SkillsRequiredToProject != null)
-                    {
-                        project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
-                        foreach (var skillId in project.SkillsRequiredToProjectArray)
-                        {
-                            var skillIdInt = Convert.ToInt32(skillId);
-                            var skill = db.Skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
-                            project.SkillsRequiredToProjectCollection.Add(skill);
-                        }
-                    }
-                }
                 return View(dataContext);
             }
         }
 
         [HttpPost]
-        public ActionResult SearchProjects(FormCollection form)
+        public ViewResult SearchProjects(List<ProjectModel> projects)
+        {
+            return View(projects);
+        }
+
+
+        public ActionResult SearchProjectsWithFilters()
+        {
+            using (DbContextModel db = new DbContextModel())
+            {
+                var skills = db.Skills.ToList();
+                MultiSelectList skillsList = new MultiSelectList(skills, "SkillId", "SkillName");
+                TempData["Skills"] = skillsList;
+
+                var categories = db.Categories.ToList();
+                MultiSelectList categoriesList = new MultiSelectList(categories, "CategoryId", "CategoryName");
+                TempData["Categories"] = categoriesList;
+            }
+
+            ProjectModel project = new ProjectModel();
+            return PartialView("_searchProjectsWithFilters", project);
+
+        }
+
+        [HttpPost]
+        public ActionResult SearchProjectsWithFiltersCompleted(ProjectModel project)
         {
             using (DbContextModel db = new DbContextModel())
             {
                 var dataContext = db.Projects
                     .Include("ProjectOwner")
                     .Include("SkillsRequiredToProjectCollection")
-                    .Include("CategoriesModel")
+                    .Include("ProjectCategory")
                     .OrderByDescending(x => x.ProjectCreationDate)
                     .ToList();
 
                 var skills = db.Skills.ToList();
                 MultiSelectList skillsList = new MultiSelectList(skills, "SkillId", "SkillName");
-
                 TempData["Skills"] = skillsList;
 
-                var categoriesList = db.Categories.ToList();
-                foreach (var project in dataContext)
+                var categories = db.Categories.ToList();
+                MultiSelectList categoriesList = new MultiSelectList(categories, "CategoryId", "CategoryName");
+                TempData["Categories"] = categoriesList;
+                foreach (var projectSearched in dataContext)
                 {
-                    var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
-                    project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                    var projectCategoryId = projectSearched.ProjectCategory.CategoryId;
+                    projectSearched.ProjectCategory = categories.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
 
-                    if (project.SkillsRequiredToProject != null)
+                    if (projectSearched.SkillsRequiredToProject != null)
                     {
-                        project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
-                        foreach (var skillId in project.SkillsRequiredToProjectArray)
+                        projectSearched.SkillsRequiredToProjectArray = projectSearched.SkillsRequiredToProject.Split(',').ToArray();
+                        foreach (var skillId in projectSearched.SkillsRequiredToProjectArray)
                         {
                             var skillIdInt = Convert.ToInt32(skillId);
                             var skill = db.Skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
-                            project.SkillsRequiredToProjectCollection.Add(skill);
+                            projectSearched.SkillsRequiredToProjectCollection.Add(skill);
                         }
                     }
 
                 }
-                if (form["Skills"] != null)
+                if (project.SkillsRequiredToProjectArray != null || project.CategoriesToProjectArray != null)
                 {
-                    var selectedSkills = form["Skills"];
-                    var selectedSkillsArray = selectedSkills.Split(',').ToArray();
+                    IEnumerable<ProjectModel> filteredDataContext = new List<ProjectModel>();
 
-                    var filteredDataContext = from p in dataContext
-                                              where selectedSkillsArray.Any(val => p.SkillsRequiredToProject.Contains(val))
+                    if (project.SkillsRequiredToProjectArray != null)
+                    {
+
+                        filteredDataContext = from p in dataContext
+                                              where project.SkillsRequiredToProjectArray.Any(val => p.SkillsRequiredToProject.Contains(val))
                                               select p;
+                    }
 
-                    return View(filteredDataContext);
+                    if (project.CategoriesToProjectArray != null)
+                    {
+                        IEnumerable<ProjectModel> filteredDataContextWithCategories = new List<ProjectModel>();
+                        if (project.SkillsRequiredToProjectArray == null)
+                        {
+                            filteredDataContextWithCategories = dataContext.Where(x => project.CategoriesToProjectArray.Contains(x.ProjectCategory.CategoryId.ToString())).ToList();
+                        }
+                        else
+                        {
+                            filteredDataContextWithCategories = filteredDataContext.Where(x => project.CategoriesToProjectArray.Contains(x.ProjectCategory.CategoryId.ToString())).ToList();
+                        }
+
+                        return View("SearchProjects", filteredDataContextWithCategories);
+                    }
+                    return View("SearchProjects", filteredDataContext);
                 }
-                return View(dataContext);
+                return View("SearchProjects", dataContext);
             }
         }
 
@@ -185,7 +199,7 @@ namespace ManageOnline.Controllers
                 var skills = db.Skills.ToList();
 
                 var projectCategoryId = Convert.ToInt32(projectDetailsInfo.ProjectCategory);
-                projectDetailsInfo.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                projectDetailsInfo.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                 if (projectDetailsInfo.SkillsRequiredToProject != null)
                 {
                     projectDetailsInfo.SkillsRequiredToProjectArray = projectDetailsInfo.SkillsRequiredToProject.Split(',').ToArray();
@@ -345,7 +359,7 @@ namespace ManageOnline.Controllers
                 db.Configuration.LazyLoadingEnabled = false;
                 var categoriesList = db.Categories.ToList();
                 ICollection<ProjectModel> projects = db.Projects.Include("ProjectOwner")
-                                                                .Include("CategoriesModel")
+                                                                .Include("ProjectCategory")
                                                                 .Include("SkillsRequiredToProjectCollection")
                                                                 .Where(x => x.ProjectStatus == ProjectStatus.WaitingForOffers).ToList();
                 ICollection<OfferToProjectModel> offersCollection = db.OfferToProjectModels.Include("UserWhoAddOffer").ToList();
@@ -360,7 +374,7 @@ namespace ManageOnline.Controllers
                     foreach (var project in filteredProjectsWithOffers)
                     {
                         var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
-                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
                             project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
@@ -385,7 +399,7 @@ namespace ManageOnline.Controllers
                     foreach (var project in filteredProjectsWithOffers)
                     {
                         var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
-                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
                             project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
@@ -409,7 +423,7 @@ namespace ManageOnline.Controllers
                     foreach (var project in filteredProjects)
                     {
                         var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
-                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
                             project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
@@ -431,7 +445,7 @@ namespace ManageOnline.Controllers
                     foreach (var project in projectsWaitingForOffers)
                     {
                         var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
-                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
                             project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
@@ -450,7 +464,7 @@ namespace ManageOnline.Controllers
             }
         }
 
-    public ActionResult ShowProjectsInProgress()
+        public ActionResult ShowProjectsInProgress()
         {
             string userId = System.Web.HttpContext.Current.Session["UserId"].ToString();
             using (DbContextModel db = new DbContextModel())
@@ -458,7 +472,7 @@ namespace ManageOnline.Controllers
                 var dataContext = db.Projects
                     .Include("ProjectOwner")
                     .Include("SkillsRequiredToProjectCollection")
-                    .Include("CategoriesModel")
+                    .Include("ProjectCategory")
                     .Include("OffersToProject")
                     .Where(x => x.ProjectStatus == ProjectStatus.InProgress)
                     .ToList();
@@ -474,7 +488,7 @@ namespace ManageOnline.Controllers
                     foreach (var project in filteredDataContext)
                     {
                         var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
-                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
                             project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
@@ -497,7 +511,7 @@ namespace ManageOnline.Controllers
                     foreach (var project in filteredDataContext)
                     {
                         var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
-                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
                             project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
@@ -519,7 +533,7 @@ namespace ManageOnline.Controllers
                     foreach (var project in projectsInProgress)
                     {
                         var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
-                        project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
                             project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
@@ -539,210 +553,210 @@ namespace ManageOnline.Controllers
         }
 
 
-    public ActionResult ShowProjectsFinished()
-    {
-        string userId = System.Web.HttpContext.Current.Session["UserId"].ToString();
-        using (DbContextModel db = new DbContextModel())
+        public ActionResult ShowProjectsFinished()
         {
-            var dataContext = db.Projects
-                .Include("ProjectOwner")
-                .Include("SkillsRequiredToProjectCollection")
-                .Include("CategoriesModel")
-                .Include("OffersToProject")
-                .Where(x => x.ProjectStatus == ProjectStatus.Finished)
-                .ToList();
-
-            var categoriesList = db.Categories.ToList();
-            var skills = db.Skills.ToList();
-
-            if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Pracownik.ToString() ||
-                System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Manager.ToString())
+            string userId = System.Web.HttpContext.Current.Session["UserId"].ToString();
+            using (DbContextModel db = new DbContextModel())
             {
-                var filteredDataContext = dataContext.Where(x => x.UsersBelongsToProject.Contains(userId)).ToList();
+                var dataContext = db.Projects
+                    .Include("ProjectOwner")
+                    .Include("SkillsRequiredToProjectCollection")
+                    .Include("ProjectCategory")
+                    .Include("OffersToProject")
+                    .Where(x => x.ProjectStatus == ProjectStatus.Finished)
+                    .ToList();
 
-                foreach (var project in filteredDataContext)
+                var categoriesList = db.Categories.ToList();
+                var skills = db.Skills.ToList();
+
+                if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Pracownik.ToString() ||
+                    System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Manager.ToString())
                 {
-                    var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
-                    project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
-                    if (project.SkillsRequiredToProject != null)
+                    var filteredDataContext = dataContext.Where(x => x.UsersBelongsToProject.Contains(userId)).ToList();
+
+                    foreach (var project in filteredDataContext)
                     {
-                        project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
-                        foreach (var skillId in project.SkillsRequiredToProjectArray)
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        if (project.SkillsRequiredToProject != null)
                         {
-                            var skillIdInt = Convert.ToInt32(skillId);
-                            var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
-                            project.SkillsRequiredToProjectCollection.Add(skill);
+                            project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
+                            foreach (var skillId in project.SkillsRequiredToProjectArray)
+                            {
+                                var skillIdInt = Convert.ToInt32(skillId);
+                                var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                                project.SkillsRequiredToProjectCollection.Add(skill);
+                            }
                         }
                     }
+
+                    return View(filteredDataContext);
                 }
-
-                return View(filteredDataContext);
-            }
-            else if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Klient.ToString())
-            {
-                var filteredDataContext = dataContext.Where(x => x.ProjectOwner.UserId.ToString().Equals(userId)).ToList();
-
-                foreach (var project in filteredDataContext)
+                else if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Klient.ToString())
                 {
-                    var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
-                    project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
-                    if (project.SkillsRequiredToProject != null)
+                    var filteredDataContext = dataContext.Where(x => x.ProjectOwner.UserId.ToString().Equals(userId)).ToList();
+
+                    foreach (var project in filteredDataContext)
                     {
-                        project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
-                        foreach (var skillId in project.SkillsRequiredToProjectArray)
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        if (project.SkillsRequiredToProject != null)
                         {
-                            var skillIdInt = Convert.ToInt32(skillId);
-                            var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
-                            project.SkillsRequiredToProjectCollection.Add(skill);
+                            project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
+                            foreach (var skillId in project.SkillsRequiredToProjectArray)
+                            {
+                                var skillIdInt = Convert.ToInt32(skillId);
+                                var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                                project.SkillsRequiredToProjectCollection.Add(skill);
+                            }
                         }
                     }
+
+                    return View(filteredDataContext);
                 }
-
-                return View(filteredDataContext);
-            }
-            else if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Admin.ToString())
-            {
-                var projectsFinished = db.Projects.Where(x => x.ProjectStatus == ProjectStatus.Finished).ToList();
-
-                foreach (var project in projectsFinished)
+                else if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Admin.ToString())
                 {
-                    var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
-                    project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
-                    if (project.SkillsRequiredToProject != null)
+                    var projectsFinished = db.Projects.Where(x => x.ProjectStatus == ProjectStatus.Finished).ToList();
+
+                    foreach (var project in projectsFinished)
                     {
-                        project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
-                        foreach (var skillId in project.SkillsRequiredToProjectArray)
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                        if (project.SkillsRequiredToProject != null)
                         {
-                            var skillIdInt = Convert.ToInt32(skillId);
-                            var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
-                            project.SkillsRequiredToProjectCollection.Add(skill);
+                            project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
+                            foreach (var skillId in project.SkillsRequiredToProjectArray)
+                            {
+                                var skillIdInt = Convert.ToInt32(skillId);
+                                var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                                project.SkillsRequiredToProjectCollection.Add(skill);
+                            }
                         }
                     }
+                    return View(projectsFinished);
                 }
-                return View(projectsFinished);
-            }
 
+                return View();
+            }
+        }
+
+
+        public ActionResult SetProjectAsFinished(int projectId)
+        {
+            ViewBag.ProjectId = projectId;
+            using (DbContextModel db = new DbContextModel())
+            {
+                ProjectModel project = db.Projects.Include("ProjectOwner").Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
+                project.ProjectFinishDate = DateTime.Now;
+                project.ProjectStatus = ProjectStatus.Finished;
+
+                db.Entry(project).State = EntityState.Modified;
+
+                project.UsersBelongsToProjectArray = project.UsersBelongsToProject.Split(',').ToArray();
+
+                foreach (var userId in project.UsersBelongsToProjectArray)
+                {
+                    int userIdInt = Convert.ToInt32(userId);
+                    var user = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
+                    user.ProjectsInProgress--;
+                    user.FinishedProjects++;
+                    db.Entry(user).State = EntityState.Modified;
+                    db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.ZakonczenieProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = user, Title = "Zakończenie projektu", Content = string.Format("Projekt {0} został zakończony. Możesz teraz ocenić inne osoby, które brały udział w projekcie.", project.ProjectTitle) });
+                    db.SaveChanges();
+                }
+                project.ProjectOwner.ProjectsInProgress--;
+                project.ProjectOwner.FinishedProjects++;
+                db.Entry(project.ProjectOwner).State = EntityState.Modified;
+                db.Entry(project).State = EntityState.Modified;
+                db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.ZakonczenieProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = project.ProjectOwner, Title = "Zakończenie projektu", Content = string.Format("Projekt {0} został zakończony. Możesz teraz ocenić inne osoby, które brały udział w projekcie.", project.ProjectTitle) });
+                db.SaveChanges();
+            }
+            return View();
+
+        }
+
+        public ActionResult SendInvitationToProject(int userId)
+        {
+            int userWhoSendInvitationId = Convert.ToInt32(Session["UserId"]);
+            NotificationModel InvitationNotification = new NotificationModel();
+            using (DbContextModel db = new DbContextModel())
+            {
+
+                var projectsFromUser = db.Projects
+                        .Include("ProjectOwner")
+                        .Include("OffersToProject")
+                        .Include("OffersToProject.UserWhoAddOffer")
+                        .Include("OffersToProject.WorkerProposedToProject")
+                        .Where(x => x.ProjectStatus == ProjectStatus.WaitingForOffers && x.ProjectOwner.UserId == userWhoSendInvitationId && x.OffersToProject.Any(item => item.UserWhoAddOffer.UserId.ToString() == userId.ToString()) == false)
+                        .ToList();
+
+                InvitationNotification.NotificationReceiver = db.UserAccounts.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
+
+                ViewBag.projectsFromUser = projectsFromUser;
+                return PartialView("_sendInvitationToProject", InvitationNotification);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SendInvitationToProject(NotificationModel notificationInvitationToProject)
+        {
+            int userWhoSendInvitationId = Convert.ToInt32(Session["UserId"]);
+            using (DbContextModel db = new DbContextModel())
+            {
+                var projectsFromUser = db.Projects
+                        .Include("ProjectOwner")
+                        .Include("OffersToProject")
+                        .Include("OffersToProject.UserWhoAddOffer")
+                        .Include("OffersToProject.WorkerProposedToProject")
+                        .Where(x => x.ProjectStatus == ProjectStatus.WaitingForOffers && x.ProjectOwner.UserId == userWhoSendInvitationId && x.OffersToProject.Any(item => item.UserWhoAddOffer.UserId.ToString() == notificationInvitationToProject.NotificationReceiver.UserId.ToString()) == false)
+                        .ToList();
+                ViewBag.projectsFromUser = projectsFromUser;
+
+                var userWhoSendInvitation = db.UserAccounts.Where(x => x.UserId.Equals(userWhoSendInvitationId)).FirstOrDefault();
+                notificationInvitationToProject.NotificationReceiver = db.UserAccounts.Where(x => x.UserId.Equals(notificationInvitationToProject.NotificationReceiver.UserId)).FirstOrDefault();
+                notificationInvitationToProject.Project = db.Projects.Where(x => x.ProjectId.Equals(notificationInvitationToProject.Project.ProjectId)).FirstOrDefault();
+                notificationInvitationToProject.IsSeen = false;
+                notificationInvitationToProject.DateSend = DateTime.Now;
+                notificationInvitationToProject.NotificationType = NotificationTypes.ZaproszenieDoProjektu;
+                notificationInvitationToProject.Title = "Zaproszenie do projektu";
+                notificationInvitationToProject.Content = string.Format("Użytkownik {0} przesłał Ci zaproszenie do złożenia oferty w projekcie {1}.", userWhoSendInvitation.Username, notificationInvitationToProject.Project.ProjectTitle);
+                db.Notifications.Add(notificationInvitationToProject);
+                db.SaveChanges();
+                TempData["SuccessfulSendInvitation"] = "Zaproszenie do projektu zostało przesłane.";
+                return RedirectToAction("ProfileDetails", "Account", new { id = notificationInvitationToProject.NotificationReceiver.UserId });
+            }
+        }
+
+        [HttpPost]
+        public ActionResult ConnectProjectWithManager(int projectId, ManageOnline.Models.ProjectManagementMethodology projectManagementMethodology)
+        {
+            int managerId = Convert.ToInt32(Session["UserId"]);
+
+            using (DbContextModel db = new DbContextModel())
+            {
+                var project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
+                var manager = db.UserAccounts.Where(x => x.UserId.Equals(managerId)).FirstOrDefault();
+                project.ProjectManagementMethodology = projectManagementMethodology;
+                project.Manager = manager;
+                db.Entry(project).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return RedirectToAction("ProjectDetails", "Project", new { id = projectId });
+        }
+
+        public ActionResult SuccessfullAddProject()
+        {
+            return View();
+        }
+
+        public ActionResult SuccessfullEditOffer()
+        {
+            return View();
+        }
+
+        public ActionResult SuccessfullAddOffer()
+        {
             return View();
         }
     }
-
-
-    public ActionResult SetProjectAsFinished(int projectId)
-    {
-        ViewBag.ProjectId = projectId;
-        using (DbContextModel db = new DbContextModel())
-        {
-            ProjectModel project = db.Projects.Include("ProjectOwner").Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
-            project.ProjectFinishDate = DateTime.Now;
-            project.ProjectStatus = ProjectStatus.Finished;
-
-            db.Entry(project).State = EntityState.Modified;
-
-            project.UsersBelongsToProjectArray = project.UsersBelongsToProject.Split(',').ToArray();
-
-            foreach (var userId in project.UsersBelongsToProjectArray)
-            {
-                int userIdInt = Convert.ToInt32(userId);
-                var user = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
-                user.ProjectsInProgress--;
-                user.FinishedProjects++;
-                db.Entry(user).State = EntityState.Modified;
-                db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.ZakonczenieProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = user, Title = "Zakończenie projektu", Content = string.Format("Projekt {0} został zakończony. Możesz teraz ocenić inne osoby, które brały udział w projekcie.", project.ProjectTitle) });
-                db.SaveChanges();
-            }
-            project.ProjectOwner.ProjectsInProgress--;
-            project.ProjectOwner.FinishedProjects++;
-            db.Entry(project.ProjectOwner).State = EntityState.Modified;
-            db.Entry(project).State = EntityState.Modified;
-            db.Notifications.Add(new NotificationModel { Project = project, NotificationType = NotificationTypes.ZakonczenieProjektu, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = project.ProjectOwner, Title = "Zakończenie projektu", Content = string.Format("Projekt {0} został zakończony. Możesz teraz ocenić inne osoby, które brały udział w projekcie.", project.ProjectTitle) });
-            db.SaveChanges();
-        }
-        return View();
-
-    }
-
-    public ActionResult SendInvitationToProject(int userId)
-    {
-        int userWhoSendInvitationId = Convert.ToInt32(Session["UserId"]);
-        NotificationModel InvitationNotification = new NotificationModel();
-        using (DbContextModel db = new DbContextModel())
-        {
-
-            var projectsFromUser = db.Projects
-                    .Include("ProjectOwner")
-                    .Include("OffersToProject")
-                    .Include("OffersToProject.UserWhoAddOffer")
-                    .Include("OffersToProject.WorkerProposedToProject")
-                    .Where(x => x.ProjectStatus == ProjectStatus.WaitingForOffers && x.ProjectOwner.UserId == userWhoSendInvitationId && x.OffersToProject.Any(item => item.UserWhoAddOffer.UserId.ToString() == userId.ToString()) == false)
-                    .ToList();
-
-            InvitationNotification.NotificationReceiver = db.UserAccounts.Where(x => x.UserId.Equals(userId)).FirstOrDefault();
-
-            ViewBag.projectsFromUser = projectsFromUser;
-            return PartialView("_sendInvitationToProject", InvitationNotification);
-        }
-    }
-
-    [HttpPost]
-    public ActionResult SendInvitationToProject(NotificationModel notificationInvitationToProject)
-    {
-        int userWhoSendInvitationId = Convert.ToInt32(Session["UserId"]);
-        using (DbContextModel db = new DbContextModel())
-        {
-            var projectsFromUser = db.Projects
-                    .Include("ProjectOwner")
-                    .Include("OffersToProject")
-                    .Include("OffersToProject.UserWhoAddOffer")
-                    .Include("OffersToProject.WorkerProposedToProject")
-                    .Where(x => x.ProjectStatus == ProjectStatus.WaitingForOffers && x.ProjectOwner.UserId == userWhoSendInvitationId && x.OffersToProject.Any(item => item.UserWhoAddOffer.UserId.ToString() == notificationInvitationToProject.NotificationReceiver.UserId.ToString()) == false)
-                    .ToList();
-            ViewBag.projectsFromUser = projectsFromUser;
-
-            var userWhoSendInvitation = db.UserAccounts.Where(x => x.UserId.Equals(userWhoSendInvitationId)).FirstOrDefault();
-            notificationInvitationToProject.NotificationReceiver = db.UserAccounts.Where(x => x.UserId.Equals(notificationInvitationToProject.NotificationReceiver.UserId)).FirstOrDefault();
-            notificationInvitationToProject.Project = db.Projects.Where(x => x.ProjectId.Equals(notificationInvitationToProject.Project.ProjectId)).FirstOrDefault();
-            notificationInvitationToProject.IsSeen = false;
-            notificationInvitationToProject.DateSend = DateTime.Now;
-            notificationInvitationToProject.NotificationType = NotificationTypes.ZaproszenieDoProjektu;
-            notificationInvitationToProject.Title = "Zaproszenie do projektu";
-            notificationInvitationToProject.Content = string.Format("Użytkownik {0} przesłał Ci zaproszenie do złożenia oferty w projekcie {1}.", userWhoSendInvitation.Username, notificationInvitationToProject.Project.ProjectTitle);
-            db.Notifications.Add(notificationInvitationToProject);
-            db.SaveChanges();
-            TempData["SuccessfulSendInvitation"] = "Zaproszenie do projektu zostało przesłane.";
-            return RedirectToAction("ProfileDetails", "Account", new { id = notificationInvitationToProject.NotificationReceiver.UserId });
-        }
-    }
-
-    [HttpPost]
-    public ActionResult ConnectProjectWithManager(int projectId, ManageOnline.Models.ProjectManagementMethodology projectManagementMethodology)
-    {
-        int managerId = Convert.ToInt32(Session["UserId"]);
-
-        using (DbContextModel db = new DbContextModel())
-        {
-            var project = db.Projects.Where(x => x.ProjectId.Equals(projectId)).FirstOrDefault();
-            var manager = db.UserAccounts.Where(x => x.UserId.Equals(managerId)).FirstOrDefault();
-            project.ProjectManagementMethodology = projectManagementMethodology;
-            project.Manager = manager;
-            db.Entry(project).State = EntityState.Modified;
-            db.SaveChanges();
-        }
-        return RedirectToAction("ProjectDetails", "Project", new { id = projectId });
-    }
-
-    public ActionResult SuccessfullAddProject()
-    {
-        return View();
-    }
-
-    public ActionResult SuccessfullEditOffer()
-    {
-        return View();
-    }
-
-    public ActionResult SuccessfullAddOffer()
-    {
-        return View();
-    }
-}
 }

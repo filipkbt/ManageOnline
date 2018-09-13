@@ -1,0 +1,26 @@
+﻿@model ManageOnline.Models.ProjectModel
+
+
+@using (Html.BeginForm("SearchProjectsWithFiltersCompleted", "Project",FormMethod.Post))
+{
+    <form>
+        <div class="row">
+            <div class="form-group col-3 float-left">
+                <div class="form-group ">
+                    <label>Kategorie</label>
+                    @Html.ListBoxFor(model => model.CategoriesToProjectArray, @TempData["Categories"] as MultiSelectList, new { id = "multiSelectDropDown1", multiple = "multiple" })
+                </div>
+            </div>
+            <div class="form-group col-3 float-left" style="margin-top:0rem">
+                <label>Wymagane umiejętności</label>
+                @Html.ListBoxFor(model => model.SkillsRequiredToProjectArray, @TempData["Skills"] as MultiSelectList, new { id = "multiSelectDropDown", multiple = "multiple" })
+            </div>
+            <div class="form-group col-3 float-right">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info float-right" value="Szukaj" />
+                </div>
+            </div>
+        </div>
+    </form>
+}
+

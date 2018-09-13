@@ -33,7 +33,7 @@ namespace ManageOnline.Controllers
                 var skills = db.Skills.ToList();
 
                 var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
-                project.CategoriesModel = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                 if (project.SkillsRequiredToProject != null)
                 {
                     project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();

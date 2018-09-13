@@ -70,8 +70,11 @@ namespace ManageOnline.Models
 
         public string ProjectBudget { get; set; }
 
-        public string ProjectCategory { get; set; }
-        public virtual CategoriesModel CategoriesModel { get; set; }
+        [NotMapped]
+        public virtual ICollection<SkillsModel> CategoriesToProjectCollection { get; set; }
+        [NotMapped]
+        public string[] CategoriesToProjectArray { get; set; }
+        public virtual CategoriesModel ProjectCategory { get; set; }
 
         public bool IsRequiredManager { get; set; }
 

@@ -10,27 +10,18 @@
     });
 </script>
 
-@using (Html.BeginForm("SearchProjects", "Project"))
-{<div class="card">
+<script type="text/javascript">
+    $(function () {
+        $("#multiSelectDropDown1").chosen();
+    });
+</script>
+
+<div class="card">
         <div class="card-header">
-            <h3>Wyszukiwarka projektów</h3>
+            <h1>Wyszukiwarka projektów</h1>
         </div>
         <div class="card-header">
-            <form>
-                <div class="form-row">
-                    <div class="form-group col-3 float-left">
-                        <div class="form-group">
-                            <label>Wymagane umiejętności</label>
-                            @Html.ListBox("Skills", @TempData["Skills"] as MultiSelectList, new { id = "multiSelectDropDown", multiple = "multiple" })
-                        </div>
-                    </div>
-                    <div class="form-group col-3 float-right">
-                        <div class="form-group">
-                            <input type="submit" class="btn btn-info float-right" value="Szukaj" />
-                        </div>
-                    </div>
-                </div>
-            </form>
+           @Html.Action("SearchProjectsWithFilters")
         </div>
         <div class="card-body">
             <table class="table table-hover" style="margin-top:30px">
@@ -72,7 +63,7 @@
                                     @Html.DisplayFor(modelItem => item.ProjectBudget)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.CategoriesModel.CategoryName)
+                                    @Html.DisplayFor(modelItem => item.ProjectCategory.CategoryName)
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.ProjectCreationDate)
@@ -93,6 +84,6 @@
             </table>
         </div>
     </div>
-}
+
 
 
