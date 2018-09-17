@@ -47,7 +47,7 @@
                     </div>
                     <div class="col-md-3">
                         <p class="control-label"><h5>Rodzaj projektu</h5></p>
-                        @Html.DropDownListFor(model => model.ProjectCategory, ViewBag.Categories as IEnumerable<SelectListItem>)
+                        @Html.DropDownListFor(model => model.ProjectCategory.CategoryId, ViewBag.Categories as SelectList)
                     </div>               
                 <div class="col-md-6">
                     <p class="control-label"><h5>Wymagane umiejętności</h5></p>

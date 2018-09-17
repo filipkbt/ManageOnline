@@ -44,12 +44,12 @@ namespace ManageOnline.Controllers
                 project.ProjectCreationDate = DateTime.Now;
                 project.ProjectOwner = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
                 project.ProjectStatus = ProjectStatus.WaitingForOffers;
-
+                project.ProjectCategory = db.Categories.Where(x => x.CategoryId == project.ProjectCategory.CategoryId).FirstOrDefault();
                 if (project.SkillsRequiredToProjectArray != null)
                 {
                     project.SkillsRequiredToProject = string.Join(",", project.SkillsRequiredToProjectArray);
                 }
-
+                
                 db.Projects.Add(project);
                 db.SaveChanges();
                 if (project.IsRequiredManager)
@@ -398,7 +398,7 @@ namespace ManageOnline.Controllers
 
                     foreach (var project in filteredProjectsWithOffers)
                     {
-                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory.CategoryId);
                         project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
@@ -422,7 +422,7 @@ namespace ManageOnline.Controllers
 
                     foreach (var project in filteredProjects)
                     {
-                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory.CategoryId);
                         project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
@@ -444,7 +444,7 @@ namespace ManageOnline.Controllers
 
                     foreach (var project in projectsWaitingForOffers)
                     {
-                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory.CategoryId);
                         project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
