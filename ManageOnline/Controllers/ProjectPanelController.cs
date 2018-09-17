@@ -21,7 +21,7 @@ namespace ManageOnline.Controllers
                 var project = db.Projects
                     .Include("ProjectOwner")
                     .Include("SkillsRequiredToProjectCollection")
-                    .Include("CategoriesModel")
+                    .Include("ProjectCategory")
                     .Include("Tasks.CurrentWorkerAtTask")
                     .Include("Tasks.UserWhoAddTask")
                     .Include("UsersBelongsToProjectCollection")
@@ -57,7 +57,7 @@ namespace ManageOnline.Controllers
                 var project = db.Projects
                     .Include("ProjectOwner")
                     .Include("SkillsRequiredToProjectCollection")
-                    .Include("CategoriesModel")
+                    .Include("ProjectCategory")
                     .Include("Tasks.CurrentWorkerAtTask")
                     .Include("Tasks.UserWhoAddTask")
                     .Include("UsersBelongsToProjectCollection")
@@ -85,7 +85,7 @@ namespace ManageOnline.Controllers
                 var project = db.Projects
                     .Include("ProjectOwner")
                     .Include("SkillsRequiredToProjectCollection")
-                    .Include("CategoriesModel")
+                    .Include("ProjectCategory")
                     .Include("Tasks.CurrentWorkerAtTask")
                     .Include("Tasks.UserWhoAddTask")
                     .Include("UsersBelongsToProjectCollection")
