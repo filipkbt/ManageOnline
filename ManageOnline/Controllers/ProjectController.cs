@@ -198,7 +198,7 @@ namespace ManageOnline.Controllers
                 var categoriesList = db.Categories.ToList();
                 var skills = db.Skills.ToList();
 
-                var projectCategoryId = Convert.ToInt32(projectDetailsInfo.ProjectCategory);
+                var projectCategoryId = Convert.ToInt32(projectDetailsInfo.ProjectCategory.CategoryId);
                 projectDetailsInfo.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                 if (projectDetailsInfo.SkillsRequiredToProject != null)
                 {
@@ -373,7 +373,7 @@ namespace ManageOnline.Controllers
 
                     foreach (var project in filteredProjectsWithOffers)
                     {
-                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory.CategoryId);
                         project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
@@ -487,7 +487,7 @@ namespace ManageOnline.Controllers
 
                     foreach (var project in filteredDataContext)
                     {
-                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory.CategoryId);
                         project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
@@ -510,7 +510,7 @@ namespace ManageOnline.Controllers
 
                     foreach (var project in filteredDataContext)
                     {
-                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory.CategoryId);
                         project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
@@ -532,7 +532,7 @@ namespace ManageOnline.Controllers
 
                     foreach (var project in projectsInProgress)
                     {
-                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory.CategoryId);
                         project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
@@ -576,7 +576,7 @@ namespace ManageOnline.Controllers
 
                     foreach (var project in filteredDataContext)
                     {
-                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory.CategoryId);
                         project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
@@ -598,7 +598,7 @@ namespace ManageOnline.Controllers
 
                     foreach (var project in filteredDataContext)
                     {
-                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory.CategoryId);
                         project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {
@@ -620,7 +620,7 @@ namespace ManageOnline.Controllers
 
                     foreach (var project in projectsFinished)
                     {
-                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory);
+                        var projectCategoryId = Convert.ToInt32(project.ProjectCategory.CategoryId);
                         project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                         if (project.SkillsRequiredToProject != null)
                         {

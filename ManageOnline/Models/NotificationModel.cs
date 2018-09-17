@@ -9,14 +9,14 @@ namespace ManageOnline.Models
 {
     public enum NotificationTypes : int
     {
-        NowaOcena, //
-        ZaproszenieDoProjektu,//
-        RozpoczecieProjektu,//
-        WybranieOfertyRealizacjiProjektu, //
-        NowaOfertaRealizacjiProjektu, //
-        ZakonczenieProjektu, //
-        NoweZadanie, //
-        DodaniePlikuDoProjektu, //
+        NowaOcena, 
+        ZaproszenieDoProjektu,
+        RozpoczecieProjektu,
+        WybranieOfertyRealizacjiProjektu, 
+        NowaOfertaRealizacjiProjektu, 
+        ZakonczenieProjektu, 
+        NoweZadanie, 
+        DodaniePlikuDoProjektu, 
         NowyProjektZMenadzerem,
         NowyKomentarzDoZadania, 
         NowyKomentarzDoKomentarza
