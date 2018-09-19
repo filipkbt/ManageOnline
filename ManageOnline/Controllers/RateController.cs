@@ -88,7 +88,7 @@ namespace ManageOnline.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> RateUser(RateModel rate)
+        public ActionResult RateUser(RateModel rate)
         {
             double RatesSum = 0;
             using (DbContextModel db = new DbContextModel())
@@ -110,7 +110,6 @@ namespace ManageOnline.Controllers
                     string roundedAverageRate = string.Format("{0:0.00}", RatesSum / 7);
                     rate.AverageRate = Convert.ToDouble(roundedAverageRate);
                 }
-
                 else if (rate.UserWhoGetRate.Role.ToString() == "Menadzer")
                 {
                     RatesSum += (double)rate.ManageSkills;
@@ -142,7 +141,7 @@ namespace ManageOnline.Controllers
             return RedirectToAction("RateUsersFromProject", new { projectId = rate.Project.ProjectId });
         }
 
-        public async Task<ActionResult> ShowRateDetails(int projectId, int userId)
+        public ActionResult ShowRateDetails(int projectId, int userId)
         {
             using (DbContextModel db = new DbContextModel())
             {

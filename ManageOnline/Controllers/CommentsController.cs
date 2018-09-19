@@ -100,7 +100,7 @@ namespace ManageOnline.Controllers
                 int userIdInt = Convert.ToInt32(Session["UserId"]);
                 comment.DateWhenCommentWasAdded = DateTime.Now;
                 comment.ProjectWhereCommentBelong = db.Projects.Where(x => x.ProjectId == comment.ProjectWhereCommentBelong.ProjectId).FirstOrDefault();
-                comment.CommentConnectedWithSelectedComment = db.Comments.Include("TaskWhereCommentBelong").Where(x => x.CommentId == comment.CommentConnectedWithSelectedComment.CommentId).FirstOrDefault();
+                comment.CommentConnectedWithSelectedComment = db.Comments.Include("TaskWhereCommentBelong").Include("UserWhoAddComment").Where(x => x.CommentId == comment.CommentConnectedWithSelectedComment.CommentId).FirstOrDefault();
                 comment.TaskWhereCommentBelong = db.Tasks.Where(x => x.TaskId == comment.CommentConnectedWithSelectedComment.TaskWhereCommentBelong.TaskId).FirstOrDefault();               
                 comment.UserWhoAddComment = db.UserAccounts.Where(x => x.UserId == userIdInt).FirstOrDefault();
                 db.Notifications.Add(new NotificationModel { Project = comment.ProjectWhereCommentBelong, NotificationType = NotificationTypes.NowyKomentarzDoKomentarza, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = comment.CommentConnectedWithSelectedComment.UserWhoAddComment, Title = "Nowy komentarz do twojej wypowiedzi", Content = string.Format("Użytkownik ({0}) skomentował twoją wypowiedź związaną z zadaniem {1} w projekcie {2}. ",comment.UserWhoAddComment.Username,comment.TaskWhereCommentBelong.TaskName, comment.ProjectWhereCommentBelong.ProjectTitle) });

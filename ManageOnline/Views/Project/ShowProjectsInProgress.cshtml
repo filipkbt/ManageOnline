@@ -18,7 +18,7 @@
     }
     else
     {
-        <div class="card-header"><h1><b>Projekty</b></h1></div>
+        <div class="card-header"><h1><b>Twoje projekty</b></h1></div>
     }
     <div class="btn-group btn-group-justified col" style="margin-top:15px;">
         <a onclick="location.href = '@Url.Action( "ShowProjectsWaitingForOffers", "Project")'" class="btn btn-primary btn-sm mr-3 text-white text-bold" style="width:100%">Pokaż projekty oczekujące na wybranie oferty</a>
@@ -45,9 +45,6 @@
                         Data rozpoczęcia
                     </th>
                     <th scope="col">
-                        Status
-                    </th>
-                    <th scope="col">
                         Kategoria
                     </th>
                     <th scope="col">
@@ -69,7 +66,7 @@
                                 @Html.DisplayFor(modelItem => item.ProjectTitle)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.ProjectBudget)
+                                @Html.DisplayFor(modelItem => item.ProjectBudget)zł
                             </td>
 
                             <td>
@@ -79,10 +76,7 @@
                                 @Html.DisplayFor(modelItem => item.ProjectStartDate)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.ProjectStatus)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.CategoriesModel.CategoryName)
+                                @Html.DisplayFor(modelItem => item.ProjectCategory.CategoryName)
                             </td>
                             <td>
                                 @if (item.SkillsRequiredToProjectCollection != null)

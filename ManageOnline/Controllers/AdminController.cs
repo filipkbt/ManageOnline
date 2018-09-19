@@ -18,7 +18,6 @@ namespace ManageOnline.Controllers
             {
                 int UserId = Convert.ToInt32(Session["UserId"]);
                 UserBasicModel adminAccount = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
-
                 return View(adminAccount);
             }
         }
@@ -288,10 +287,10 @@ namespace ManageOnline.Controllers
             using (DbContextModel db = new DbContextModel())
             {
                 DateTime now = DateTime.Now;
-                DateTime startDate = Convert.ToDateTime("1/08/2019 00:00:00");
+                DateTime startDate = Convert.ToDateTime("24/07/2019 00:00:00");
                 double daysSincePortalIsWorking = (startDate - now).TotalDays;
 
-                ViewBag.PortalStartDate = Convert.ToDateTime("1/08/2019 00:00:00").ToString("yyyy-mm-dd");
+                ViewBag.PortalStartDate = startDate.ToString();
 
                 ViewBag.ClientsCount = db.UserAccounts.Where(x => x.Role == Roles.Klient).Count();
                 ViewBag.EmployeesCount = db.UserAccounts.Where(x => x.Role == Roles.Pracownik).Count();

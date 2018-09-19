@@ -28,12 +28,10 @@ namespace ManageOnline.Controllers
                     .Where(x => x.ProjectId.Equals(projectId))
                     .FirstOrDefault();
 
-
                 var categoriesList = db.Categories.ToList();
                 var skills = db.Skills.ToList();
 
-                var projectCategoryId = Convert.ToInt32(project.ProjectCategory.CategoryId);
-                project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
+                project.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(project.ProjectCategory.CategoryId)).FirstOrDefault();
                 if (project.SkillsRequiredToProject != null)
                 {
                     project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
@@ -112,16 +110,15 @@ namespace ManageOnline.Controllers
                 scrumSprint.FinishScrumSprintDate = DateTime.Now.AddDays(scrumSprintLengthInDays);
                 scrumSprint.ScrumSprintLengthInDays = scrumSprintLengthInDays;
                 var lastSprint = db.ScrumSprints.Where(x => x.Project.ProjectId == projectId).OrderByDescending(x => x.ScrumSprintNumber).FirstOrDefault();
-                int sprintNumber = lastSprint.ScrumSprintNumber;
+                int sprintNumber;
                 if(lastSprint != null)
                 {
-                    sprintNumber++;
+                    sprintNumber = lastSprint.ScrumSprintNumber + 1;
                 }
                 else
                 {
                     sprintNumber = 1;
                 }
-
                 scrumSprint.ScrumSprintNumber = sprintNumber;
                 db.ScrumSprints.Add(scrumSprint);
                 db.SaveChanges();
@@ -134,7 +131,6 @@ namespace ManageOnline.Controllers
             using (DbContextModel db = new DbContextModel())
             {
                 var scrumSprint = db.ScrumSprints.Where(x => x.ScrumSprintId == scrumSprintId).FirstOrDefault();
-
                 var tasksBelongedToScrumSprint = db.Tasks.Include("ScrumSprintWhereTaskBelong").Where(x => x.ScrumSprintWhereTaskBelong.ScrumSprintId == scrumSprintId).ToList();
 
                 foreach (var task in tasksBelongedToScrumSprint)
@@ -142,10 +138,8 @@ namespace ManageOnline.Controllers
                     db.Tasks.Remove(task);
                     db.SaveChanges();
                 }
-
                 db.ScrumSprints.Remove(scrumSprint);
                 db.SaveChanges();
-
                 return RedirectToAction("ScrumBoard", "ProjectPanel", new { projectId = projectId });
             }
         }
@@ -155,14 +149,10 @@ namespace ManageOnline.Controllers
             using (DbContextModel db = new DbContextModel())
             {
                 var scrumSprint = db.ScrumSprints.Where(x => x.ScrumSprintId == scrumSprintId).FirstOrDefault();
-
                 scrumSprint.FinishScrumSprintDate = DateTime.Now;
                 scrumSprint.IsFinished = true;
-
                 db.Entry(scrumSprint).State = EntityState.Modified;
-
                 db.SaveChanges();
-
                 return RedirectToAction("ScrumBoard", "ProjectPanel", new { projectId = projectId });
             }
         }
@@ -182,8 +172,7 @@ namespace ManageOnline.Controllers
                                     .ToList();
                 
                 return View(files);
-            }
-            
+            }            
         }
 
         public ActionResult UploadFile(int projectId)

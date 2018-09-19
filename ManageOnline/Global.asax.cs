@@ -35,7 +35,6 @@ namespace ManageOnline
                     adminAccount.ConfirmPassword = confirmPassword;
                     byte[] image = System.IO.File.ReadAllBytes(Server.MapPath("~/Content/Images/icons8-administrator-mężczyzna-480.png"));
                     adminAccount.UserPhoto = image;
-
                     db.UserAccounts.Add(adminAccount);
                     db.SaveChanges();
                 }

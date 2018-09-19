@@ -70,13 +70,10 @@ namespace ManageOnline.Controllers
         public ActionResult AddTask(TaskModel task)
         {
             int userIdInt = Convert.ToInt32(Session["UserId"]);
-            int ProjectId = task.ProjectId;
-            if (task.TaskName != null)
-            {
                 using (DbContextModel db = new DbContextModel())
                 {
                     task.TaskCreationDate = DateTime.Now;
-                    task.Project = db.Projects.Where(x => x.ProjectId.Equals(ProjectId)).FirstOrDefault();
+                    task.Project = db.Projects.Where(x => x.ProjectId.Equals(task.ProjectId)).FirstOrDefault();
                     task.UserWhoAddTask = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
                     task.CurrentWorkerAtTask = db.UserAccounts.Where(x => x.UserId.Equals(task.CurrentWorkerAtTask.UserId)).FirstOrDefault();
                     var currentSprint = db.ScrumSprints.Where(x => x.ScrumSprintId == task.ScrumSprintWhereTaskBelong.ScrumSprintId).FirstOrDefault();
@@ -84,21 +81,18 @@ namespace ManageOnline.Controllers
                     {
                         task.ScrumSprintWhereTaskBelong = currentSprint;
                     }
-                    task.RowNumber = 1;
-                    task.ColumnNumber = 1;
+                    if (task.Project.ProjectManagementMethodology == ProjectManagementMethodology.Kanban)
+                        task.ScrumSprintWhereTaskBelong = null;
 
                     db.Tasks.Add(task);
                     db.Notifications.Add(new NotificationModel { Project = task.Project, NotificationType = NotificationTypes.NoweZadanie, IsSeen = false, DateSend = DateTime.Now, NotificationReceiver = task.CurrentWorkerAtTask, Title = "Nowe zadanie", Content = string.Format("Użytkownik {0} przypisał Ci zadanie: {1}", task.UserWhoAddTask.Username, task.TaskName) });
-
                     db.SaveChanges();
                 }
-            }
-
             if (task.ScrumSprintWhereTaskBelong != null)
             {
-                return RedirectToAction("ScrumBoard", "ProjectPanel", new { projectId = ProjectId });
+                return RedirectToAction("ScrumBoard", "ProjectPanel", new { projectId = task.ProjectId });
             }
-            return RedirectToAction("KanbanBoard", "ProjectPanel", new { projectId = ProjectId });
+            return RedirectToAction("KanbanBoard", "ProjectPanel", new { projectId = task.ProjectId });
         }
 
         public ActionResult UpdateTaskPosition(string column1, string column2, string column3, int projectId)
@@ -251,7 +245,6 @@ namespace ManageOnline.Controllers
 
                 db.Entry(taskToEdit).State = EntityState.Modified;
                 db.SaveChanges();
-
                 if (taskToEdit.Project.ProjectManagementMethodology == ManageOnline.Models.ProjectManagementMethodology.Scrum)
                 {
                     return RedirectToAction("ScrumBoard", "ProjectPanel", new { projectId = taskToEdit.Project.ProjectId });

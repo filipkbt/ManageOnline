@@ -24,13 +24,13 @@ namespace ManageOnline.Models
         public string Description { get; set; }
         [Required]
         [DisplayName("Koszt")]
-        public double Budget { get; set; }
+        public int Budget { get; set; }
         [Required]
         [DisplayName("Czas realizacji")]
         public int EstimatedTimeToFinishProject { get; set; }
         [Required]
         [DisplayName("Zakres obowiązków")]
-        public int Responsibilities { get; set; }
+        public string Responsibilities { get; set; }
 
         public virtual UserBasicModel WorkerProposedToProject { get; set; }
         public virtual ICollection<UserBasicModel> WorkersProposedToProjectCollection { get; set; }

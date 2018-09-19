@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<ManageOnline.Models.RateModel>
 <div class="card">
-    <div class="card-header bg-info"><h2>Oceny użytkownika</h2></div>
+    <div class="card-header bg-info text-white"><h2>Oceny użytkownika</h2></div>
     <div class="card-body">
         @foreach (var item in Model)
     {
@@ -35,34 +35,34 @@
                 </div>
                 <div class="col-2">
                     <row>
-                        <label>Komunikacja</label>
+                        <h6>Komunikacja</h6>
                     </row>
                     <row>
                         <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.Communication" data-static="true">
                     </row>
-                    <label>Spełnienie warunków projektu</label>
+                    <h6>Spełnienie warunków projektu</h6>
                     <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.MeetingTheConditions" data-static="true">
-                    <label>Profesjonalizm</label>
+                    <h6>Profesjonalizm</h6>
                     <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.Professionalism" data-static="true">
-                    <label>Chęć do ponownej współpracy</label>
+                    <h6>Chęć do ponownej współpracy</h6>
                     <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.WantToCoworkAgain" data-static="true">
                 </div>
 
                 @if (item.UserWhoGetRate.Role.ToString() == "Pracownik")
             {
                 <div class="col-2">
-                    <label>Terminowość</label>
+                    <h6>Terminowość</h6>
                     <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.Punctuality" data-static="true">
-                    <label>Jakość</label>
+                    <h6>Jakość</h6>
                     <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.Quality" data-static="true">
-                    <label>Umiejętności</label>
+                    <h6>Umiejętności</h6>
                     <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.Skills" data-static="true">
                 </div>
         }
         else if (item.UserWhoGetRate.Role.ToString() == "Manager")
         {
             <div class="col-2">
-                Umiejętności zarządzania projektem
+                <h6>Umiejętności zarządzania projektem</h6>
                 <input data-role="rating" data-star-color="cyan" data-stared-color="cyan" data-value="@item.ManageSkills" data-static="true">
             </div>
     }

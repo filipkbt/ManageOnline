@@ -51,14 +51,10 @@ namespace ManageOnline.Controllers
         {
             using (DbContextModel db = new DbContextModel())
             {
-
                 var workersList = db.UserAccounts.Where(u => u.Role == Roles.Pracownik).ToList();
-
                 var skills = db.Skills.ToList();
                 MultiSelectList skillsList = new MultiSelectList(skills, "SkillId", "SkillName");
-
                 TempData["Skills"] = skillsList;
-
                 foreach (var employee in workersList)
                 {
                     if (employee.Skills != null)
@@ -73,14 +69,13 @@ namespace ManageOnline.Controllers
                     }
                 }
                 List<UserBasicModel> filteredDataContext = new List<UserBasicModel>();
-                string rateValue= form["rateValueText"];
+                string rateValue = form["rateValueText"];
                 string rateValuePreparedToDoubleConvert = rateValue.Replace(".", ",");
                 double minimumAverageRate = 0;
                 if (rateValue != "")
                 {
                     minimumAverageRate = Convert.ToDouble(rateValuePreparedToDoubleConvert);
                 }
-
                 if (form["Skills"] != null || form["rateValueText"] != null)
                 {
                     if (form["Skills"] != null)
@@ -88,7 +83,6 @@ namespace ManageOnline.Controllers
                         var selectedSkills = form["Skills"];
                         var selectedSkillsArray = selectedSkills.Split(',').ToArray();
                         int countOfSelectedSkills = selectedSkillsArray.Count();
-
                         foreach (var employee in workersList)
                         {
                             bool flag = false;
@@ -108,9 +102,7 @@ namespace ManageOnline.Controllers
                             return View(filteredDataContextWithCheckedAverageRateAndSkills);
                         }
                         else
-                        {
                             return View(filteredDataContext);
-                        }
                     }
                     else if (form["rateValueText"] != null)
                     {

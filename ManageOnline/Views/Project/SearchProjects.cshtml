@@ -52,7 +52,7 @@
                     {
                         if (item.ProjectStatus == ManageOnline.Models.ProjectStatus.WaitingForOffers)
                         {
-                            <tr onclick="location.href = '@Url.Action("ProjectDetails", "Project",  new { id=item.ProjectId}, null)'">
+                            <tr onclick="location.href = '@Url.Action("ProjectDetails", "Project",  new { id=item.ProjectId}, null)'" style="cursor:pointer">
                                 <td>
                                     @Html.DisplayFor(modelItem => item.ProjectOwner.Username)
                                 </td>
@@ -60,7 +60,7 @@
                                     @Html.DisplayFor(modelItem => item.ProjectTitle)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.ProjectBudget)
+                                    @Html.DisplayFor(modelItem => item.ProjectBudget)zł
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.ProjectCategory.CategoryName)

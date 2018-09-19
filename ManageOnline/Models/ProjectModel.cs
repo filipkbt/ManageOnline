@@ -68,7 +68,7 @@ namespace ManageOnline.Models
 
         public virtual ICollection<ScrumSprintModel> ScrumSprints { get; set; }
 
-        public string ProjectBudget { get; set; }
+        public int ProjectBudget { get; set; }
 
         [NotMapped]
         public virtual ICollection<SkillsModel> CategoriesToProjectCollection { get; set; }

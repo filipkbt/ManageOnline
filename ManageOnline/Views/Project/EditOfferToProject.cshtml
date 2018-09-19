@@ -43,14 +43,14 @@
                 <div class="row">
                     <div class="col-3 ">
                         <div class="form-group ">
-                            @Html.LabelFor(model => model.Budget, htmlAttributes: new { @class = "control-label " })
+                            <label>Koszt (w PLN)</label>
                             @Html.EditorFor(model => model.Budget, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.Budget, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="col-3 ">
                         <div class="form-group">
-                            @Html.LabelFor(model => model.EstimatedTimeToFinishProject, htmlAttributes: new { @class = "control-label" })
+                            <label>Czas wykonania (w dniach)</label>
                             @Html.EditorFor(model => model.EstimatedTimeToFinishProject, new { htmlAttributes = new { @class = "form-control" } })
                             @Html.ValidationMessageFor(model => model.EstimatedTimeToFinishProject, "", new { @class = "text-danger" })
                         </div>

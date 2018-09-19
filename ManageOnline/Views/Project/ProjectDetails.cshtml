@@ -19,7 +19,7 @@
             </h4>
         }
 
-        <h4 class="card-title" style="text-align:left"><b>@Model.CategoriesModel.CategoryName</b></h4>
+        <h4 class="card-title" style="text-align:left"><b>@Model.ProjectCategory.CategoryName</b></h4>
         <h6 class="card-title" style="text-align:left">
             @if (Model.SkillsRequiredToProjectCollection != null)
             {<b>Wymagane umiejętności:</b>
@@ -90,7 +90,7 @@
             using (Html.BeginForm("ConnectProjectWithManager", "Project", new { projectId = Model.ProjectId, projectManagementMethodology = Model.ProjectManagementMethodology },FormMethod.Post))
             {
                 <div class="col row justify-content-center">
-                    @Html.EnumDropDownListFor(x => x.ProjectManagementMethodology, "Wybierz metodologię zarządzania projektem", new { @class = "form-control col-2", style = "margin-top:5px;" })
+                    @Html.EnumDropDownListFor(x => x.ProjectManagementMethodology, "Wybierz metodologię zarządzania ", new { @class = "form-control col-2 ", style = "margin-top:5px; font-size:12px;" })
                     <button type="submit" style="margin-top:5px;margin-left:10px;" class="btn btn-success btn-block col-8">Obejmij projekt nadzorem menadżerskim</button>
                 </div>
             }

@@ -51,23 +51,20 @@
     {
         <div class="navbar navbar-expand-lg navbar-light bg-primary justify-content-end">
             <div class="container justify-content-end">
-                            <div class="navbar-header">
-            </div>
+                <div class="navbar-header">
+                </div>
                 @Html.Action("NotificationsInfo", "Dashboard")
                 <li class="btn-group nav mr-2">
-                    <button type="button" class="btn navbar-btn text-bold text-white dropdown-toggle" data-toggle="dropdown" style="background-color: forestgreen">Pracownicy</button>
-                    <ul class="dropdown-menu" role="menu">
-                        @Html.ActionLink("Przeglądaj wszystkich pracowników", "EmployeesList", "Employees")
-                    </ul>
+                    <button type="button" class="btn navbar-btn text-bold text-white" style="background-color: forestgreen" onclick="location.href ='@Url.Action("EmployeesList", "Employees")'">Pracownicy</button>
                 </li>
                 <li class="btn-group nav mr-2" style="float: right;">
                     <button type="button" class="btn navbar-btn text-bold text-white dropdown-toggle" data-toggle="dropdown" style="background-color: forestgreen">Projekty</button>
                     <ul class="dropdown-menu" role="menu">
                         <li class="navbar-brand">@Html.ActionLink("Wyszukaj projekty", "SearchProjects", "Project")</li>
                         @if ((string)HttpContext.Current.Session["Role"] == "Klient")
-                {
-                    <li class="navbar-brand">@Html.ActionLink("Dodaj projekt", "AddProject", "Project", new { id = Convert.ToInt32(HttpContext.Current.Session["UserId"]) }, null)</li>
-        }
+                        {
+                            <li class="navbar-brand">@Html.ActionLink("Dodaj projekt", "AddProject", "Project", new { id = Convert.ToInt32(HttpContext.Current.Session["UserId"]) }, null)</li>
+                        }
                         <li class="navbar-brand">@Html.ActionLink("Twoje projekty", "ShowYourProjects", "Project", new { id = Convert.ToInt32(HttpContext.Current.Session["UserId"]) }, null)</li>
 
                     </ul>
@@ -75,7 +72,6 @@
                 @Html.Action("MessagesInfo", "Messages", new { userId = Convert.ToInt32(HttpContext.Current.Session["UserId"]) })
                 <li class="btn-group nav float-right mr-2">
                     <button type="button" class="btn navbar-btn text-bold text-white dropdown-toggle" data-toggle="dropdown" style="background-color: forestgreen">@HttpContext.Current.Session["Username"]</button>
-
                     <ul class="dropdown-menu" role="menu">
                         <li class="navbar-brand">@Html.ActionLink("Zmień hasło", "ChangePassword", "Account")</li>
                         <li class="navbar-brand">@Html.ActionLink("Edytuj profil", "EditAccount", "Account")</li>

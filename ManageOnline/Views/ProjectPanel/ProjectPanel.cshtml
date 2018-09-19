@@ -84,21 +84,28 @@
 
     <div class="card-body">
         @if (Model.ProjectStatus.ToString() == "Finished")
-        {
-            <div class="alert alert-warning" role="alert">
-                <h4 class="alert-heading"><strong>Project został zakończony.</strong></h4> Jeśli jeszcze nie wystawiłeś ocen osobom zaangażowanym w projekt - zrób to !
-            </div>
-        }
+    {
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading"><strong>Project został zakończony.</strong></h4> Jeśli jeszcze nie wystawiłeś ocen osobom zaangażowanym w projekt - zrób to !
+        </div>
+}
         <h2 class="card-title" style="text-align:left;margin-bottom:5px"><b>@Model.ProjectTitle</b></h2>
-        <h4 class="card-title" style="text-align:left;margin-top:5px"><b>@Model.CategoriesModel.CategoryName</b></h4>
+        @if (Model.IsRequiredManager == true)
+    {
+        <h4 class="card-title text-info" style="text-align:left">
+            Projekt z menadżerem @if (Model.Manager != null)
+        {<a style="cursor:pointer;" onclick="location.href = '@Url.Action("ProfileDetails", "Account", new { id = Model.ProjectOwner.UserId }, null)'"><b>@Model.Manager.Username </b></a>}
+        </h4>
+}
+        <h4 class="card-title" style="text-align:left;margin-top:5px"><b>@Model.ProjectCategory.CategoryName</b></h4>
         <h6 class="card-title" style="text-align:left;margin-top:5px">
             @if (Model.SkillsRequiredToProjectCollection != null)
-            {<b>Wymagane umiejętności:</b>
-                foreach (var skill in Model.SkillsRequiredToProjectCollection)
-                {
-                    @skill.SkillName@:;
-                }
-            }
+        {<b>Wymagane umiejętności:</b>
+        foreach (var skill in Model.SkillsRequiredToProjectCollection)
+        {
+            @skill.SkillName@:;
+    }
+}
         </h6>
 
         <div class="row">
@@ -114,14 +121,14 @@
                         <p class="card-text"><b>Telefon kontaktowy: <br /></b>@Model.ProjectOwner.MobileNumber</p>
 
                         @if ((HttpContext.Current.Session["UserId"].ToString() != Model.ProjectOwner.UserId.ToString()))
-                        {
-                            @Html.Action("SendMessage", "Messages", new { userId = Model.ProjectOwner.UserId })
-                        }
+                    {
+                        @Html.Action("SendMessage", "Messages", new { userId = Model.ProjectOwner.UserId })
+                }
 
                         @if ((HttpContext.Current.Session["UserId"].ToString() == Model.ProjectOwner.UserId.ToString()) && Model.ProjectStatus.ToString() != "Finished")
-                        {
-                            <a class="btn btn-success text-white" style="margin-top:10px" onclick="location.href = '@Url.Action("SetProjectAsFinished", "Project", new { projectId = Model.ProjectId }, null)'">Zakończ projekt</a>
-                        }
+                    {
+                        <a class="btn btn-success text-white" style="margin-top:10px" onclick="location.href = '@Url.Action("SetProjectAsFinished", "Project", new { projectId = Model.ProjectId }, null)'">Zakończ projekt</a>
+                }
                     </div>
                 </div>
             </div>

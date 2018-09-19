@@ -61,16 +61,7 @@ namespace ManageOnline.Controllers
                         db.SaveChanges();
                     }
                 }
-
-                var skills = db.Skills.ToList();
-                MultiSelectList listSkills = new MultiSelectList(skills, "SkillId", "SkillName");
-                ViewBag.Skills = listSkills;
-
-                var categories = db.Categories.ToList();
-                SelectList list = new SelectList(categories, "CategoryId", "CategoryName");
-                ViewBag.Categories = list;
             }
-
             return View("SuccessfullAddProject");
         }
 
@@ -85,6 +76,21 @@ namespace ManageOnline.Controllers
                     .OrderByDescending(x => x.ProjectCreationDate)
                     .ToList();
 
+                foreach(var project in dataContext)
+                {
+                    if (project.SkillsRequiredToProject != null)
+                    {
+                        var skills = db.Skills.ToList();
+                        project.SkillsRequiredToProjectArray = project.SkillsRequiredToProject.Split(',').ToArray();
+                        project.SkillsRequiredToProjectCollection = new Collection<SkillsModel>();
+                        foreach (var skillId in project.SkillsRequiredToProjectArray)
+                        {
+                            var skillIdInt = Convert.ToInt32(skillId);
+                            var skill = skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                            project.SkillsRequiredToProjectCollection.Add(skill);
+                        }
+                    }
+                }
                 return View(dataContext);
             }
         }
@@ -108,10 +114,8 @@ namespace ManageOnline.Controllers
                 MultiSelectList categoriesList = new MultiSelectList(categories, "CategoryId", "CategoryName");
                 TempData["Categories"] = categoriesList;
             }
-
             ProjectModel project = new ProjectModel();
             return PartialView("_searchProjectsWithFilters", project);
-
         }
 
         [HttpPost]
@@ -133,6 +137,7 @@ namespace ManageOnline.Controllers
                 var categories = db.Categories.ToList();
                 MultiSelectList categoriesList = new MultiSelectList(categories, "CategoryId", "CategoryName");
                 TempData["Categories"] = categoriesList;
+
                 foreach (var projectSearched in dataContext)
                 {
                     var projectCategoryId = projectSearched.ProjectCategory.CategoryId;
@@ -153,7 +158,6 @@ namespace ManageOnline.Controllers
                 if (project.SkillsRequiredToProjectArray != null || project.CategoriesToProjectArray != null)
                 {
                     IEnumerable<ProjectModel> filteredDataContext = new List<ProjectModel>();
-
                     if (project.SkillsRequiredToProjectArray != null)
                     {
 
@@ -173,7 +177,6 @@ namespace ManageOnline.Controllers
                         {
                             filteredDataContextWithCategories = filteredDataContext.Where(x => project.CategoriesToProjectArray.Contains(x.ProjectCategory.CategoryId.ToString())).ToList();
                         }
-
                         return View("SearchProjects", filteredDataContextWithCategories);
                     }
                     return View("SearchProjects", filteredDataContext);
@@ -193,13 +196,12 @@ namespace ManageOnline.Controllers
                     .Include("OffersToProject.UserWhoAddOffer")
                     .Include("Manager")
                     .Include("OffersToProject.WorkerProposedToProject")
+                    .Include("ProjectCategory")
                     .FirstOrDefault(p => p.ProjectId.Equals(id));
 
                 var categoriesList = db.Categories.ToList();
                 var skills = db.Skills.ToList();
 
-                var projectCategoryId = Convert.ToInt32(projectDetailsInfo.ProjectCategory.CategoryId);
-                projectDetailsInfo.ProjectCategory = categoriesList.Where(x => x.CategoryId.Equals(projectCategoryId)).FirstOrDefault();
                 if (projectDetailsInfo.SkillsRequiredToProject != null)
                 {
                     projectDetailsInfo.SkillsRequiredToProjectArray = projectDetailsInfo.SkillsRequiredToProject.Split(',').ToArray();
@@ -263,10 +265,7 @@ namespace ManageOnline.Controllers
             {
                 db.Configuration.LazyLoadingEnabled = false;
 
-                int offerToProjectId = offerToProject.OfferToProjectId;
-
-                OfferToProjectModel oldOffer = db.OfferToProjectModels.FirstOrDefault(x => x.OfferToProjectId.Equals(offerToProjectId));
-
+                OfferToProjectModel oldOffer = db.OfferToProjectModels.FirstOrDefault(x => x.OfferToProjectId.Equals(offerToProject.OfferToProjectId));
                 oldOffer.Budget = offerToProject.Budget;
                 oldOffer.Description = offerToProject.Description;
                 oldOffer.EstimatedTimeToFinishProject = offerToProject.EstimatedTimeToFinishProject;
@@ -361,7 +360,9 @@ namespace ManageOnline.Controllers
                 ICollection<ProjectModel> projects = db.Projects.Include("ProjectOwner")
                                                                 .Include("ProjectCategory")
                                                                 .Include("SkillsRequiredToProjectCollection")
-                                                                .Where(x => x.ProjectStatus == ProjectStatus.WaitingForOffers).ToList();
+                                                                .Where(x => x.ProjectStatus == ProjectStatus.WaitingForOffers)
+                                                                .OrderByDescending( x=> x.ProjectCreationDate)
+                                                                .ToList();
                 ICollection<OfferToProjectModel> offersCollection = db.OfferToProjectModels.Include("UserWhoAddOffer").ToList();
                 ICollection<SkillsModel> skills = db.Skills.ToList();
                 if (System.Web.HttpContext.Current.Session["Role"].ToString() == Roles.Pracownik.ToString())
@@ -475,6 +476,7 @@ namespace ManageOnline.Controllers
                     .Include("ProjectCategory")
                     .Include("OffersToProject")
                     .Where(x => x.ProjectStatus == ProjectStatus.InProgress)
+                    .OrderByDescending(x => x.ProjectStartDate)
                     .ToList();
                 var categoriesList = db.Categories.ToList();
                 var skills = db.Skills.ToList();
@@ -564,6 +566,7 @@ namespace ManageOnline.Controllers
                     .Include("ProjectCategory")
                     .Include("OffersToProject")
                     .Where(x => x.ProjectStatus == ProjectStatus.Finished)
+                    .OrderByDescending(x => x.ProjectFinishDate)
                     .ToList();
 
                 var categoriesList = db.Categories.ToList();

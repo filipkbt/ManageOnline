@@ -16,14 +16,11 @@ namespace ManageOnline.Controllers
             {
                 var userId = Convert.ToInt32(System.Web.HttpContext.Current.Session["UserId"]);
                 var notifications = db.Notifications.Include("NotificationReceiver").Include("Project").OrderByDescending(x=>x.DateSend).Where(x => x.NotificationReceiver.UserId.Equals(userId)).ToList();
-
                 var NotificationsNotSeen = db.Notifications.Include("NotificationReceiver").OrderByDescending(x => x.DateSend).Where(x => x.NotificationReceiver.UserId == userId && !x.IsSeen).ToList();
-
                 foreach(var notification in NotificationsNotSeen)
                 {
                     notification.IsSeen = true;
                 }
-
                 db.SaveChanges();
                 return View(notifications);
             }

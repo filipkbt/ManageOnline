@@ -69,10 +69,9 @@ namespace ManageOnline.Controllers
                 {
                     if ((string.Compare(Crypto.Hash(user.Password), currentUser.Password) == 0))
                     {
-                        System.Web.HttpContext.Current.Session["UserId"] = currentUser.UserId.ToString().ToLower();
+                        System.Web.HttpContext.Current.Session["UserId"] = currentUser.UserId.ToString();
                         System.Web.HttpContext.Current.Session["Username"] = currentUser.Username.ToString().ToLower();
                         System.Web.HttpContext.Current.Session["Role"] = currentUser.Role.ToString();
-                        Session.Timeout = 30;
                         if(currentUser.Role == Roles.Admin)
                         {
                             return RedirectToAction("AdminDashboard", "Admin");
@@ -129,8 +128,16 @@ namespace ManageOnline.Controllers
                         userToEdit.Password = Crypto.Hash(newPassword);
                         userToEdit.ConfirmPassword = Crypto.Hash(confirmNewPassword);
                         db.Entry(userToEdit).State = EntityState.Modified;
-                        db.SaveChanges();
-                        ViewBag.MessageInfoRight = "Hasło zostało zmienione.";
+                        try
+                        {
+                            db.SaveChanges();
+                            ViewBag.MessageInfoRight = "Hasło zostało zmienione.";
+                        }
+                        catch(Exception ex)
+                        {
+                            ViewBag.MessageInfoWront = "Hasło nie zostało zmienione." + ex.Message;
+                        }
+
                         return View();
                     }
                     else
@@ -218,9 +225,7 @@ namespace ManageOnline.Controllers
         [HttpPost]
         public ActionResult EditAccount(UserBasicModel userAfterEdit, HttpPostedFileBase file)
         {
-            int UserId = Convert.ToInt32(Session["UserId"]);
-            
-
+            int UserId = Convert.ToInt32(Session["UserId"]);         
             using (DbContextModel db = new DbContextModel())
             {
                 if (userAfterEdit.SkillsArray != null)
@@ -229,38 +234,29 @@ namespace ManageOnline.Controllers
                 }
 
                 UserBasicModel user = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(UserId));
-
                 user.MobileNumber = userAfterEdit.MobileNumber;
-
                 user.DisplayedRole = userAfterEdit.DisplayedRole;
-
                 user.Description = userAfterEdit.Description;
                 if (file != null)
                 {
                     byte[] data = FileHandler.GetBytesFromFile(file);
                     user.UserPhoto = data;
                 }
-
-                user.Skills = userAfterEdit.Skills;
-                
+                user.Skills = userAfterEdit.Skills;                
                 db.Entry(user).State = EntityState.Modified;
                 try
                 {
                     db.SaveChanges();
                 }
-
                 catch
                 {
                     ViewBag.MessageAfterEditProfileDetails = "Edycja danych nie powiodła się";
                 }
-
                 ViewBag.MessageAfterEditProfileDetails = "Edycja danych przebiegła pomyślnie";
-
                 if(user.SkillsArray != null)
                 {
                     user.SkillsArray = user.Skills.Split(',').ToArray();
-                }
-                
+                }                
                 var skills = db.Skills.ToList();
                 MultiSelectList list = new MultiSelectList(skills, "SkillId", "SkillName");
                 ViewBag.Skills = list;
@@ -325,22 +321,21 @@ namespace ManageOnline.Controllers
 
         public ActionResult ProfileDetails(int id)
         {
-            DbContextModel db = new DbContextModel();
-
-            UserBasicModel userDetails = db.UserAccounts.FirstOrDefault(u => u.UserId.Equals(id));
-
-            if (userDetails.Skills != null)
+            using (DbContextModel db = new DbContextModel())
             {
-                userDetails.SkillsArray = userDetails.Skills.Split(',').ToArray();
-                foreach (var skillId in userDetails.SkillsArray)
+                UserBasicModel userDetails = db.UserAccounts.Where(u => u.UserId.Equals(id)).FirstOrDefault();
+                if (userDetails.Skills != null)
                 {
-                    var skillIdInt = Convert.ToInt32(skillId);
-                    var skill = db.Skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
-                    userDetails.SkillsCollection.Add(skill);
+                    userDetails.SkillsArray = userDetails.Skills.Split(',').ToArray();
+                    foreach (var skillId in userDetails.SkillsArray)
+                    {
+                        var skillIdInt = Convert.ToInt32(skillId);
+                        var skill = db.Skills.Where(x => x.SkillId.Equals(skillIdInt)).FirstOrDefault();
+                        userDetails.SkillsCollection.Add(skill);
+                    }
                 }
+                return View(userDetails);
             }
-
-            return View(userDetails);
         }
 
     }

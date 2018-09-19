@@ -29,16 +29,23 @@ namespace ManageOnline.Controllers
             using (DbContextModel db = new DbContextModel())
             {
                 portfolioProject.EmployeeId = db.UserAccounts.Where(x => x.UserId.Equals(userIdInt)).FirstOrDefault();
-
                 if (file != null)
                 {
                     byte[] data = FileHandler.GetBytesFromFile(file);
                     portfolioProject.ProjectImage = data;
                 }
                 db.PortfolioProjects.Add(portfolioProject);
-                db.SaveChanges();
+                try
+                {
+                    db.SaveChanges();
+                    ViewBag.MessageAfterEditProfileDetails = "Edycja danych przebiegła pomyślnie.";
+                }
+                catch(Exception ex)
+                {
+                    ViewBag.MessageAfterEditProfileDetails = "Edycja danych się nie udała." + ex.Message;
+                    return View();
+                }
             }
-            ViewBag.MessageAfterEditProfileDetails = "Edycja danych przebiegła pomyślnie";
             return RedirectToAction("EditAccount", "Account");
         }
 

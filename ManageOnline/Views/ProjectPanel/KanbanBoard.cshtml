@@ -134,7 +134,7 @@
                             <div class="uk-card uk-card-hover uk-card-default uk-card-small">
                                 <div class="uk-card-body">
                                     <h3 class="uk-card-title uk-margin-remove">@task.TaskName</h3>
-                                    <p class="uk-text-meta uk-margin-remove"><b>Data Dodania:</b> @task.TaskCreationDate<br /><b>Data rozpoczęcia:</b> @task.TaskStartDate</p>
+                                    <p class="uk-text-meta uk-margin-remove"><b>Data dodania:</b> @task.TaskCreationDate<br /><b>Data rozpoczęcia:</b> @task.TaskStartDate</p>
                                     @if (task.CurrentWorkerAtTask != null)
                                     {
                                         <ul class="user-group">
@@ -192,7 +192,6 @@
 
 
     <script type="text/javascript">
-
     $(function () {
         $("#sortable1, #sortable2, #sortable3").sortable({
             connectWith: ".connectedSortable",
@@ -200,7 +199,6 @@
                 var columnFromKanban1 = $('#sortable1').sortable('toArray').toString();
                 var columnFromKanban2 = $('#sortable2').sortable('toArray').toString();
                 var columnFromKanban3 = $('#sortable3').sortable('toArray').toString();
-                var toast = Metro.toast.create;
                 var notStartedTasksWidth = $('#sortable1').sortable('toArray').length;
                 var inProgressTasksWidth = $('#sortable2').sortable('toArray').length;
                 var finishedTasksWidth = $('#sortable3').sortable('toArray').length;
@@ -229,7 +227,6 @@
             }
         }).disableSelection();
     });
-
     </script>
 
 

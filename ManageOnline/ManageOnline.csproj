@@ -460,6 +460,18 @@
     <Compile Include="Migrations\201809132251329_renameColumnCategoriesAtProjectModels.Designer.cs">
       <DependentUpon>201809132251329_renameColumnCategoriesAtProjectModels.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201809171836586_fixToOfferToProjectModelDescriptionBudget.cs" />
+    <Compile Include="Migrations\201809171836586_fixToOfferToProjectModelDescriptionBudget.Designer.cs">
+      <DependentUpon>201809171836586_fixToOfferToProjectModelDescriptionBudget.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809180058303_changeStringToIntAtProjectBudget.cs" />
+    <Compile Include="Migrations\201809180058303_changeStringToIntAtProjectBudget.Designer.cs">
+      <DependentUpon>201809180058303_changeStringToIntAtProjectBudget.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201809190303467_ChangeRowNumberToNullable.cs" />
+    <Compile Include="Migrations\201809190303467_ChangeRowNumberToNullable.Designer.cs">
+      <DependentUpon>201809190303467_ChangeRowNumberToNullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CategoriesModel.cs" />
     <Compile Include="Models\CommentModel.cs" />
@@ -922,6 +934,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201809132251329_renameColumnCategoriesAtProjectModels.resx">
       <DependentUpon>201809132251329_renameColumnCategoriesAtProjectModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809171836586_fixToOfferToProjectModelDescriptionBudget.resx">
+      <DependentUpon>201809171836586_fixToOfferToProjectModelDescriptionBudget.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809180058303_changeStringToIntAtProjectBudget.resx">
+      <DependentUpon>201809180058303_changeStringToIntAtProjectBudget.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201809190303467_ChangeRowNumberToNullable.resx">
+      <DependentUpon>201809190303467_ChangeRowNumberToNullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
