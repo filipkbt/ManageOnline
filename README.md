@@ -1,10 +1,6 @@
 # Manage Online
 
 ## Description:
-Web application supporting acquisition and project management in the Kanban methodology.
-
-The project was implemented as part of a BA thesis. 
-
 The application is a combination of an advertisement portal for freelancers, where they can establish cooperation with clients as well as a web application supporting project management. 
 
 In "Manage Online" there is a division into three roles of users: 
